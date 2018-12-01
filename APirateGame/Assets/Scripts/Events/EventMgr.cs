@@ -10,7 +10,7 @@ namespace Assets.Events
     {
         private static EventMgr _instance;
 
-        public IEvent GenerateEvent(EventEnum eventEnum)
+        public IEvent GenerateEvent(EventEnum eventEnum, params object[] eventArgs)
         {
             switch (eventEnum)
             {
@@ -30,15 +30,26 @@ namespace Assets.Events
                     return new HarmShipPartEvent();
                 case EventEnum.HARM_CREW_MEMBER:
                     return new HarmCrewMemberEvent();
+                case EventEnum.REDUCE_RESOURCES:
+                    uint foodToReduce = (uint)eventArgs[0];
+                    uint woodToReduce = (uint)eventArgs[1];
+
+                    return new ReduceResourcesEvent(foodToReduce, woodToReduce);
                 default:
                     return null;
             }
         }
 
-        public void ExecuteEvent(EventEnum eventEnum, MonoBehaviour behaviouralObject)
+        public void ExecuteEvent(EventEnum eventEnum, MonoBehaviour behaviouralObject, params object[] eventArgs)
         {
-            GenerateEvent(eventEnum).Execute(behaviouralObject);
+            GenerateEvent(eventEnum, eventArgs).Execute(behaviouralObject);
         }
+
+        public void RaiseReduceResourcesEvent(MonoBehaviour behaviouralObject, uint foodToReduce, uint woodToReduce)
+        {
+            GenerateEvent(EventEnum.REDUCE_RESOURCES, foodToReduce, woodToReduce).Execute(behaviouralObject);
+        }
+
 
         public ComposedEvent ComposeEvent()
         {

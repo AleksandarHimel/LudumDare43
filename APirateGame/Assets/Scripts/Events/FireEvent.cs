@@ -9,7 +9,7 @@ namespace Assets.Events
         public readonly uint FireDamageOnShipParts = 2;
         public readonly int FireDamageOnCrewMembers = 2;
 
-        public override void ExecuteEventInternal(MonoBehaviour behaviouralObject)
+        public override void ExecuteEventInternal(Ship behaviouralObject)
         {
             Ship shipObject = behaviouralObject as Ship;
 
