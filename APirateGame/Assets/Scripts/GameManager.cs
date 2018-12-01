@@ -9,9 +9,12 @@ namespace Assets.Scripts
 
         public Ship Ship;
         public EventManager EventManager;
-        public GameState GameState;
         public PlayerController PlayerController;
         public InputController InputController;
+
+        [Header("Health Settings")]
+        public GameState GameState;
+        public ShipInventory ShipInventory;
 
         private GameObject _gameManagerGameObject;
 
@@ -45,11 +48,9 @@ namespace Assets.Scripts
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
 
-            var shipGameObject = new GameObject("ShipGameObject");
-            Ship = shipGameObject.AddComponent<Ship>();
-
-            AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
-            AssetDatabase.SaveAssets();
+            var shipGameObject = GameObject.Find("ShipGO");
+            Ship = shipGameObject.GetComponent<Ship>();
+            Ship.Inventory = ShipInventory;
         }
 	
         public void SetIsUserTurn(bool newValue)

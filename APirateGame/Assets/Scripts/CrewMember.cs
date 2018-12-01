@@ -11,8 +11,21 @@ public class CrewMember : MonoBehaviour {
 
     public Ship ship;
 
+    public static string[] CrewMemberColors =
+    {
+        "red",
+        "green",
+        "blue"
+    };
+
     void Start()
     {
+        var sprite = GetComponent<SpriteRenderer>();
+
+        var color = CrewMemberColors[new System.Random().Next(3)];
+        Debug.Log(color);
+        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
+
         Health = 10;
         IsDead = false;
     }
