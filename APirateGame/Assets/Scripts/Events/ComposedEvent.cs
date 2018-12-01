@@ -15,7 +15,7 @@ namespace Assets.Events
         public ComposedEvent AddEvent(EventEnum eventEnum)
         {
             eventsOfInterest.Add(
-                EventMgr.Instance.GenerateEvent(eventEnum)
+                EventManager.Instance.GenerateEvent(eventEnum)
             );
 
             return this;

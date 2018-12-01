@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Events
 {
-    public class PlaugeEvent : IEvent
+    public class PlagueEvent : IEvent
     {
         public readonly int PlagueResourceConsumptionIncrement = 30;
 

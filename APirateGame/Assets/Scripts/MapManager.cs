@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Events;
 
-public class MapManager : MonoBehaviour
+public class MapManager
 {
 
     private static int RiskDepth = 3;
@@ -56,7 +56,7 @@ public class MapManager : MonoBehaviour
             {
                 for (int k = 0; k < RiskDepth; k++)
                 {
-                    if (j + 1 == MapLength)
+                    if (j + 1 >= MapLength)
                     {
                         Map[i][j].Destinations[i] = null;
                     }
@@ -76,6 +76,8 @@ public class MapManager : MonoBehaviour
 
         for (int i = 0; i < RiskDepth; i++)
         {
+            StartingDestinations.Add(new MapNode());
+
             StartingDestinations[i] = Map[0][i];
         }
     }

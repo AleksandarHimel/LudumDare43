@@ -1,6 +1,8 @@
 using Assets.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
@@ -26,24 +28,43 @@ public class Ship : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        var cannon = new Cannon(this);
-        var engineRoom = new EngineRoom(this);
-        var hull = new Hull(this);
-        var kitchen = new Kitchen(this);
+        // Instantiate some type of ship 4 example:
+        // For each ship type there should be specific game object...
+        var cannonGO = new GameObject("ShipPart/Cannon");
+        cannonGO.transform.parent = gameObject.transform.parent;
+
+        var engineRoomGO = new GameObject("ShipPart/EngineRoom");
+        engineRoomGO.transform.parent = gameObject.transform.parent;
+
+        var hullGO = new GameObject("ShipPart/Hull");
+        engineRoomGO.transform.parent = gameObject.transform.parent;
+
+        var kitchenGO = new GameObject("ShipPart/Kitchen");
+        engineRoomGO.transform.parent = gameObject.transform.parent;
 
         ShipParts = new List<ShipPart>
         {
-            cannon, engineRoom, hull, kitchen
+            cannonGO.AddComponent<Cannon>(),
+            engineRoomGO.AddComponent<EngineRoom>(),
+            hullGO.AddComponent<Hull>(),
+            kitchenGO.AddComponent<Kitchen>()
         };
 
-        CrewMembers = new List<CrewMember>
+        CrewMembers = new List<CrewMember>();
+        // TODO: this is temp, depending on crew member size compared to ship part count
+        foreach (var shipPart in ShipParts)
         {
-            new CrewMember(cannon),
-            new CrewMember(engineRoom),
-            new CrewMember(kitchen),
-            new CrewMember(kitchen)
-        };
-	}
+            var crewMemberGO = new GameObject("CrewMembers/PlayerCharacter-" + Guid.NewGuid());
+            var component = crewMemberGO.AddComponent<CrewMember>();
+            component.CurrentShipPart = shipPart;
+            CrewMembers.Add(component);
+        }
+
+        Inventory = ScriptableObject.CreateInstance<ShipInventory>();
+
+        AssetDatabase.CreateAsset(Inventory, "Assets/ScriptableObjectsStatic/ShipInventory.asset");
+        AssetDatabase.SaveAssets();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -102,9 +123,9 @@ public class Ship : MonoBehaviour
                 {
                     if (!crewMember.IsUnderPlague)
                     {
-                        if (Random.Range(0, 1) > PlagueSpreadingProbability)
+                        if (UnityEngine.Random.Range(0, 1) > PlagueSpreadingProbability)
                         {
-                            EventMgr.Instance.ExecuteEvent(EventEnum.PLAGUE, crewMember);
+                            EventManager.Instance.ExecuteEvent(EventEnum.PLAGUE, crewMember);
                         }
                     }
                 }

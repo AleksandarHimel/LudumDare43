@@ -11,11 +11,10 @@ public class CrewMember : MonoBehaviour {
 
     public Ship ship;
 
-    public CrewMember(ShipPart StartingShipPart)
+    void Start()
     {
         Health = 10;
         IsDead = false;
-        CurrentShipPart = StartingShipPart;
     }
 
     public void ReduceHealth(int damage)

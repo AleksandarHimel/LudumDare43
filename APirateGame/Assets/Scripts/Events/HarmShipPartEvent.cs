@@ -20,7 +20,7 @@ namespace Assets.Events
             {
                 foreach (CrewMember crewMember in shipPart.PresentCrewMembers)
                 {
-                    EventMgr.Instance.ExecuteEvent(EventEnum.HARM_CREW_MEMBER, crewMember);
+                    EventManager.Instance.ExecuteEvent(EventEnum.HARM_CREW_MEMBER, crewMember);
                 }
             }
         }

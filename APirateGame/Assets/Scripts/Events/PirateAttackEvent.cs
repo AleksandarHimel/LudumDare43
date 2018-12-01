@@ -22,7 +22,7 @@ namespace Assets.Events
                 crewMember.ReduceHealth(PirateAttackDamageOnCrewMembers);
             }
 
-            EventMgr.Instance.RaiseReduceResourcesEvent(shipObject.Inventory, PirateAttackFoodLooted, PirateAttackWoodLooted);
+            EventManager.Instance.RaiseReduceResourcesEvent(shipObject, PirateAttackFoodLooted, PirateAttackWoodLooted);
         }
     }
 }

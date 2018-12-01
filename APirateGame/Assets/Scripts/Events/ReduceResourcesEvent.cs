@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,10 +18,10 @@ namespace Assets.Events
             this.woodToReduce = woodToReduce;
         }
 
-
         public override void ExecuteEventInternal(Ship ship)
         {
-            ship.Inventory.ReduceResources(foodToReduce, woodToReduce);
+            ship.Inventory.TryRemoveAmountOfFood(foodToReduce);
+            ship.Inventory.TryRemoveAmountOfWood(woodToReduce);
         }
     }
 }
