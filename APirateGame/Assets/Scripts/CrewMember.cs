@@ -6,8 +6,8 @@ public class CrewMember : MonoBehaviour {
 
     public ShipPart CurrentShipPart;
     public int Health;
-    public bool isDead;
-    public bool IsUnderPlauge;
+    public bool IsDead;
+    public bool IsUnderPlague;
     public int ResourceConsumption;
 
     public Ship ship;
@@ -15,7 +15,7 @@ public class CrewMember : MonoBehaviour {
     public CrewMember(ShipPart StartingShipPart)
     {
         Health = 10;
-        isDead = false;
+        IsDead = false;
         CurrentShipPart = StartingShipPart;
     }
 
@@ -23,6 +23,6 @@ public class CrewMember : MonoBehaviour {
     {
         Health -= damage;
         if (Health <= 0)
-            isDead = true;
+            IsDead = true;
     }
 }

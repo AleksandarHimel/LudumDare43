@@ -55,7 +55,7 @@ public class Ship : MonoBehaviour
 
         foreach (CrewMember cm in CrewMembers)
         {
-            if (!cm.IsDead())
+            if (!cm.IsDead)
             {
                 hasLivingCrewMember = true;
                 break;
