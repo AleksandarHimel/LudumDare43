@@ -14,7 +14,10 @@ namespace Assets.Events
 
             foreach (ShipPart shipPart in shipObject.ShipParts)
             {
-                shipPart.TakeDamage(ShallowWaterDamageOnShipParts);
+                if (shipPart.isOnBottom())
+                {
+                    shipPart.TakeDamage(ShallowWaterDamageOnShipParts);
+                }
             }            
         }
     }
