@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Ship : MonoBehaviour
+public class Ship : MonoBehaviour, IPointerClickHandler
 {
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
 
-    public ShipInventory Inventory { get; private set; }
+    public ShipInventory Inventory { get; set; }
 
     public double PlagueSpreadingProbability = 0.3;
 
@@ -54,16 +55,19 @@ public class Ship : MonoBehaviour
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
-            var crewMemberGO = new GameObject("CrewMembers/PlayerCharacter-" + Guid.NewGuid());
+            // Create position
+            var transform = this.transform;
+            transform.position = new Vector3(transform.position.x + UnityEngine.Random.Range(-0.3f, 0.3f), transform.position.y, transform.position.z);
+
+            // Create instance of a Pirate
+            var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
+            crewMemberGO.name = "CrewMembers /PlayerCharacter-" + Guid.NewGuid();
+
+            // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
             component.CurrentShipPart = shipPart;
             CrewMembers.Add(component);
         }
-
-        Inventory = ScriptableObject.CreateInstance<ShipInventory>();
-
-        AssetDatabase.CreateAsset(Inventory, "Assets/ScriptableObjectsStatic/ShipInventory.asset");
-        AssetDatabase.SaveAssets();
     }
 	
 	// Update is called once per frame
@@ -136,5 +140,10 @@ public class Ship : MonoBehaviour
     void TryApplyPlague(CrewMember crewMember)
     {
 
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log(name + " Game Object Clicked!");
     }
 }
