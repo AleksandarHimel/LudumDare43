@@ -5,9 +5,9 @@ namespace Assets.Events
 {
     public enum EventEnum
     {
-        PIRATES_ATTACK = 0,
-        PLAGUE = 10,
-        DESTROY_CANNON = 500,
+        PIRATES_ATTACK,
+        PLAGUE,
+        DESTROY_CANNON,
         DESTROY_OBJECT,
         EVENT_MAX
     }
