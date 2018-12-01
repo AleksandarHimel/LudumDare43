@@ -21,19 +21,13 @@ public class ShipInventory : ScriptableObject
         WoodForFuel = wood;
     }
 
-    public uint TryRemoveAmountOfFood (uint amount)
+    public void TryRemoveAmountOfFood (uint amount)
     {
-        Food = Food >= foodToReduce ? Food - foodToReduce : 0;
+        Food = Food >= amount ? Food - amount : 0;
     }
 
-    public void reduceWood (uint woodToReduce)
+    public void TryRemoveAmountOfWood(uint amount)
     {
-        WoodForFuel = WoodForFuel >= woodToReduce ? WoodForFuel - woodToReduce : 0;
-    }
-
-    public uint TryRemoveAmountOfWood(uint amount)
-    {
-        reduceFood(foodToReduce);
-        reduceWood(woodToReduce);      
+        WoodForFuel = WoodForFuel >= amount ? WoodForFuel - amount : 0;
     }
 }

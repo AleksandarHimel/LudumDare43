@@ -43,7 +43,7 @@ namespace Assets.Events
         public IEvent GetNextEvent()
         {
             // TODO: logic
-            return new PlaugeEvent();
+            return new PlagueEvent();
         }
 
         public void ExecuteEvent(EventEnum eventEnum, MonoBehaviour behaviouralObject, params object[] eventArgs)
@@ -55,7 +55,6 @@ namespace Assets.Events
         {
             GenerateEvent(EventEnum.REDUCE_RESOURCES, foodToReduce, woodToReduce).Execute(behaviouralObject);
         }
-
 
         public ComposedEvent ComposeEvent()
         {

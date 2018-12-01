@@ -18,10 +18,10 @@ namespace Assets.Events
             this.woodToReduce = woodToReduce;
         }
 
-        public override void ExecuteEventInternal(MonoBehaviour behaviouralObject)
+        public override void ExecuteEventInternal(Ship ship)
         {
-            GameManager.Instance.Ship.Inventory.TryRemoveAmountOfFood(foodToReduce);
-            GameManager.Instance.Ship.Inventory.TryRemoveAmountOfWood(woodToReduce);
+            ship.Inventory.TryRemoveAmountOfFood(foodToReduce);
+            ship.Inventory.TryRemoveAmountOfWood(woodToReduce);
         }
     }
 }
