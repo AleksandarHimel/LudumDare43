@@ -7,6 +7,7 @@ namespace Assets.Events
     {
         PIRATES_ATTACK,
         PLAGUE,
+        SHALLOW_WATER,
         DESTROY_CANNON,
         DESTROY_OBJECT
     }
