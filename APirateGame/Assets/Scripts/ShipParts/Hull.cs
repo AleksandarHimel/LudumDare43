@@ -6,8 +6,8 @@ public class Hull : ShipPart
 {
     public Hull(Ship parentShip) : base(parentShip) { }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    public override void InitShipPart()
     {
         MaxNumberOfCrewMembers = 0;
         MaxHealth = 2;

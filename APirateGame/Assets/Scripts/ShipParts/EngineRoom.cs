@@ -6,8 +6,8 @@ public class EngineRoom : ShipPart {
 
     public EngineRoom(Ship parentShip) : base (parentShip) { }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    public override void InitShipPart()
     {
         MaxNumberOfCrewMembers = 2;
         MaxHealth = 2;

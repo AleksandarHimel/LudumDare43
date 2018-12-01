@@ -6,9 +6,12 @@ public class Cannon : ShipPart
 {
     public Cannon(Ship parentShip) : base(parentShip) { }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    public override void InitShipPart()
     {
+        // Assign texture
+        spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Cannon");
+
         MaxNumberOfCrewMembers = 1;
         MaxHealth = 2;
         Health = MaxHealth;

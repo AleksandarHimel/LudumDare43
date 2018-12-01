@@ -6,8 +6,8 @@ public class Kitchen : ShipPart {
 
     public Kitchen(Ship parentShip) : base(parentShip) { }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    public override void InitShipPart()
     {
         MaxNumberOfCrewMembers = 10;
         MaxHealth = 2;
