@@ -41,4 +41,9 @@ public class ShipInventory : MonoBehaviour
         WoodForFuel = WoodForFuel >= amount ? WoodForFuel - amount : 0;
         return retVal;
     }
+
+    public void ReduceResources(uint foodToReduce, uint woodToReduce)
+    {
+
+    }
 }
