@@ -12,6 +12,7 @@ namespace Assets.Events
         GAME_OVER,
         HARM_SHIP_PART,
         HARM_CREW_MEMBER,
+        REDUCE_RESOURCES,
         EVENT_MAX
     }
 }

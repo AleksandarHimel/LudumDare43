@@ -11,10 +11,8 @@ namespace Assets.Events
         public readonly uint PirateAttackFoodLooted = 1;
         public readonly uint PirateAttackWoodLooted = 1;
 
-        public override void ExecuteEventInternal(MonoBehaviour behaviouralObject)
+        public override void ExecuteEventInternal(Ship shipObject)
         {
-            Ship shipObject = behaviouralObject as Ship;
-
             foreach (ShipPart shipPart in shipObject.ShipParts)
             {
                 shipPart.TakeDamage(PirateAttackDamageOnShipParts);
@@ -23,8 +21,8 @@ namespace Assets.Events
             {
                 crewMember.ReduceHealth(PirateAttackDamageOnCrewMembers);
             }
-            shipObject.Inventory.TryRemoveAmountOfFood(PirateAttackFoodLooted);
-            shipObject.Inventory.TryRemoveAmountOfWood(PirateAttackWoodLooted);
+
+            EventMgr.Instance.RaiseReduceResourcesEvent(shipObject.Inventory, PirateAttackFoodLooted, PirateAttackWoodLooted);
         }
     }
 }

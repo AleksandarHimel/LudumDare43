@@ -8,10 +8,8 @@ namespace Assets.Events
     {
         public readonly uint ShallowWaterDamageOnShipParts = 1;
 
-        public override void ExecuteEventInternal(MonoBehaviour behaviouralObject)
+        public override void ExecuteEventInternal(Ship shipObject)
         {
-            Ship shipObject = behaviouralObject as Ship;
-
             foreach (ShipPart shipPart in shipObject.ShipParts)
             {
                 if (shipPart.isOnBottom())
