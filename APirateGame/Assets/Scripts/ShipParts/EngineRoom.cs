@@ -19,4 +19,9 @@ public class EngineRoom : ShipPart {
     {
 		
 	}
+
+    public override bool isOnBottom()
+    {
+        return false;
+    }
 }

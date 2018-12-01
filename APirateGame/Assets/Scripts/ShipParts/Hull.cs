@@ -18,4 +18,9 @@ public class Hull : ShipPart
 	void Update () {
 		
 	}
+
+    public override bool isOnBottom()
+    {
+        return true;
+    }
 }

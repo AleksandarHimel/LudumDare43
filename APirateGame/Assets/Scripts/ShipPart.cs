@@ -44,4 +44,6 @@ public abstract class ShipPart : MonoBehaviour {
     {
         Health -= Math.Min(damage, Health);
     }
+
+    public abstract bool isOnBottom();
 }

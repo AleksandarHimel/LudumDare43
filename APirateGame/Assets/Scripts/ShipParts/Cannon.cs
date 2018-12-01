@@ -19,4 +19,9 @@ public class Cannon : ShipPart
     {
 		
 	}
+
+    public override bool isOnBottom()
+    {
+        return false;
+    }
 }
