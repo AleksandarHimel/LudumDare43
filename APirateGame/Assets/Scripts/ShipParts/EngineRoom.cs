@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class EngineRoom : ShipPart {
 
+    public EngineRoom(Ship parentShip) : base (parentShip) { }
+
 	// Use this for initialization
 	void Start ()
     {
         MaxNumberOfCrewMembers = 2;
         MaxHealth = 2;
+        Health = MaxHealth;
 	}
 	
 	// Update is called once per frame

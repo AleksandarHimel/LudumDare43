@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class ShipPart : MonoBehaviour {
 
-    private readonly Ship ParentShip;
+    protected readonly Ship ParentShip;
 
     public uint MaxNumberOfCrewMembers { get; protected set; }
 
