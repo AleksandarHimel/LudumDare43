@@ -16,10 +16,10 @@ namespace Assets.Events
 
            if (crewMember != null)
            {
-                if (!crewMember.IsUnderPlauge)
+                if (!crewMember.IsUnderPlague)
                 {
                     crewMember.ResourceConsumption += PlagueResourceConsumptionIncrement;
-                    crewMember.IsUnderPlauge = true;
+                    crewMember.IsUnderPlague = true;
                 }
             }
         }

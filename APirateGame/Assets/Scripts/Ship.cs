@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,19 +7,17 @@ public class Ship : MonoBehaviour
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
 
-    public Dictionary<CrewMember, ShipPart> Assignment { get; private set; }
-
     public double PlagueSpreadingProbability = 0.3;
 
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
     {
-        if (Assignment.ContainsKey(crew))
+        if (part.MaxNumberOfCrewMembers == part.PresentCrewMembers.Count())
         {
-            Assignment.Remove(crew);
+            throw new System.Exception("Ship part is full!");
         }
 
-        Assignment.Add(crew, part);
+        crew.CurrentShipPart = part;
     }
 
 	// Use this for initialization
@@ -32,12 +30,8 @@ public class Ship : MonoBehaviour
 
         ShipParts = new List<ShipPart>
         {
-            new Cannon(this),
-            new EngineRoom(this),
-            new Hull(this),
-            new Kitchen(this)
+            cannon, engineRoom, hull, kitchen
         };
-
 
         CrewMembers = new List<CrewMember>
         {
@@ -97,15 +91,15 @@ public class Ship : MonoBehaviour
     {
         foreach (ShipPart shipPart in ShipParts)
         {
-            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlauge);
+            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
 
             if (!isRoomSafe)
             {
                 foreach (CrewMember crewMember in shipPart.PresentCrewMembers)
                 {
-                    if (!crewMember.IsUnderPlauge)
+                    if (!crewMember.IsUnderPlague)
                     {
-                        if (Random.RandomRange(0, 1) > PlagueSpreadingProbability)
+                        if (Random.Range(0, 1) > PlagueSpreadingProbability)
                         {
 
                         }
