@@ -4,13 +4,24 @@ using UnityEngine;
 
 public abstract class CrewMember : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public ShipPart CurrentShipPart;
+    public int Health;
+
+    public CrewMember(ShipPart StartingShipPart)
+    {
+        Health = 10;
+        CurrentShipPart = StartingShipPart;
+    }
+
+    public void ReduceHealth(int damage)
+    {
+        Health -= damage;
+    }
+
+    public bool IsDead()
+    {
+        if (Health <= 0)
+            return true;
+        return false;
+    }
 }
