@@ -6,31 +6,32 @@ using Assets.Events;
 
 public class MapManager
 {
+    private static MapManager _instance;
 
     private static int RiskDepth = 3;
+
     private static int MapLength = 12;
 
     private List<List<MapNode>> Map;
 
     private MapNode Current;
 
-    private Random RandomGenerator;
-
     private List<MapNode> StartingDestinations;
 
-    // Use this for initialization
-    void Start()
+    public static MapManager Instance
     {
-        CreateMap();
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new MapManager();
+            }
+
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void CreateMap()
+    MapManager()
     {
         Current = null;
         Map = new List<List<MapNode>>();
@@ -44,7 +45,7 @@ public class MapManager
                 Map[i].Add(new MapNode(RiskDepth));
 
                 //(Devnote - Srki) Fix once we get eligible encounters in order.
-                Map[i][j].Encounter = GetRandomEncounter(10 * (i + 1));
+                Map[i][j].Encounter = GetRandomEncounter(i);
             }
         }
 
@@ -58,15 +59,15 @@ public class MapManager
                 {
                     if (j + 1 >= MapLength)
                     {
-                        Map[i][j].Destinations[i] = null;
+                        Map[i][j].Destinations[k] = null;
                     }
                     else if (i == k)
                     {
-                        Map[i][j].Destinations[i] = Map[i][j + 1];
+                        Map[i][j].Destinations[k] = Map[i][j + 1];
                     }
                     else
                     {
-                        Map[i][j].Destinations[i] = (Random.Range(0, 1) < 1.0f / (RiskDepth)) ? Map[k][j] : null;
+                        Map[i][j].Destinations[k] = (Random.Range(0.0f, 1.0f) < 1.0f / (RiskDepth-1.0f)) ? Map[k][j+1] : null;
                     }
                 }
             }
@@ -88,13 +89,21 @@ public class MapManager
     private void SetCurrentNode(MapNode next)
     { Current = next;}
 
-    List<MapNode> GetPossibleDestinations()
+    public List<MapNode> GetPossibleDestinations()
     {
         return (Current == null) ? StartingDestinations : Current.Destinations;
     }
 
-    EventEnum GetRandomEncounter(int MaxEvent)
+    EventEnum GetRandomEncounter(int riskTier)
     {
-        return (EventEnum) Random.Range(0, (int) EventEnum.EVENT_MAX-1 );
+        switch (riskTier)
+        {
+            case 0 :
+                return (EventEnum)Random.Range(0, (int)EventEnum.MAX_FIRST_TIER);
+            case 1:
+                return (EventEnum)Random.Range((int)EventEnum.MAX_FIRST_TIER + 1, (int)EventEnum.MAX_SECOND_TIER);
+            default:
+                return (EventEnum)Random.Range((int)EventEnum.MAX_SECOND_TIER + 1, (int)EventEnum.MAX_THIRD_TIER);
+        }
     }
 }

@@ -4,9 +4,12 @@ namespace Assets.Events
 {
     public enum EventEnum
     {
-        PIRATES_ATTACK,
-        PLAGUE,
-        SHALLOW_WATER,
+        SHALLOW_WATER = 0,
+        MAX_FIRST_TIER = 0,
+        PLAGUE = 1,
+        MAX_SECOND_TIER = 1,
+        PIRATES_ATTACK = 2,
+        MAX_THIRD_TIER = 2,
         DESTROY_CANNON,
         DESTROY_OBJECT,
         GAME_OVER,
