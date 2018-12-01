@@ -9,6 +9,7 @@ public class Ship : MonoBehaviour
 
     public Dictionary<CrewMember, ShipPart> Assignment { get; private set; }
 
+    // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
     {
         if (Assignment.ContainsKey(crew))
