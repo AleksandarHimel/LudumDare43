@@ -18,6 +18,6 @@ namespace Assets.Events
             }
         }
 
-        public abstract void ExecuteEventInternal(MonoBehaviour behaviouralObject);
+        public abstract void ExecuteEventInternal(Ship ship);
     }
 }
