@@ -1,3 +1,4 @@
+using Assets.Events;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class Ship : MonoBehaviour
 {
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
+
+    public ShipInventory Inventory { get; private set; }
 
     public double PlagueSpreadingProbability = 0.3;
 
@@ -40,6 +43,8 @@ public class Ship : MonoBehaviour
             new CrewMember(kitchen),
             new CrewMember(kitchen)
         };
+
+        Inventory = new ShipInventory(100, 100);
 	}
 	
 	// Update is called once per frame
@@ -55,7 +60,7 @@ public class Ship : MonoBehaviour
 
         foreach (CrewMember cm in CrewMembers)
         {
-            if (!cm.IsDead())
+            if (!cm.IsDead)
             {
                 hasLivingCrewMember = true;
                 break;
@@ -91,17 +96,17 @@ public class Ship : MonoBehaviour
     {
         foreach (ShipPart shipPart in ShipParts)
         {
-            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
+            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlauge);
 
             if (!isRoomSafe)
             {
                 foreach (CrewMember crewMember in shipPart.PresentCrewMembers)
                 {
-                    if (!crewMember.IsUnderPlague)
+                    if (!crewMember.IsUnderPlauge)
                     {
                         if (Random.Range(0, 1) > PlagueSpreadingProbability)
                         {
-
+                            EventMgr.Instance.ExecuteEvent(EventEnum.PLAGUE, crewMember);
                         }
                     }
                 }

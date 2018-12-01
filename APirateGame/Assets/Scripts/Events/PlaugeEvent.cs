@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Events
 {
-    public class PlagueEvent : IEvent
+    public class PlaugeEvent : IEvent
     {
         public readonly int PlagueResourceConsumptionIncrement = 30;
 
@@ -16,10 +16,10 @@ namespace Assets.Events
 
            if (crewMember != null)
            {
-                if (!crewMember.IsUnderPlague)
+                if (!crewMember.IsUnderPlauge)
                 {
                     crewMember.ResourceConsumption += PlagueResourceConsumptionIncrement;
-                    crewMember.IsUnderPlague = true;
+                    crewMember.IsUnderPlauge = true;
                 }
             }
         }

@@ -9,6 +9,8 @@ namespace Assets.Events
         SHALLOW_WATER,
         DESTROY_CANNON,
         DESTROY_OBJECT,
-        GAME_OVER
+        GAME_OVER,
+        HARM_SHIP_PART,
+        HARM_CREW_MEMBER,
     }
 }
