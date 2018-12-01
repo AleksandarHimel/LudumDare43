@@ -9,6 +9,7 @@ namespace Assets.Events
         PLAGUE,
         SHALLOW_WATER,
         DESTROY_CANNON,
-        DESTROY_OBJECT
+        DESTROY_OBJECT,
+        GAME_OVER
     }
 }
