@@ -27,4 +27,18 @@ public class ShipInventory : MonoBehaviour
         Food = food;
         WoodForFuel = wood;
     }
+
+    public uint tryRemoveAmountOfFood (uint amount)
+    {
+        uint retVal = Food >= amount ? amount : Food;
+        Food = Food >= amount ? Food - amount : 0;
+        return retVal;
+    }
+
+    public uint tryRemoveAmountOfWood(uint amount)
+    {
+        uint retVal = WoodForFuel >= amount ? amount : WoodForFuel;
+        WoodForFuel = WoodForFuel >= amount ? WoodForFuel - amount : 0;
+        return retVal;
+    }
 }

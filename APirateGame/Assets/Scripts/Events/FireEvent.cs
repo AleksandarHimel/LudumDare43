@@ -1,13 +1,13 @@
 ﻿using Assets.Events;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class FireEvent : MonoBehaviour {
-
-    public class ShallowWaterEvent : ShipEvent
+namespace Assets.Events
+{
+    public class FireEvent : ShipEvent
     {
         public readonly uint FireDamageOnShipParts = 2;
+        public readonly int FireDamageOnCrewMembers = 2;
 
         public override void ExecuteEventInternal(MonoBehaviour behaviouralObject)
         {
@@ -16,6 +16,10 @@ public class FireEvent : MonoBehaviour {
             foreach (ShipPart shipPart in shipObject.ShipParts)
             {
                 shipPart.TakeDamage(FireDamageOnShipParts);
+            }
+            foreach (CrewMember crewMember in shipObject.CrewMembers)
+            {
+                crewMember.ReduceHealth(FireDamageOnCrewMembers);
             }
         }
     }
