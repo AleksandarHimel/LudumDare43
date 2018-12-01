@@ -1,4 +1,6 @@
-﻿namespace Assets.Events
+﻿using System;
+
+namespace Assets.Events
 {
     public enum EventEnum
     {
@@ -6,6 +8,7 @@
         PLAGUE,
         SHALLOW_WATER,
         DESTROY_CANNON,
-        DESTROY_OBJECT
+        DESTROY_OBJECT,
+        GAME_OVER
     }
 }

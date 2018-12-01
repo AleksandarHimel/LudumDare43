@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrewMember : MonoBehaviour {
+public abstract class CrewMember : MonoBehaviour {
 
     public ShipPart CurrentShipPart;
     public int Health;
+    public bool IsUnderPlauge;
+    public int ResourceConsumption;
+
+    public Ship ship;
 
     public CrewMember(ShipPart StartingShipPart)
     {
@@ -23,5 +27,15 @@ public class CrewMember : MonoBehaviour {
         if (Health <= 0)
             return true;
         return false;
+    }
+
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+
     }
 }

@@ -21,11 +21,11 @@ namespace Assets.Events
             return this;
         }
 
-        public void Execute(GameObject gameObject)
+        public void Execute(MonoBehaviour behaviouralObject)
         {
             foreach (var eventOfInterest in eventsOfInterest)
             {
-                eventOfInterest.Execute(gameObject);
+                eventOfInterest.Execute(behaviouralObject);
             }
         }
     }

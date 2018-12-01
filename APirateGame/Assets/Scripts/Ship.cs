@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
@@ -7,6 +8,8 @@ public class Ship : MonoBehaviour
     public List<CrewMember> CrewMembers { get; private set; }
 
     public Dictionary<CrewMember, ShipPart> Assignment { get; private set; }
+
+    public double PlagueSpreadingProbability = 0.3;
 
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
@@ -88,5 +91,32 @@ public class Ship : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void SpreadPlague()
+    {
+        foreach (ShipPart shipPart in ShipParts)
+        {
+            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlauge);
+
+            if (!isRoomSafe)
+            {
+                foreach (CrewMember crewMember in shipPart.PresentCrewMembers)
+                {
+                    if (!crewMember.IsUnderPlauge)
+                    {
+                        if (Random.RandomRange(0, 1) > PlagueSpreadingProbability)
+                        {
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void TryApplyPlague(CrewMember crewMember)
+    {
+
     }
 }
