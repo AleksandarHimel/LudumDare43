@@ -1,25 +1,18 @@
 ﻿using UnityEngine;
 
-public class ShipInventory : MonoBehaviour
+public class ShipInventory : ScriptableObject
 {
     public uint Food { get; private set; }
     public uint WoodForFuel { get; private set; }
 
-    public ShipInventory(uint food, uint wood)
-    {
-        InitialiseResources(food, wood);
-    }
-
-    // Use this for initialization
-    void Start()
+    public ShipInventory()
     {
         InitialiseResources(100, 100);
     }
 
-    // Update is called once per frame
-    void Update()
+    public ShipInventory(uint food, uint wood)
     {
-
+        InitialiseResources(food, wood);
     }
 
     private void InitialiseResources (uint food, uint wood)
@@ -28,14 +21,14 @@ public class ShipInventory : MonoBehaviour
         WoodForFuel = wood;
     }
 
-    public uint tryRemoveAmountOfFood (uint amount)
+    public uint TryRemoveAmountOfFood (uint amount)
     {
         uint retVal = Food >= amount ? amount : Food;
         Food = Food >= amount ? Food - amount : 0;
         return retVal;
     }
 
-    public uint tryRemoveAmountOfWood(uint amount)
+    public uint TryRemoveAmountOfWood(uint amount)
     {
         uint retVal = WoodForFuel >= amount ? amount : WoodForFuel;
         WoodForFuel = WoodForFuel >= amount ? WoodForFuel - amount : 0;

@@ -23,8 +23,8 @@ namespace Assets.Events
             {
                 crewMember.ReduceHealth(PirateAttackDamageOnCrewMembers);
             }
-            shipObject.Inventory.tryRemoveAmountOfFood(PirateAttackFoodLooted);
-            shipObject.Inventory.tryRemoveAmountOfWood(PirateAttackWoodLooted);
+            shipObject.Inventory.TryRemoveAmountOfFood(PirateAttackFoodLooted);
+            shipObject.Inventory.TryRemoveAmountOfWood(PirateAttackWoodLooted);
         }
     }
 }

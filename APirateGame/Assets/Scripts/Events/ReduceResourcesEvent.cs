@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,10 +18,10 @@ namespace Assets.Events
             this.woodToReduce = woodToReduce;
         }
 
-
-        public override void ExecuteEventInternal(Ship ship)
+        public override void ExecuteEventInternal(MonoBehaviour behaviouralObject)
         {
-            ship.Inventory.ReduceResources(foodToReduce, woodToReduce);
+            GameManager.Instance.Ship.Inventory.TryRemoveAmountOfFood(foodToReduce);
+            GameManager.Instance.Ship.Inventory.TryRemoveAmountOfWood(woodToReduce);
         }
     }
 }
