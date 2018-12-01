@@ -8,9 +8,8 @@ namespace Assets.Events
 {
     public class DestroyObject : IEvent
     {
-        public void Execute(GameObject gameObject)
+        public void Execute(MonoBehaviour behaviouralObject)
         {
-            gameObject.SetActive(false);
         }
     }
 }

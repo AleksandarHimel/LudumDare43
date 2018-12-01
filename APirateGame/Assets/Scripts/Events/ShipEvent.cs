@@ -8,14 +8,16 @@ namespace Assets.Events
 {
     public abstract class ShipEvent : IEvent
     {
-        public void Execute(GameObject gameObject)
+        public void Execute(MonoBehaviour behaviouralObject)
         {
-            if (gameObject.CompareTag("Ship"))
+            Ship shipObject = behaviouralObject as Ship;
+
+            if (shipObject != null)
             {
-                ExecuteEventInternal(gameObject);
+                ExecuteEventInternal(shipObject);
             }
         }
 
-        public abstract void ExecuteEventInternal(GameObject gameObject);
+        public abstract void ExecuteEventInternal(MonoBehaviour behaviouralObject);
     }
 }

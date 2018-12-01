@@ -4,6 +4,6 @@ namespace Assets.Events
 {
     public interface IEvent
     {
-        void Execute(GameObject gameObject);
+        void Execute(MonoBehaviour behaviouralObject);
     }
 }
