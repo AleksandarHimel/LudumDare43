@@ -17,7 +17,7 @@ namespace Assets.Events
                 case EventEnum.PIRATES_ATTACK:
                     return null;
                 case EventEnum.PLAGUE:
-                    return new PlaugeEvent();
+                    return new PlagueEvent();
                 case EventEnum.SHALLOW_WATER:
                     return new ShallowWaterEvent();
                 case EventEnum.DESTROY_CANNON:
