@@ -7,18 +7,22 @@ using UnityEngine;
 public class GameManger : MonoBehaviour {
 
     public Ship ship;
+
     public EventMgr eventManager;
+    public MapManager mapManager;
 
     private bool isUserTurn;
     private int currentDay;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         // Create all important parts
         currentDay = 0;
-        ship = new Ship();
         eventManager = new EventMgr();
-	}
+        mapManager = new MapManager();
+        SetIsUserTurn(true);
+    }
 	
     public void SetIsUserTurn(bool newValue)
     {
@@ -32,7 +36,6 @@ public class GameManger : MonoBehaviour {
         {
 
             currentDay++;
-            return;
         }
 
         ExecuteEncounters(ship);
@@ -44,11 +47,12 @@ public class GameManger : MonoBehaviour {
 
     private void VerifyGameState()
     {
-        throw new NotImplementedException();
+        return;
     }
 
     private void ExecuteEncounters(Ship ship)
     {
-        throw new NotImplementedException();
+        EventEnum eventEnum = mapManager.GetCurrentNode().Encounter;
+        eventManager.GenerateEvent(eventEnum).Execute(ship);
     }
 }
