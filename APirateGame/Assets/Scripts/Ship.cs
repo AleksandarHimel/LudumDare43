@@ -7,6 +7,18 @@ public class Ship : MonoBehaviour
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
 
+    public Dictionary<CrewMember, ShipPart> Assignment { get; private set; }
+
+    public void AssignCrewMember(CrewMember crew, ShipPart part)
+    {
+        if (Assignment.ContainsKey(crew))
+        {
+            Assignment.Remove(crew);
+        }
+
+        Assignment.Add(crew, part);
+    }
+
 	// Use this for initialization
 	void Start ()
     {
