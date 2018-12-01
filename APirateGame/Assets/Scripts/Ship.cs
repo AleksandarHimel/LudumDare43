@@ -1,3 +1,4 @@
+using Assets.Events;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -95,17 +96,17 @@ public class Ship : MonoBehaviour
     {
         foreach (ShipPart shipPart in ShipParts)
         {
-            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
+            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlauge);
 
             if (!isRoomSafe)
             {
                 foreach (CrewMember crewMember in shipPart.PresentCrewMembers)
                 {
-                    if (!crewMember.IsUnderPlague)
+                    if (!crewMember.IsUnderPlauge)
                     {
                         if (Random.Range(0, 1) > PlagueSpreadingProbability)
                         {
-
+                            EventMgr.Instance.ExecuteEvent(EventEnum.PLAGUE, crewMember);
                         }
                     }
                 }
