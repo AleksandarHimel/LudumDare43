@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cannon : ShipPart
+public class Hull : ShipPart
 {
+
 	// Use this for initialization
 	void Start ()
     {
-        MaxNumberOfCrewMembers = 1;
+        MaxNumberOfCrewMembers = 0;
         MaxHealth = 2;
 	}
 	
 	// Update is called once per frame
-	void Update ()
-    {
+	void Update () {
 		
 	}
 }

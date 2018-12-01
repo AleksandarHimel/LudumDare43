@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShipInventory : MonoBehaviour
 {
-
     public uint Food { get; private set; }
     public uint WoodForFuel { get; private set; }
 

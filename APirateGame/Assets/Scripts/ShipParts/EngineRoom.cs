@@ -8,6 +8,7 @@ public class EngineRoom : ShipPart {
 	void Start ()
     {
         MaxNumberOfCrewMembers = 2;
+        MaxHealth = 2;
 	}
 	
 	// Update is called once per frame
