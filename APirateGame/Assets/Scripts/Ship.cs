@@ -96,13 +96,13 @@ public class Ship : MonoBehaviour
     {
         foreach (ShipPart shipPart in ShipParts)
         {
-            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlauge);
+            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
 
             if (!isRoomSafe)
             {
                 foreach (CrewMember crewMember in shipPart.PresentCrewMembers)
                 {
-                    if (!crewMember.IsUnderPlauge)
+                    if (!crewMember.IsUnderPlague)
                     {
                         if (Random.Range(0, 1) > PlagueSpreadingProbability)
                         {

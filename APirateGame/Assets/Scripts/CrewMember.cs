@@ -4,7 +4,7 @@ public class CrewMember : MonoBehaviour {
 
     public ShipPart CurrentShipPart;
     public int Health;
-    public bool IsUnderPlauge;
+    public bool IsUnderPlague;
     public int ResourceConsumption;
 
     public bool IsDead { get; private set; }
