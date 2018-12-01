@@ -12,9 +12,11 @@ public class MapManager : MonoBehaviour
 
     private List<List<MapNode>> Map;
 
-    private MapNode current;
+    private MapNode Current;
 
     private Random RandomGenerator;
+
+    private List<MapNode> StartingDestinations;
 
     // Use this for initialization
     void Start()
@@ -30,11 +32,12 @@ public class MapManager : MonoBehaviour
 
     void CreateMap()
     {
+        Current = null;
         Map = new List<List<MapNode>>();
 
         for (int i = 0; i < RiskDepth; i++)
         {
-            Map.Add(new List<MapNode>()); 
+            Map.Add(new List<MapNode>());
             // Generate each path
             for (int j = 0; j < MapLength; j++)
             {
@@ -47,34 +50,46 @@ public class MapManager : MonoBehaviour
 
         // Link allowed paths
         // Best code ever. Don't touch! I know you want to...
-        for (int j = 0; j < MapLength; j++) 
+        for (int j = 0; j < MapLength; j++)
         {
             for (int i = 0; i < RiskDepth; i++)
             {
-                for (int k=0; k < RiskDepth; k++)
-                { 
+                for (int k = 0; k < RiskDepth; k++)
+                {
                     if (j + 1 == MapLength)
                     {
                         Map[i][j].Destinations[i] = null;
                     }
-                    else if (i==k)
+                    else if (i == k)
                     {
-                        Map[i][j].Destinations[i] = Map[i][j+1];
+                        Map[i][j].Destinations[i] = Map[i][j + 1];
                     }
                     else
                     {
-                        Map[i][j].Destinations[i] = (Random.Range(0, 1) < 1.0f / (RiskDepth))? Map[k][j] : null ;
+                        Map[i][j].Destinations[i] = (Random.Range(0, 1) < 1.0f / (RiskDepth)) ? Map[k][j] : null;
                     }
                 }
             }
         }
+
+        StartingDestinations = new List<MapNode>(RiskDepth);
+
+        for (int i = 0; i < RiskDepth; i++)
+        {
+            StartingDestinations[i] = Map[0][i];
+        }
     }
 
     public MapNode GetCurrentNode()
-    { return current;}
+    { return Current;}
 
     private void SetCurrentNode(MapNode next)
-    { current = next;}
+    { Current = next;}
+
+    List<MapNode> GetPossibleDestinations()
+    {
+        return (Current == null) ? StartingDestinations : Current.Destinations;
+    }
 
     EventEnum GetRandomEncounter(int MaxEvent)
     {
