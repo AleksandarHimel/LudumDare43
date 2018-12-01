@@ -13,10 +13,10 @@ public class Cannon : ShipPart
         MaxHealth = 2;
         Health = MaxHealth;
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
     {
-		
+
 	}
 }

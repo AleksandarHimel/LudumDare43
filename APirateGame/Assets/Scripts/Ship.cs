@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
@@ -23,16 +22,27 @@ public class Ship : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        var cannon = new Cannon(this);
+        var engineRoom = new EngineRoom(this);
+        var hull = new Hull(this);
+        var kitchen = new Kitchen(this);
+
         ShipParts = new List<ShipPart>
         {
-            new Cannon(),
-            new EngineRoom(),
-            new Hull()
+            new Cannon(this),
+            new EngineRoom(this),
+            new Hull(this),
+            new Kitchen(this)
         };
 
 
-        CrewMembers = new List<CrewMember>();
-        // CrewMembers.Add(...)
+        CrewMembers = new List<CrewMember>
+        {
+            new CrewMember(cannon),
+            new CrewMember(engineRoom),
+            new CrewMember(kitchen),
+            new CrewMember(kitchen)
+        };
 	}
 	
 	// Update is called once per frame

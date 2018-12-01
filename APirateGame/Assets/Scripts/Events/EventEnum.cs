@@ -1,7 +1,4 @@
-﻿using System;
-using System.Web;
-
-namespace Assets.Events
+﻿namespace Assets.Events
 {
     public enum EventEnum
     {
