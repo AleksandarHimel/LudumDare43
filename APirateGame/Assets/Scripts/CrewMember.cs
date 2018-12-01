@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CrewMember : MonoBehaviour {
 
     public ShipPart CurrentShipPart;
     public int Health;
-    public bool IsDead;
     public bool IsUnderPlague;
     public int ResourceConsumption;
+
+    public bool IsDead { get; private set; }
 
     public Ship ship;
 
