@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Events
 {
@@ -20,11 +21,11 @@ namespace Assets.Events
             return this;
         }
 
-        public void Execute()
+        public void Execute(GameObject gameObject)
         {
             foreach (var eventOfInterest in eventsOfInterest)
             {
-                eventOfInterest.Execute();
+                eventOfInterest.Execute(gameObject);
             }
         }
     }

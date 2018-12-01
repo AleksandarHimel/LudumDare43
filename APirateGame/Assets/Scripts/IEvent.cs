@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using UnityEngine;
 
 namespace Assets.Events
 {
     public interface IEvent
     {
-        void Execute();
+        void Execute(GameObject gameObject);
     }
 }
