@@ -28,22 +28,19 @@ public class ShipInventory : MonoBehaviour
         WoodForFuel = wood;
     }
 
-    public uint tryRemoveAmountOfFood (uint amount)
+    public void reduceFood (uint foodToReduce)
     {
-        uint retVal = Food >= amount ? amount : Food;
-        Food = Food >= amount ? Food - amount : 0;
-        return retVal;
+        Food = Food >= foodToReduce ? Food - foodToReduce : 0;
     }
 
-    public uint tryRemoveAmountOfWood(uint amount)
+    public void reduceWood (uint woodToReduce)
     {
-        uint retVal = WoodForFuel >= amount ? amount : WoodForFuel;
-        WoodForFuel = WoodForFuel >= amount ? WoodForFuel - amount : 0;
-        return retVal;
+        WoodForFuel = WoodForFuel >= woodToReduce ? WoodForFuel - woodToReduce : 0;
     }
 
     public void ReduceResources(uint foodToReduce, uint woodToReduce)
     {
-
+        reduceFood(foodToReduce);
+        reduceWood(woodToReduce);      
     }
 }
