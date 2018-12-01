@@ -32,16 +32,16 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // Instantiate some type of ship 4 example:
         // For each ship type there should be specific game object...
         var cannonGO = new GameObject("ShipPart/Cannon");
-        cannonGO.transform.parent = gameObject.transform.parent;
+        cannonGO.transform.parent = gameObject.transform;
 
         var engineRoomGO = new GameObject("ShipPart/EngineRoom");
-        engineRoomGO.transform.parent = gameObject.transform.parent;
+        engineRoomGO.transform.parent = gameObject.transform;
 
         var hullGO = new GameObject("ShipPart/Hull");
-        engineRoomGO.transform.parent = gameObject.transform.parent;
+        engineRoomGO.transform.parent = gameObject.transform;
 
         var kitchenGO = new GameObject("ShipPart/Kitchen");
-        engineRoomGO.transform.parent = gameObject.transform.parent;
+        engineRoomGO.transform.parent = gameObject.transform;
 
         ShipParts = new List<ShipPart>
         {
