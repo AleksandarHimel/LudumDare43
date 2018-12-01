@@ -8,7 +8,7 @@ public class Ship : MonoBehaviour
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
 
-    public ShipInventory Inventory { get; private set; }
+    public ShipInventory Inventory;
 
     public double PlagueSpreadingProbability = 0.3;
 
@@ -43,8 +43,6 @@ public class Ship : MonoBehaviour
             new CrewMember(kitchen),
             new CrewMember(kitchen)
         };
-
-        Inventory = new ShipInventory(100, 100);
 	}
 	
 	// Update is called once per frame
