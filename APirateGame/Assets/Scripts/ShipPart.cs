@@ -1,19 +1,32 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class ShipPart : MonoBehaviour {
 
-    public uint MaxNumberOfCrewMembers { get; protected set; }
+    private readonly Ship ParentShip;
 
-    public List<CrewMember> PresentCrewMembers { get; protected set; }
+    public uint MaxNumberOfCrewMembers { get; protected set; }
 
     public uint Health { get; protected set; }
 
     public bool IsDestroyed { get { return (Health == 0); } }
 
     public uint MaxHealth { get; protected set; }
+
+    public ShipPart(Ship parentShip)
+    {
+        ParentShip = parentShip;
+    }
+
+    /// <summary>
+    /// Gets all crew members currently in this ship part.
+    /// </summary>
+    public IEnumerable<CrewMember> PresentCrewMembers
+    {
+        get { return ParentShip.CrewMembers.Where(cm => cm.CurrentShipPart == this); }
+    }
 
 	// Use this for initialization
 	void Start ()
