@@ -8,7 +8,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
     public int Health;
     public bool IsUnderPlague;
     public int ResourceConsumption;
-    
+    public string Name;
+
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
     public bool IsDead { get; private set; }
