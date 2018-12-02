@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -52,5 +53,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(name + " Game Object Clicked!");
+
+        GameManager.Instance.UiController.OnCrewMemberSelected(this);
     }
 }

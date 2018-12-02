@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class CrewMemberAttribute
 {
-    private static Dictionary<string, Vector2> s_allowedAttributes;
+    public static Dictionary<string, Vector2> s_allowedAttributes;
 
     static CrewMemberAttribute()
     {
-        s_allowedAttributes = new Dictionary<string, UnityEngine.Vector2>();
+        s_allowedAttributes = new Dictionary<string, Vector2>();
         s_allowedAttributes.Add("Rowing", new Vector2(1f, 10f));
         s_allowedAttributes.Add("Scouting", new Vector2(1f, 10f));
         s_allowedAttributes.Add("Canon", new Vector2(1f, 10f));

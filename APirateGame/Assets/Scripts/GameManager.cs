@@ -13,14 +13,13 @@ namespace Assets.Scripts
         public PlayerController PlayerController;
         public InputController InputController;
         public MapManager MapManager;
+        public UiController UiController;
 
         [Header("Health Settings")]
         public GameState GameState;
         public ShipInventory ShipInventory;
 
         // TODO: find a better home for this
-        public Text ResourcesTextBox;
-
         private GameObject _gameManagerGameObject;
 
         public static GameManager Instance
@@ -76,7 +75,7 @@ namespace Assets.Scripts
         public void ProcessMoveEnd()
         {
             Ship.ProcessMoveEnd();
-            ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
+            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
         }
 
         void Update()

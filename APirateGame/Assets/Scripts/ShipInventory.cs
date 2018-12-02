@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 [CreateAssetMenu]
 public class ShipInventory : ScriptableObject
