@@ -12,6 +12,9 @@ namespace Assets.Scripts
             ComputerTurn,
             Victory,
             GameOver,
+            BringTheNight,
+            BringTheDawn,
+            WaitForUserEventResultConfirm,
         }
 
         public EGameState State = EGameState.PreGame;

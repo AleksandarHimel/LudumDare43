@@ -44,8 +44,8 @@ namespace Assets.Scripts
         }
 
         private static GameManager _instance;
-        private bool IsNight = false;
-        private bool bringTheNight = true;
+        public float FadeTime = 3f;
+        private float t = 0.0f;
 
         private void Awake()
         {
@@ -95,7 +95,7 @@ namespace Assets.Scripts
 	
         public void SetIsUserTurn(bool newValue)
         {
-            if (GameState.State == GameState.EGameState.PlayerTurn || GameState.State == GameState.EGameState.ComputerTurn)
+            if (!(GameState.State == GameState.EGameState.Victory && GameState.State == GameState.EGameState.GameOver))
             {
                 GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
 
@@ -115,65 +115,80 @@ namespace Assets.Scripts
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
             UiController.Points.text = string.Format("Points: {0}", Points);
 
-            SetIsUserTurn(false);
+            GameState.State = GameState.EGameState.BringTheNight; 
         }
 
         void Update()
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                if (bringTheNight)
+                MapManager.GoToNextDestination(DesiredRiskiness);
+                Points += MapManager.Instance.GetCurrentNode().Riskiness + 1;
+
+                if (Points >= 100)
                 {
-                    StartCoroutine(BringTheNight());
-                    bringTheNight = false;
+                    Victory();
+                    return;
                 }
 
-                if (!IsNight)
+                if (Ship.Inventory.Food == 0)
                 {
-                    Debug.Log(IsNight);
-                    while (!IsNight)
-                    { return; }
-
-                    Points += MapManager.GetCurrentNode().Riskiness + 1;
-
-                    Points = Math.Max(100, Points);
-
-                    if (Points == 100)
-                    {
-                        Victory();
-                    }
-
-                    if (Ship.Inventory.Food == 0 || Ship.ShipParts.Count() == 0)
-                    {
-                        GameOver();
-                    }
-
-                    MapManager.GoToNextDestination(DesiredRiskiness);
-                    // Handle
-                    var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
-                    gameplayEvent.Execute(Ship);
-                    UiController.UpdateChoices(MapManager.GetPossibleDestinations());
-
-                    // Execute Sfx
-
-                    // Show user info message
-
-                    bringTheNight = true;
+                    GameOver();
+                    return;
                 }
+                
+                // Handle
+                var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
+                gameplayEvent.Execute(Ship);
+                UiController.UpdateChoices(MapManager.GetPossibleDestinations());
 
-                StartCoroutine(BringTheDawn());
+                // Execute Sfx
+                
+                // Show user info message
+
+                // todo Wait for user to confirm
+                // GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
+                GameState.State = GameState.EGameState.BringTheDawn;
+            }
+            if (GameState.State == GameState.EGameState.BringTheDawn)
+            { 
+                while (t < 1.0f)
+                {
+                    nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 1), new Color(0, 0, 0, 0), t);
+                    t += Time.deltaTime / FadeTime;
+                    return;
+                }
+                t = 0.0f;
                 SetIsUserTurn(true);
+            }
+            if (GameState.State == GameState.EGameState.BringTheNight)
+            {
+                Debug.Log(t);
+                while (t < 1.0f)
+                {
+                    nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), t);
+                    t += Time.deltaTime / FadeTime;
+                    return;
+                }
+                t = 0.0f;
+                SetIsUserTurn(false);
             }
         }
 
         public void GameOver()
         {
             GameState.State = GameState.EGameState.GameOver;
+            InputController.MoveEndButton.gameObject.SetActive(false);
+            UiController.PathChoice.gameObject.SetActive(false);
+            UiController.GameOverText.gameObject.SetActive(true);
         }
 
         public void Victory()
         {
             GameState.State = GameState.EGameState.Victory;
+            InputController.MoveEndButton.gameObject.SetActive(false);
+            UiController.PathChoice.gameObject.SetActive(false);
+            UiController.VictoryText.gameObject.SetActive(true);
         }
 
 
@@ -184,7 +199,6 @@ namespace Assets.Scripts
         }
 
 
-
         private void VerifyGameState()
         {
             throw new NotImplementedException();
@@ -193,35 +207,6 @@ namespace Assets.Scripts
         private void ExecuteEncounters(Ship ship)
         {
             
-        }
-
-        private IEnumerator BringTheNight()
-        {
-            float FadeTime = 4f;
-            float t = 0;
-            while (t < 0.95f)
-            {
-                Debug.Log("bbbb");
-                nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0,0,0,1), t);
-                t += Time.deltaTime / FadeTime;
-                yield return null;
-            }
-            IsNight = true;
-        }
-
-        private IEnumerator BringTheDawn()
-        {
-            float FadeTime = 4f;
-            float t = 1;
-            while (t > 0.0f)
-            {
-                Debug.Log("aaaa");
-                nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), t);
-                t -= Time.deltaTime / FadeTime;
-                yield return null;
-            }
-            IsNight = false;
-            Debug.Log(IsNight);
         }
     }
 }

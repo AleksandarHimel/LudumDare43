@@ -11,6 +11,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public bool IsUnderPlague;
     public int ResourceConsumption = 10;
     public string Name;
+    public string Color;
 
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
@@ -35,12 +36,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         var sprite = GetComponent<SpriteRenderer>();
 
         var random = new System.Random(System.DateTime.Now.Millisecond);
-        var color = CrewMemberColors[random.Next(3)];
-        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
+        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", Color));
 
         Debug.Log("Start Loading attributes");
 
-        foreach(var atr in ShipConfig.GetInstance().GetAttributesForCrewMember("Jack"))
+        foreach(var atr in ShipConfig.GetInstance().GetAttributesForCrewMember(Name))
         {
             Debug.Log(string.Format("{0} : {1}", atr.AttributeName, atr.AttributeValue));
             this.attributes.Add(atr.AttributeName, atr);
