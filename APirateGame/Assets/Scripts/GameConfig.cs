@@ -17,26 +17,33 @@ namespace Assets.Scripts
 
         public int RowingActionFoodConsumptionIncrement = 30;
 
-        public int MinimumPirateBoatDamageInflicted = 0;
-
-        public int MaximumPirateBoatDamageInflicted = 100;
-
-        public int MinimumPirateCrewMemberDamageInflicted = 0;
-
-        public int MaxiumumPirateCrewMemberDamageInflicted = 100;
-
-        public int MinimumPirateFoodStolen = 0;
-
-        public int MaximumPirateFoodStolen = 100;
-
         public uint InitialFoodCount = 100;
-
         public uint InitialWoodCount = 100;
 
+        public int ChanceForShallowWaters = 10;
+        public int ChanceForFire = 20;
+        public int ChanceForPirateAttack = 15;
+        public int ChanceForWalkThePlank = 5;
+
+        public int MinShallowWaterShipPartDamage = 0;
+        public int MaxShallowWaterShipPartDamage = 100;
+
+        public int MinFireShipPartDamage = 0;
+        public int MaxFireShipPartDamage = 100;
+        public int MinFireCrewMemberDamage = 0;
+        public int MaxFireCrewMemberDamage = 100;
+
+        public int MinPirateAttackShipPartDamage = 0;
+        public int MaxPirateAttackShipPartDamage = 100;
+        public int MinPirateAttackCrewMemberDamage = 0;
+        public int MaxPirateAttackCrewMemberDamage = 100;
+        public int MinPirateAttackResourceDamage = 0;
+        public int MaxPirateAttackResourceDamage = 100;
 
         public static GameConfig Instance
         {
-            get {
+            get
+            {
                 return FindObjectOfType<GameConfig>();
             }
         }

@@ -89,8 +89,10 @@ namespace Assets.Scripts
                 // Fade out background music
                 AudioController.FadeOutBackgroundMusic();
 
+                // TODO Update Map
+
                 // Handle
-                var gameplayEvent = EventManager.Instance.GetNextEvent();
+                var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
 
                 SetIsUserTurn(true);

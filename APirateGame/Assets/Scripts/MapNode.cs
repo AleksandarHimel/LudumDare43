@@ -5,11 +5,14 @@ using Assets.Events;
 
 public class MapNode
 {
-    public EventEnum Encounter{ get; set; }
+    public IEvent NodeEvent { get; set; }
+
+    public int Riskiness;
 
     public MapNode() {}
 
-    public MapNode(int numOfPaths)
+
+    public MapNode(int numOfPaths, int riskiness)
     {
         Destinations = new List<MapNode>(numOfPaths);
         for (int i = 0; i < numOfPaths; i++)
@@ -17,11 +20,10 @@ public class MapNode
             Destinations.Add(new MapNode());
         }
 
-
+        Riskiness = riskiness;
     }
 
     public List <MapNode> Destinations;
-    
 
     // Use this for initialization
     void Start()

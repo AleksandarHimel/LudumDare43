@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu]
 public class ShipInventory : ScriptableObject
@@ -25,24 +26,19 @@ public class ShipInventory : ScriptableObject
         TryRemoveAmountOfFood(1);
     }
 
-    public uint TryRemoveAmountOfFood (uint amount)
+    public void TryRemoveAmountOfFood (uint amount)
     {
-        uint retVal = Food >= amount ? amount : Food;
-        Food = Food >= amount ? Food - amount : 0;
-
-        return retVal;
+        Food = Math.Max(Food - amount, 0);
     }
 
-    public uint TryRemoveAmountOfWood(uint amount)
+    public void TryRemoveAmountOfWood(uint amount)
     {
-        uint retVal = WoodForFuel >= amount ? amount : WoodForFuel;
-        WoodForFuel = WoodForFuel >= amount ? WoodForFuel - amount : 0;
-
-        return retVal;
+        WoodForFuel = Math.Max(WoodForFuel - amount, 0);
     }
 
     public void ReduceResources(uint foodToReduce, uint woodToReduce)
     {
-
+        TryRemoveAmountOfFood(foodToReduce);
+        TryRemoveAmountOfWood(woodToReduce);
     }
 }
