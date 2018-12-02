@@ -16,8 +16,10 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     public bool IsMoving;
     private Vector3 expectedPosition;
-    
+
     public bool IsDead { get; private set; }
+
+    public IEnumerable<string> AttributeNames { get { return attributes.Keys; } }
 
     public Ship Ship;
 
@@ -33,7 +35,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public void Init(string pirateName)
     {
         PirateName = pirateName;
-        Assets.Scripts.Configuration.CrewMemberConfig pirate = 
+        Assets.Scripts.Configuration.CrewMemberConfig pirate =
             GameFileConfig.GetInstance().ShipConfig.GetCrewMembers()[pirateName];
         foreach (var atrConfig in pirate.AttributesArray)
         {
@@ -75,7 +77,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
             Ship.DeceasedCrewMembers.Add(this);
         }
     }
-
+    
     public CrewMemberAttribute GetAttribute(string attributeName)
     {
         CrewMemberAttribute retValue = null;
