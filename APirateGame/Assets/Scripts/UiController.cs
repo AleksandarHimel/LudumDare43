@@ -44,7 +44,7 @@ public class UiController : MonoBehaviour
     {
         string text = string.Format("Name: {0}\nHealth: {1}{2}", member.PirateName, member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
 
-        foreach (string attributeName in CrewMemberAttribute.s_allowedAttributes.Keys)
+        foreach (string attributeName in member.AttributeNames)
         {
             text += string.Format("\n{0}: {1}", attributeName,( member.GetAttribute(attributeName) == null) ? "\u2620" : member.GetAttribute(attributeName).AttributeValue.ToString());
         }
