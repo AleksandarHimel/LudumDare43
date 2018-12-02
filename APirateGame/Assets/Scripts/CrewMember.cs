@@ -36,6 +36,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
 
         foreach(var atr in ShipConfig.GetInstance().GetAttributesForCrewMember("Jack"))
         {
+            Debug.Log(string.Format("{0} : {1}", atr.AttributeName, atr.AttributeValue));
             this.attributes.Add(atr.AttributeName, atr);
         }
 
