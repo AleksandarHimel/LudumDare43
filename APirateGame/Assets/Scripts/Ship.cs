@@ -81,7 +81,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             _collider.size = new Vector2(20, 20);
         }
 
-        CrewMembers = new List<CrewMember>();
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
@@ -118,6 +117,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
                 }
                 catch { }
             }
+
+            CrewMembers.Add(component);
         }
     }
 

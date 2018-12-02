@@ -113,8 +113,7 @@ namespace Assets.Scripts
             AudioController.FadeOutBackgroundMusic();
 
             Ship.ProcessMoveEnd();
-            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
-
+           
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
@@ -127,6 +126,7 @@ namespace Assets.Scripts
                 Points = Points + MapManager.Instance.GetCurrentNode().Riskiness + 1;
                 Debug.Log("POINTS" + Points);
                 UiController.Points.text = string.Format("Points: {0}", Points);
+                UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
                 //Points = Math.Min(Points, GameConfig.Instance.PointRequiredForVictory);
                 if (Points >= GameConfig.Instance.PointRequiredForVictory)
                 {
