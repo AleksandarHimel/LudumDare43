@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class CrewMember : MonoBehaviour {
 
@@ -6,6 +7,8 @@ public class CrewMember : MonoBehaviour {
     public int Health;
     public bool IsUnderPlague;
     public int ResourceConsumption;
+    
+    private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
     public bool IsDead { get; private set; }
 
@@ -35,5 +38,13 @@ public class CrewMember : MonoBehaviour {
         Health -= damage;
         if (Health <= 0)
             IsDead = true;
+    }
+
+    public CrewMemberAttribute GetAttribute(string attributeName)
+    {
+        CrewMemberAttribute retValue = null;
+        attributes.TryGetValue(attributeName, out retValue);
+
+        return retValue;
     }
 }
