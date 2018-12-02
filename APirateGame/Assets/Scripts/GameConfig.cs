@@ -28,9 +28,9 @@ namespace Assets.Scripts
 
         public int MaximumPirateFoodStolen = 100;
 
-        public int InitialFoodCount = 100;
+        public uint InitialFoodCount = 100;
 
-        public int InitialWoodCount = 100;
+        public uint InitialWoodCount = 100;
 
 
         public static GameConfig Instance
