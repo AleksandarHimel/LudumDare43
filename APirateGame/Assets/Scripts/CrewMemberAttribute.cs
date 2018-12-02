@@ -11,6 +11,7 @@ public class CrewMemberAttribute
     {
         s_allowedAttributes = new Dictionary<string, UnityEngine.Vector2>();
         s_allowedAttributes.Add("Rowing", new Vector2(1f, 10f));
+        s_allowedAttributes.Add("Sailing", new Vector2(1f, 5f));
         s_allowedAttributes.Add("Scouting", new Vector2(1f, 10f));
         s_allowedAttributes.Add("Canon", new Vector2(1f, 10f));
     }
