@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Ship>
+  <ShipCrew>
+    <CrewMember name ="Jack" color="red">
+      <CrewMemberAttribute name="Scouting" value="2" />
+      <CrewMemberAttribute name="Rowing" value="3" />
+    </CrewMember>
+    <CrewMember name ="Samuel" color="blue">
+      <CrewMemberAttribute name="Canon" value="8" />
+      <CrewMemberAttribute name="Rowing" value="3" />
+      <CrewMemberAttribute name="Sailing" value="1.5" />
+    </CrewMember>
+    <CrewMember name ="Benjamin" color="green">
+      <CrewMemberAttribute name="Canon" value="5" />
+      <CrewMemberAttribute name="Rowing" value="8" />
+      <CrewMemberAttribute name="Sailing" value="1.2" />
+    </CrewMember>
+    <CrewMember name ="Francis" color="red">
+      <CrewMemberAttribute name="Canon" value="2" />
+      <CrewMemberAttribute name="Rowing" value="9" />
+      <CrewMemberAttribute name="Sailing" value="1.1" />
+    </CrewMember>
+  </ShipCrew>
+</Ship>
