@@ -5,7 +5,7 @@ using Assets.Events;
 
 public class MapNode
 {
-    public EventEnum Encounter{ get; set; }
+    public IEvent NodeEvent { get; set; }
 
     public MapNode() {}
 
@@ -16,12 +16,9 @@ public class MapNode
         {
             Destinations.Add(new MapNode());
         }
-
-
     }
 
     public List <MapNode> Destinations;
-    
 
     // Use this for initialization
     void Start()

@@ -46,8 +46,18 @@ namespace Assets.Scripts
                 {
                     Map[riskDepth].Add(new MapNode(RiskDepth));
 
-                    //(Devnote - Srki) Fix once we get eligible encounters in order.
-                    Map[riskDepth][mapPosition].Encounter = GetRandomEncounter(riskDepth);
+                    EventManager
+                        .Instance.ComposeEvent()
+                        .AddEvent(GetRandomEncounter(riskDepth))
+                        .AddEvent(EventEnum.SPREAD_THE_PLAGUE)
+                        .AddEvent(EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES);
+
+                    //(Devnote - Srki) Fix once we get eligible encounters in 
+                    Map[riskDepth][mapPosition].NodeEvent = EventManager
+                        .Instance.ComposeEvent()
+                        .AddEvent(GetRandomEncounter(riskDepth))
+                        .AddEvent(EventEnum.SPREAD_THE_PLAGUE)
+                        .AddEvent(EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES);
                 }
             }
 
