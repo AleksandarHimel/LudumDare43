@@ -15,7 +15,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public List<CrewMember> DeceasedCrewMembers { get; private set; }
 
     public ShipInventory Inventory { get; set; }
-
+    public CrewMember SelectedCrewMember { get; private set; }
 
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
@@ -72,12 +72,11 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         foreach (ShipPart sp in ShipParts)
         {
-            var collider = sp.gameObject.AddComponent<BoxCollider2D>();
-            collider.size = new Vector2(20, 20);
+            var _collider = sp.gameObject.AddComponent<BoxCollider2D>();
+            _collider.size = new Vector2(20, 20);
         }
 
         CrewMembers = new List<CrewMember>();
-
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
@@ -102,8 +101,27 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
             // Init ship parts, name, color and ship part
             component.Init(crewMemberConfig.PirateName);
+            component.Ship = this;
+/*            
+            bool fAssigned = false;
+            while (!fAssigned)
+            {
+                try
+                {
+                    component.CurrentShipPart = GetRandomLiveShipPart();
+                    AssignCrewMember(component, component.CurrentShipPart);
+                    fAssigned = true;
+                }
+                catch { }
+            }
+*/
             CrewMembers.Add(component);
         }
+    }
+
+    internal void OnCrewMemberSelected(CrewMember crewMember)
+    {
+        SelectedCrewMember = crewMember;
     }
 
     internal void ProcessMoveEnd()
@@ -238,6 +256,11 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         Debug.Log(name + " Game Object Clicked!");
 
         GameManager.Instance.UiController.OnShipSelected();
+        
+        if (eventData.button == PointerEventData.InputButton.Right && SelectedCrewMember != null)
+        {
+            SelectedCrewMember.MoveTo(eventData.pointerCurrentRaycast.worldPosition);
+        }
     }
 
     public ShipPart GetRandomLiveShipPart()
