@@ -12,5 +12,10 @@ namespace Assets.Events
             uint foodToReduce = ship.CalculateFoodConsumptionBetweenTwoPoints();
             ship.Inventory.ReduceResources(foodToReduce, 0);
         }
+
+        public override string eventDescription()
+        {
+            return "Heave ho! We be eatin' food.";
+        }
     }
 }

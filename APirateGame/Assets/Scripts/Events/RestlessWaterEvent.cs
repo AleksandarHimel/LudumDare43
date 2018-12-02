@@ -18,5 +18,10 @@ namespace Assets.Events
                 }
             }
         }
+
+        public override string eventDescription()
+        {
+            return "Batten down the hatches! Tis sea be filled with waves!";
+        }
     }
 }

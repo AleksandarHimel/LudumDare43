@@ -8,9 +8,10 @@ namespace Assets.Events
         MAX_FIRST_TIER = 0,
         RESTLESS_WATERS = 1,
         MAX_SECOND_TIER = 1,
-        PIRATES_ATTACK = 2,
-        MAX_THIRD_TIER = 2,
-        WALK_THE_PLANK,
+        WALK_THE_PLANK = 2,
+        PIRATES_ATTACK = 3,
+
+        MAX_THIRD_TIER = 3,
         SPREAD_THE_PLAGUE,
         CONSUME_RESOURCES_BETWEEEN_STAGES,
         EVENT_MAX

@@ -10,5 +10,10 @@ namespace Assets.Events
         {
             ship.SpreadPlague();
         }
+
+        public override string eventDescription()
+        {
+            return "The black spot is upon us!";
+        }
     }
 }
