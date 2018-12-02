@@ -198,7 +198,9 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             CrewMembers
             .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
             // TODO: v-milast check if rowing is valid
-            .Select(crewMember => crewMember.GetAttribute("Rowing").AttributeValue)
+            .Select(crewMember => crewMember.GetAttribute("Rowing"))
+            .Where(attribute => attribute != null)
+            .Select(attribute => attribute.AttributeValue)
             .Sum();
 
         boatSpeed += (int)Math.Floor(rowingSpeedIncrement);
