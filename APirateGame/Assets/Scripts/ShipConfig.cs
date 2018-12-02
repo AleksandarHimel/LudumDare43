@@ -21,7 +21,7 @@ public class ShipConfig
     public IEnumerable<CrewMemberAttribute> GetAttributesForCrewMember(string name)
     {
         XmlNodeList itemNodes = xmlConfig.SelectNodes(
-            String.Format("//Ship/ShipCrew/CrewMember[name='{0}']/CrewMemberAttribute", name));
+            String.Format("//Ship/ShipCrew/CrewMember[@name='{0}']/CrewMemberAttribute", name));
         foreach (XmlNode itemNode in itemNodes)
         {
             string atrName = itemNode.Attributes["name"].Value;
@@ -35,7 +35,7 @@ public class ShipConfig
     public string GetColorForCrewMember(string name)
     {
         XmlNode itemNode = xmlConfig.SelectSingleNode(
-            String.Format("//Ship/ShipCrew/CrewMember[name='{0}']", name));
+            String.Format("//Ship/ShipCrew/CrewMember[@name='{0}']", name));
         return itemNode.Attributes["color"].Value;
     }
 
