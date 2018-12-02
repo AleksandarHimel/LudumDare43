@@ -26,6 +26,7 @@ public class UiController : MonoBehaviour
     {
         ChoiceChangedEvent = new Dropdown.DropdownEvent();
         ChoiceChangedEvent.AddListener(x => OnChoiceChanged(x));
+        PathChoice.onValueChanged = ChoiceChangedEvent;
     }
 
 	// Use this for initialization
@@ -81,6 +82,11 @@ public class UiController : MonoBehaviour
         }
 
         PathChoice.AddOptions(options);
+    }
+
+    public int GetActiveRiskiness()
+    {
+        return OptionsDictionary[PathChoice.options[PathChoice.value].text];
     }
 
     public void OnShipSelected()

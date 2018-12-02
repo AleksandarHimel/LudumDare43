@@ -11,7 +11,7 @@ namespace Assets.Scripts
     public class GameManager : MonoBehaviour {
 
         public Ship Ship;
-        public int Points = 0;
+        public int Points;
         public EventManager EventManager;
         public PlayerController PlayerController;
         public InputController InputController;
@@ -82,6 +82,7 @@ namespace Assets.Scripts
             // var shipGameObject = new GameObject("ShipGameObject");
             // Ship = shipGameObject.AddComponent<Ship>();
             UiController.UpdateChoices(MapManager.GetPossibleDestinations());
+            DesiredRiskiness = UiController.GetActiveRiskiness();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
             UiController.Points.text = string.Format("Points: {0}", Points);
 
@@ -111,9 +112,12 @@ namespace Assets.Scripts
             // Fade out background music
             AudioController.FadeOutBackgroundMusic();
 
+            // Disable next buton and path pick
+            InputController.MoveEndButton.gameObject.SetActive(false);
+            UiController.PathChoice.gameObject.SetActive(false);
+
             Ship.ProcessMoveEnd();
-            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
-            UiController.Points.text = string.Format("Points: {0}", Points);
+           
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
@@ -122,9 +126,12 @@ namespace Assets.Scripts
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                MapManager.GoToNextDestination(DesiredRiskiness);
-                Points += Math.Min(MapManager.Instance.GetCurrentNode().Riskiness + 1, GameConfig.Instance.PointRequiredForVictory);
-
+                MapManager.GoToNextDestination(DesiredRiskiness - 1);
+                Points = Points + MapManager.Instance.GetCurrentNode().Riskiness + 1;
+                Debug.Log("POINTS" + Points);
+                UiController.Points.text = string.Format("Points: {0}", Points);
+                UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
+                //Points = Math.Min(Points, GameConfig.Instance.PointRequiredForVictory);
                 if (Points >= GameConfig.Instance.PointRequiredForVictory)
                 {
                     Victory();
@@ -163,7 +170,6 @@ namespace Assets.Scripts
             }
             if (GameState.State == GameState.EGameState.BringTheNight)
             {
-                Debug.Log(t);
                 while (t < 1.0f)
                 {
                     nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), t);
@@ -196,6 +202,10 @@ namespace Assets.Scripts
         {
             // Fade out background music
             AudioController.FadeInBackgroundMusic();
+
+            // Enable next button and path chooser
+            InputController.MoveEndButton.gameObject.SetActive(true);
+            UiController.PathChoice.gameObject.SetActive(true);
         }
 
 

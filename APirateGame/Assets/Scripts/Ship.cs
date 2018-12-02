@@ -38,7 +38,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
-
+        DeceasedCrewMembers = new List<CrewMember>();
         // Instantiate some type of ship 4 example:
         // For each ship type there should be specific game object...
         var cannonGO = new GameObject("ShipPart/Cannon");
@@ -81,7 +81,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             _collider.size = new Vector2(20, 20);
         }
 
-        CrewMembers = new List<CrewMember>();
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
@@ -118,6 +117,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
                 }
                 catch { }
             }
+
+            CrewMembers.Add(component);
         }
     }
 
