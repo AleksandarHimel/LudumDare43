@@ -81,6 +81,7 @@ namespace Assets.Scripts
             // var shipGameObject = new GameObject("ShipGameObject");
             // Ship = shipGameObject.AddComponent<Ship>();
             UiController.UpdateChoices(MapManager.GetPossibleDestinations());
+            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 

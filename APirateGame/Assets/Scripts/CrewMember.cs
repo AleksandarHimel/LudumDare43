@@ -9,7 +9,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public ShipPart CurrentShipPart;
     public int Health;
     public bool IsUnderPlague;
-    public int ResourceConsumption;
+    public int ResourceConsumption = 10;
     public string Name;
 
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();

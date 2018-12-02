@@ -40,6 +40,12 @@ namespace Assets.Scripts
         public int MinPirateAttackResourceDamage = 0;
         public int MaxPirateAttackResourceDamage = 100;
 
+        public int CannonWeight = 1;
+        public int EngineRoomWeight = 3;
+        public int HullWeight = 2;
+        public int KitchenWeight = 1;
+        public int SailsWeight = 1;
+
         public static GameConfig Instance
         {
             get

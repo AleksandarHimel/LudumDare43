@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +14,8 @@ public class Kitchen : ShipPart {
         MaxNumberOfCrewMembers = 10;
         MaxHealth = 2;
         Health = MaxHealth;
-        Weight = 150;
-	}
+        Weight = GameConfig.Instance.KitchenWeight;
+    }
 	
 	// Update is called once per frame
 	void Update ()

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class Cannon : ShipPart
         MaxNumberOfCrewMembers = 1;
         MaxHealth = 2;
         Health = MaxHealth;
-        Weight = 10;
+        Weight = GameConfig.Instance.CannonWeight;
 	}
 
 	// Update is called once per frame

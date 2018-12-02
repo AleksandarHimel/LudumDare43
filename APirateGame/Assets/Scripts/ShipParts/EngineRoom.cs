@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +14,8 @@ public class EngineRoom : ShipPart {
         MaxNumberOfCrewMembers = 2;
         MaxHealth = 2;
         Health = MaxHealth;
-        Weight = 100;
-	}
+        Weight = GameConfig.Instance.EngineRoomWeight;
+    }
 	
 	// Update is called once per frame
 	void Update ()
