@@ -21,6 +21,7 @@ public class UiController : MonoBehaviour
     Dropdown.DropdownEvent ChoiceChangedEvent;
     public Text EventInfo;
     public GameObject EventCanvas;
+    public ScrollRect ScrollRect;
 
     // Maps option choice to riskiness
     public Dictionary<string, int> OptionsDictionary = new Dictionary<string, int>();
