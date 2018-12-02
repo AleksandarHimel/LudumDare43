@@ -69,7 +69,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     }
 
     public void PlagueThisGuy()
-    {        
+    {
         IsUnderPlague = true;  
     }
     
@@ -97,10 +97,10 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log(name + string.Format(" being dragged: {0} {1}", eventData.position.x, eventData.position.y));
+        // Debug.Log(name + string.Format(" being dragged: {0} {1}", eventData.position.x, eventData.position.y));
         
         var worldPoint = Camera.main.ScreenToWorldPoint(
-            new Vector3(eventData.position.x, eventData.position.y, Camera.main.transform.position.z - gameObject.transform.position.z));
+            new Vector3(eventData.position.x, eventData.position.y, gameObject.transform.position.z - Camera.main.transform.position.z));
 
         var pendingPosition = new Vector3(worldPoint.x, worldPoint.y, gameObject.transform.position.z);
 
@@ -122,17 +122,17 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter(Collider other)
     {
-        Debug.Log(this.gameObject.name + " collided with " + collision.gameObject.name);
+        Debug.Log(this.gameObject.name + " collided with " + other.gameObject.name);
 
-        if (collision.gameObject.GetComponent<ShipPart>() != null)
+        if (other.gameObject.GetComponent<ShipPart>() != null)
         {
-            Debug.Log(this.gameObject.name + " trying to enter " + collision.gameObject.name);
+            Debug.Log(this.gameObject.name + " trying to enter " + other.gameObject.name);
 
             try
             {
-                ship.AssignCrewMember(this, collision.gameObject.GetComponent<ShipPart>());
+                ship.AssignCrewMember(this, other.gameObject.GetComponent<ShipPart>());
             }
             catch (Exception)
             {

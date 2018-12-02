@@ -37,9 +37,9 @@ public abstract class ShipPart : MonoBehaviour {
 	// Use this for initialization
 	void Awake ()
     {
-        spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+         spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         // TODO: add sprite
-        //spriteRenderer.sprite = Resources.Load<Sprite>("Path");
+        // spriteRenderer.sprite = Resources.Load<Sprite>("Path");
 	}
 	
 	// Update is called once per frame

@@ -33,32 +33,36 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     }
 
     // Use this for initialization
-    void Start ()
+    void Awake()
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
+
+        float shipPartZ = -0.2f;
 
         // Instantiate some type of ship 4 example:
         // For each ship type there should be specific game object...
         var cannonGO = new GameObject("ShipPart/Cannon");
         cannonGO.transform.parent = gameObject.transform;
-        cannonGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+        cannonGO.transform.localPosition = new Vector3(-10, UnityEngine.Random.Range(-1, 1), shipPartZ);
 
-        var engineRoomGO = new GameObject("ShipPart/EngineRoom");
+        var engineRoomGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
+        engineRoomGO.name = "ShipPart/EngineRoom";
         engineRoomGO.transform.parent = gameObject.transform;
-        engineRoomGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+        engineRoomGO.transform.localPosition = new Vector3(-5, UnityEngine.Random.Range(-1, 1), shipPartZ);
 
-        var hullGO = new GameObject("ShipPart/Hull");
+        var hullGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
+        hullGO.name = "ShipPart/Hull";
         hullGO.transform.parent = gameObject.transform;
-        hullGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+        hullGO.transform.localPosition = new Vector3(0, UnityEngine.Random.Range(-1, 1), shipPartZ);
 
         var kitchenGO = new GameObject("ShipPart/Kitchen");
         kitchenGO.transform.parent = gameObject.transform;
-        kitchenGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+        kitchenGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), shipPartZ);
 
         var sailsGO = new GameObject("ShipPart/Sails");
         sailsGO.transform.parent = gameObject.transform;
-        sailsGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+        sailsGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), shipPartZ);
 
         ShipParts = new List<ShipPart>
         {
@@ -68,7 +72,10 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             kitchenGO.AddComponent<Kitchen>(),
             sailsGO.AddComponent<Sails>()
         };
+    }
 
+    void Start()
+    {
         foreach (ShipPart sp in ShipParts)
         {
             var collider = sp.gameObject.AddComponent<BoxCollider2D>();
@@ -88,13 +95,13 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(DateTime.Now.Millisecond);
-            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
-            crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
+            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.3f);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
             component.Name = crewMemberGO.name;
             component.CurrentShipPart = shipPart;
+            component.ship = this;
             CrewMembers.Add(component);
         }
     }
