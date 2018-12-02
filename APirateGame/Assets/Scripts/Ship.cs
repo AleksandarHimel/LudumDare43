@@ -1,4 +1,5 @@
 using Assets.Events;
+using Assets.Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,7 +75,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
-            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
@@ -213,5 +214,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(name + " Game Object Clicked!");
+
+        GameManager.Instance.UiController.OnShipSelected();
     }
 }

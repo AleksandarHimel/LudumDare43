@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 public class UiController : MonoBehaviour
 {
     public Text ResourcesTextBox;
-    public Text CrewMemberDetailsTextBox;
+    public Text SelectedItemDetailsTextBox;
 
 	// Use this for initialization
 	void Start ()
@@ -31,6 +32,11 @@ public class UiController : MonoBehaviour
         }
 
         Debug.Log(text);
-        CrewMemberDetailsTextBox.text = text;
+        SelectedItemDetailsTextBox.text = text;
+    }
+
+    public void OnShipSelected()
+    {
+        SelectedItemDetailsTextBox.text = "That's a pretty cool ship";
     }
 }
