@@ -1,6 +1,7 @@
 using Assets.Scripts;
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -76,25 +77,45 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         }
 
         CrewMembers = new List<CrewMember>();
-        int i = 1;
+
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
             Debug.Log("INITALIZING SHIP");
             shipPart.InitShipPart(this);
+        }
+
+        CrewMembers = new List<CrewMember>();
+
+        foreach (var node in ShipConfig.xmlConfig.SelectNodes("Ship/ShipCrew/CrewMember"))
+        {
 
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
-            crewMemberGO.name = "CrewMember " + (++i);
+            crewMemberGO.name = ((XmlNode)node).Attributes["name"].Value;
 
             // TODO: read positions of crew members relative to boat
-            UnityEngine.Random.InitState(DateTime.Now.Millisecond);
+            UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
             crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
-            component.Name = crewMemberGO.name;
-            component.CurrentShipPart = shipPart;
+
+            component.Name = ((XmlNode)node).Attributes["name"].Value;
+            component.Color = ((XmlNode)node).Attributes["color"].Value;
+
+            bool fAssigned = false;
+            while (!fAssigned)
+            {
+                try
+                {
+                    component.CurrentShipPart = GetRandomLiveShipPart();
+                    AssignCrewMember(component, component.CurrentShipPart);
+                    fAssigned = true;
+                }
+                catch { }
+            }
+
             CrewMembers.Add(component);
         }
     }
@@ -162,7 +183,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
                 {
                     if (!crewMember.IsUnderPlague)
                     {
-                        if (UnityEngine.Random.Range(0, 1) > GameConfig.Instance.PlagueSpreadingProbability)
+                        if (UnityEngine.Random.Range(0f, 1f) > GameConfig.Instance.PlagueSpreadingProbability)
                         {
                             crewMember.PlagueThisGuy();
                         }
@@ -231,5 +252,39 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         Debug.Log(name + " Game Object Clicked!");
 
         GameManager.Instance.UiController.OnShipSelected();
+    }
+
+    public ShipPart GetRandomLiveShipPart()
+    {
+        // Count available ship parts
+        int countParts = 0;
+        
+        foreach (var shipPart in ShipParts)
+        {
+            if (!shipPart.IsDestroyed)
+            {
+                countParts++;
+            }
+        }
+
+        int chosenShipPart = UnityEngine.Random.Range(0, countParts-1);
+
+        var returnPart = new System.Object();
+
+        foreach (var shipPart in ShipParts)
+        {
+            if (!shipPart.IsDestroyed)
+            {
+                if (chosenShipPart == 0)
+                {
+                    returnPart = shipPart;
+                    break;
+                }
+
+                chosenShipPart--;
+            }
+        }
+
+        return (ShipPart) returnPart;
     }
 }
