@@ -9,7 +9,7 @@ namespace Assets.Scripts
 {
     public class GameConfig : MonoBehaviour
     {
-        public int InitialShipSpeed;
+        public int InitialShipSpeed = 100;
 
         public double PlagueSpreadingProbability = 0.3;
 

@@ -223,7 +223,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         int defaultFoodConsumption = CalculateDefaultFoodConsumption();
         int boatSpeed = CalculateBoatSpeed();
 
-        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100));
+        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100.0));
     }
 
     public void OnPointerClick(PointerEventData eventData)
