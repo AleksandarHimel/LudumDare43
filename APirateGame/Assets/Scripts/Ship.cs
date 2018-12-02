@@ -55,13 +55,10 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
-            // Create position
-            var transform = this.transform;
-            transform.position = new Vector3(transform.position.x + UnityEngine.Random.Range(-0.3f, 0.3f), transform.position.y, transform.position.z);
-
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
             crewMemberGO.name = "CrewMembers /PlayerCharacter-" + Guid.NewGuid();
+            crewMemberGO.transform.position = new Vector3(0, 0, 0);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();

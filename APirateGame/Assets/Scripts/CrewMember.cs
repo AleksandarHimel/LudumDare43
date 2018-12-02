@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CrewMember : MonoBehaviour {
+public class CrewMember : MonoBehaviour, IPointerClickHandler {
 
     public ShipPart CurrentShipPart;
     public int Health;
@@ -35,5 +36,10 @@ public class CrewMember : MonoBehaviour {
         Health -= damage;
         if (Health <= 0)
             IsDead = true;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log(name + " Game Object Clicked!");
     }
 }
