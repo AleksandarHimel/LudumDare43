@@ -10,6 +10,8 @@ namespace Assets.Scripts
             PreGame,
             PlayerTurn,
             ComputerTurn,
+            Victory,
+            GameOver,
         }
 
         public EGameState State = EGameState.PreGame;

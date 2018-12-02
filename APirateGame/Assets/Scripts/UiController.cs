@@ -13,6 +13,7 @@ public class UiController : MonoBehaviour
 {
     public Text ResourcesTextBox;
     public Text SelectedItemDetailsTextBox;
+    public Text Points;
     public Dropdown PathChoice;
     Dropdown.DropdownEvent ChoiceChangedEvent;
     // Maps option choice to riskiness
