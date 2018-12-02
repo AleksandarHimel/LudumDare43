@@ -1,9 +1,7 @@
-using Assets.Events;
 using Assets.Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -29,8 +27,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         crew.CurrentShipPart = part;
     }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
@@ -66,20 +64,28 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             sailsGO.AddComponent<Sails>()
         };
 
+        foreach (ShipPart sp in ShipParts)
+        {
+            var collider = sp.gameObject.AddComponent<BoxCollider2D>();
+            collider.size = new Vector2(20, 20);
+        }
+
         CrewMembers = new List<CrewMember>();
+        int i = 1;
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
-            crewMemberGO.name = "CrewMembers /PlayerCharacter-" + Guid.NewGuid();
+            crewMemberGO.name = "CrewMember " + (++i);
 
             // TODO: read positions of crew members relative to boat
-            UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
+            UnityEngine.Random.InitState(DateTime.Now.Millisecond);
             crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
+            component.Name = crewMemberGO.name;
             component.CurrentShipPart = shipPart;
             CrewMembers.Add(component);
         }
@@ -94,8 +100,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update ()
     {
-		// hi my name is andrija
-	}
+        // hi my name is andrija
+    }
 
     public bool IsDestroyed()
     {

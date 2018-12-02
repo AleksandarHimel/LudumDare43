@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -89,5 +90,26 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         var something = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, Camera.main.transform.position.z - gameObject.transform.position.z));
 
         this.gameObject.transform.position = new Vector3(something.x, something.y, gameObject.transform.position.z);
+
+        foreach (ShipPart sp in ship.ShipParts)
+        {
+            if (this.IsWithinBoundaries(sp))
+            {
+                try
+                {
+                    ship.AssignCrewMember(this, sp);
+                }
+                catch (Exception)
+                {
+                    // could not assign - do something else
+                }
+
+            }
+        }
+    }
+
+    private bool IsWithinBoundaries(ShipPart sp)
+    {
+        return true;
     }
 }
