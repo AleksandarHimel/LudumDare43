@@ -53,7 +53,7 @@ namespace Assets.Scripts
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
-            AudioController = new AudioController();
+            AudioController = _gameManagerGameObject.AddComponent<AudioController>();
 
             // TODO merge
 
