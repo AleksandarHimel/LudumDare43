@@ -12,6 +12,7 @@ public class Hull : ShipPart
         MaxNumberOfCrewMembers = 0;
         MaxHealth = 2;
         Health = MaxHealth;
+        Weight = 100;
 	}
 	
 	// Update is called once per frame
@@ -19,7 +20,7 @@ public class Hull : ShipPart
 		
 	}
 
-    public override bool isOnBottom()
+    public override bool IsOnBottom()
     {
         return true;
     }

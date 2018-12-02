@@ -1,12 +1,10 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Events
 {
-    public class PlagueEvent : IEvent
+    public class WalkThePlankEvent : IEvent
     {
         public readonly int PlagueResourceConsumptionIncrement = 30;
 
@@ -14,12 +12,10 @@ namespace Assets.Events
         {
             CrewMember crewMember = behaviouralObject as CrewMember;
 
-           if (crewMember != null)
-           {
-                if (!crewMember.IsUnderPlague)
-                {
-                    crewMember.IsUnderPlague = true;
-                }
+            if (crewMember != null)
+            {
+                //Timmy has to go
+                crewMember.ReduceHealth(crewMember.Health);
             }
         }
     }

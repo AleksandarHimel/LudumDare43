@@ -12,6 +12,7 @@ public class EngineRoom : ShipPart {
         MaxNumberOfCrewMembers = 2;
         MaxHealth = 2;
         Health = MaxHealth;
+        Weight = 100;
 	}
 	
 	// Update is called once per frame
@@ -20,7 +21,7 @@ public class EngineRoom : ShipPart {
 		
 	}
 
-    public override bool isOnBottom()
+    public override bool IsOnBottom()
     {
         return false;
     }

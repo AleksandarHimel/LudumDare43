@@ -38,7 +38,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
     {
         Health -= damage;
         if (Health <= 0)
+        {
             IsDead = true;
+            ship.CrewMembers.Remove(this);
+            ship.DeceasedCrewMembers.Add(this);
+        }
     }
 
     public CrewMemberAttribute GetAttribute(string attributeName)

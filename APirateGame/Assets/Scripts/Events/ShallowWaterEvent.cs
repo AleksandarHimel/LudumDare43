@@ -12,7 +12,7 @@ namespace Assets.Events
         {
             foreach (ShipPart shipPart in shipObject.ShipParts)
             {
-                if (shipPart.isOnBottom())
+                if (shipPart.IsOnBottom())
                 {
                     shipPart.TakeDamage(ShallowWaterDamageOnShipParts);
                 }
