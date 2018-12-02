@@ -16,7 +16,7 @@ public class WavePhysics : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         Xspeed = 0.7f;
         rb.velocity = new Vector2 (Xspeed,0.0f);
-        Amplitude = 0.7f;
+        Amplitude = 0.3f;
         Frequency =1f;
         StartingPosition = rb.position;
         resetX = 4.5f;
