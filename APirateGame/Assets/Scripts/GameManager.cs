@@ -49,7 +49,6 @@ namespace Assets.Scripts
 
             _gameManagerGameObject = new GameObject("_gameManagerGameObject");
             PlayerController = _gameManagerGameObject.AddComponent<PlayerController>();
-            // InputController = _gameManagerGameObject.AddComponent<InputController>();
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
