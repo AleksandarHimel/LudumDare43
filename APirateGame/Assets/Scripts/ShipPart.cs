@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class ShipPart : MonoBehaviour {
 
-    protected readonly Ship ParentShip;
+    protected Ship ParentShip;
 
     protected SpriteRenderer spriteRenderer;
 
@@ -19,7 +19,7 @@ public abstract class ShipPart : MonoBehaviour {
 
     public int Weight { get; set; }
 
-    public abstract void InitShipPart();
+    public abstract void InitShipPart(Ship ship);
 
     public ShipPart(Ship parentShip)
     {
@@ -35,13 +35,11 @@ public abstract class ShipPart : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         // TODO: add sprite
         //spriteRenderer.sprite = Resources.Load<Sprite>("Path");
-
-        InitShipPart();
 	}
 	
 	// Update is called once per frame

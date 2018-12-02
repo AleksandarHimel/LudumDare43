@@ -7,8 +7,9 @@ public class EngineRoom : ShipPart {
     public EngineRoom(Ship parentShip) : base (parentShip) { }
 
     // Use this for initialization
-    public override void InitShipPart()
+    public override void InitShipPart(Ship ship)
     {
+        ParentShip = ship;
         MaxNumberOfCrewMembers = 2;
         MaxHealth = 2;
         Health = MaxHealth;

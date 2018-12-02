@@ -6,7 +6,7 @@ using System;
 
 namespace Assets.Events
 {
-    public class EventManager : MonoBehaviour
+    public class EventManager
     {
         private static EventManager _instance;
 
@@ -30,6 +30,25 @@ namespace Assets.Events
                     return null;
             }
         }
+
+
+        public string GetEventDescription(EventEnum eventEnum)
+        {
+            switch (eventEnum)
+            {
+                case EventEnum.PIRATES_ATTACK:
+                    return "Arghhh! Pirates might attack";
+                case EventEnum.SHALLOW_WATER:
+                    return "This watters are known for being shallow!";
+                case EventEnum.RESTLESS_WATERS:
+                    return "Restless waters! Weak crew might get sicK!";
+                case EventEnum.FIRE_EVENT:
+                    return "YOU MIGHT BUUURN!";
+                default:
+                    return "Don't know what's gonna happen!";
+            }
+        }
+
 
         public IEvent GetNextEvent()
         {

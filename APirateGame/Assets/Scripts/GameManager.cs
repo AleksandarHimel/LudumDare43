@@ -17,6 +17,7 @@ namespace Assets.Scripts
         public UiController UiController;
         public AudioController AudioController;
         public GameConfig GameConfig;
+        public int DesiredRiskiness;
 
         [Header("Health Settings")]
         public GameState GameState;
@@ -51,7 +52,7 @@ namespace Assets.Scripts
 
             _gameManagerGameObject = new GameObject("_gameManagerGameObject");
             PlayerController = _gameManagerGameObject.AddComponent<PlayerController>();
-            EventManager = _gameManagerGameObject.AddComponent<EventManager>();
+            EventManager = EventManager.Instance;
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
             AudioController = _gameManagerGameObject.AddComponent<AudioController>();
@@ -68,6 +69,7 @@ namespace Assets.Scripts
             // Ship.Inventory = ShipInventory;
             // var shipGameObject = new GameObject("ShipGameObject");
             // Ship = shipGameObject.AddComponent<Ship>();
+            UiController.UpdateChoices(MapManager.GetPossibleDestinations());
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 
@@ -102,11 +104,11 @@ namespace Assets.Scripts
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                // TODO Update Map
-
+                MapManager.GoToNextDestination(DesiredRiskiness);
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
+                UiController.UpdateChoices(MapManager.GetPossibleDestinations());
 
                 SetIsUserTurn(true);
             }
