@@ -86,15 +86,14 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         CrewMembers = new List<CrewMember>();
 
         foreach (var node in ShipConfig.GetInstance().xmlConfig.SelectNodes("Ship/ShipCrew/CrewMember"))
-        {
-
+        {   
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
             crewMemberGO.name = ((XmlNode)node).Attributes["name"].Value;
 
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
-            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
+            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.5f);
             crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
 
             // Add component
