@@ -92,7 +92,7 @@ namespace Assets.Scripts
             {
                 StartingDestinations.Add(new MapNode());
 
-                StartingDestinations[riskDepth] = Map[0][riskDepth];
+                StartingDestinations[riskDepth] = Map[riskDepth][0];
             }
         }
 
@@ -105,6 +105,7 @@ namespace Assets.Scripts
         public IEnumerable<MapNodeInformation> GetPossibleDestinations()
         {
             IEnumerable<MapNode> possibleNodeDestinations = (Current == null) ? StartingDestinations : Current.Destinations.Where(node => node != null);
+
             return possibleNodeDestinations.Select(node => new MapNodeInformation(GetRiskinessEvents(node.Riskiness), node.Riskiness));
         }
 
@@ -128,13 +129,13 @@ namespace Assets.Scripts
 
                     break;
                 case 1:
-                    for (int i = (int)EventEnum.MAX_FIRST_TIER; i <= (int)EventEnum.MAX_SECOND_TIER; i++)
+                    for (int i = (int)EventEnum.MAX_FIRST_TIER + 1; i <= (int)EventEnum.MAX_SECOND_TIER; i++)
                     {
                         possibleEvents.Add(i);
                     }
                     break;
                 default:
-                    for (int i = (int)EventEnum.MAX_SECOND_TIER; i <= (int)EventEnum.MAX_THIRD_TIER; i++)
+                    for (int i = (int)EventEnum.MAX_SECOND_TIER + 1; i <= (int)EventEnum.MAX_THIRD_TIER; i++)
                     {
                         possibleEvents.Add(i);
                     }

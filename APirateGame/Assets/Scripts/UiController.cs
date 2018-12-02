@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Assets.Events;
+using Assets.Scripts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +13,23 @@ public class UiController : MonoBehaviour
 {
     public Text ResourcesTextBox;
     public Text SelectedItemDetailsTextBox;
+    public Text Points;
+    public Dropdown PathChoice;
+    Dropdown.DropdownEvent ChoiceChangedEvent;
+    // Maps option choice to riskiness
+    public Dictionary<string, int> OptionsDictionary = new Dictionary<string, int>();
+
+
+    void Awake()
+    {
+        ChoiceChangedEvent = new Dropdown.DropdownEvent();
+        ChoiceChangedEvent.AddListener(x => OnChoiceChanged(x));
+    }
 
 	// Use this for initialization
 	void Start ()
     {
-		
-	}
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -33,6 +48,37 @@ public class UiController : MonoBehaviour
 
         Debug.Log(text);
         SelectedItemDetailsTextBox.text = text;
+    }
+
+    public void OnChoiceChanged(int x)
+    {
+        GameManager.Instance.DesiredRiskiness = OptionsDictionary[PathChoice.options[x].text];
+    }
+
+    public void UpdateChoices(IEnumerable<MapNodeInformation> nodesInformation)
+    {
+        PathChoice.ClearOptions();
+        OptionsDictionary.Clear();
+
+        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+
+        foreach (MapNodeInformation nodeInfo in nodesInformation)
+        {
+            string optionText = string.Format("{0} pst: {1}",
+                  nodeInfo.Riskiness + 1,
+                  String.Join(" or ",
+                  nodeInfo
+                    .PossibleEncounter
+                    .Select(possibleEncounter => EventManager.Instance.GetEventDescription(possibleEncounter)).ToArray())
+                );
+            Debug.Log(optionText);
+            Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
+
+            OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
+            options.Add(optionData);
+        }
+
+        PathChoice.AddOptions(options);
     }
 
     public void OnShipSelected()

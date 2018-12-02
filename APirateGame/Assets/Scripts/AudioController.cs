@@ -13,35 +13,40 @@ public class AudioController : MonoBehaviour {
     public AudioSource SfxAudioSource;
 
     private IEnumerator fadeOutEnumerator;
+    private bool fadeOutInProgress = false;
     private IEnumerator fadeInEnumerator;
+    private bool fadeInInProgress = false;
 
-    // Use this for initialization
-    void Start()
+    private void Awake()
     {
-        GameObject audioSourceObject = new GameObject();
+        GameObject audioSourceObject = new GameObject("_audioController");
         BackgroundAudioSource = audioSourceObject.AddComponent<AudioSource>();
-
         SfxAudioSource = audioSourceObject.AddComponent<AudioSource>();
-
         BackgroundMusic = Resources.Load<AudioClip>("Audio/MusicTheme");
         BackgroundAudioSource.clip = BackgroundMusic;
         BackgroundAudioSource.loop = true;
+        BackgroundAudioSource.clip = BackgroundMusic;
+
+        fadeInEnumerator = GetBackgroundMusicFadeInEnumerator();
+        fadeOutEnumerator = GetBackgroundMusicFadeOutEnumerator();
     }
 
     public void FadeInBackgroundMusic()
     {
         // Stop backround fadeout if running
-        StopCoroutine(fadeOutEnumerator);
+        if (fadeOutInProgress)
+            StopCoroutine(fadeOutEnumerator);
+
         // Start fade in coroutine
         fadeInEnumerator = GetBackgroundMusicFadeInEnumerator();
         StartCoroutine(fadeInEnumerator);
     }
 
-
     public void FadeOutBackgroundMusic()
     {
         // Stop backround fadeout if running
-        StopCoroutine(fadeInEnumerator);
+        if (fadeInInProgress)
+            StopCoroutine(fadeInEnumerator);
         // Stop backround music
         fadeOutEnumerator = GetBackgroundMusicFadeOutEnumerator();
         StartCoroutine(fadeOutEnumerator);
@@ -49,6 +54,8 @@ public class AudioController : MonoBehaviour {
 
     private IEnumerator GetBackgroundMusicFadeOutEnumerator()
     {
+        fadeOutInProgress = true;
+
         float FadeTime = 3.0f;
         float startVolume = BackgroundAudioSource.volume;
 
@@ -61,10 +68,13 @@ public class AudioController : MonoBehaviour {
 
         BackgroundAudioSource.Stop();
         BackgroundAudioSource.volume = startVolume;
+        fadeOutInProgress = false;
     }
 
     private IEnumerator GetBackgroundMusicFadeInEnumerator()
     {
+        fadeInInProgress = true;
+
         float FadeTime = 3.0f;
         float startVolume = 0.2f;
 
@@ -79,5 +89,6 @@ public class AudioController : MonoBehaviour {
         }
 
         BackgroundAudioSource.volume = 1f;
+        fadeInInProgress = false;
     }
 }

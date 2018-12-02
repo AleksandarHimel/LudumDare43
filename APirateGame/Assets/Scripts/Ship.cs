@@ -1,9 +1,8 @@
-using Assets.Events;
 using Assets.Scripts;
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -21,6 +20,11 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
     {
+        if (crew.CurrentShipPart == part)
+        {
+            return;
+        }
+
         if (part.MaxNumberOfCrewMembers == part.PresentCrewMembers.Count())
         {
             throw new Exception("Ship part is full!");
@@ -29,8 +33,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         crew.CurrentShipPart = part;
     }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
@@ -66,9 +70,24 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             sailsGO.AddComponent<Sails>()
         };
 
+        foreach (ShipPart sp in ShipParts)
+        {
+            var collider = sp.gameObject.AddComponent<BoxCollider2D>();
+            collider.size = new Vector2(20, 20);
+        }
+
+        CrewMembers = new List<CrewMember>();
+
+        // TODO: this is temp, depending on crew member size compared to ship part count
+        foreach (var shipPart in ShipParts)
+        {
+            shipPart.InitShipPart(this);
+        }
+
         CrewMembers = new List<CrewMember>();
         foreach (var crewMemberConfig in GameFileConfig.GetInstance().ShipConfig.ShipCrew)
         {
+
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
             crewMemberGO.name = "CrewMembers /PlayerCharacter-" + crewMemberConfig.PirateName;
@@ -76,6 +95,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
             crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
+            crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
@@ -95,8 +115,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update ()
     {
-		// hi my name is andrija
-	}
+        // hi my name is andrija
+    }
 
     public bool IsDestroyed()
     {
@@ -149,7 +169,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
                 {
                     if (!crewMember.IsUnderPlague)
                     {
-                        if (UnityEngine.Random.Range(0, 1) > GameConfig.Instance.PlagueSpreadingProbability)
+                        if (UnityEngine.Random.Range(0f, 1f) > GameConfig.Instance.PlagueSpreadingProbability)
                         {
                             crewMember.PlagueThisGuy();
                         }
@@ -210,7 +230,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         int defaultFoodConsumption = CalculateDefaultFoodConsumption();
         int boatSpeed = CalculateBoatSpeed();
 
-        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100));
+        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100.0));
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -218,5 +238,39 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         Debug.Log(name + " Game Object Clicked!");
 
         GameManager.Instance.UiController.OnShipSelected();
+    }
+
+    public ShipPart GetRandomLiveShipPart()
+    {
+        // Count available ship parts
+        int countParts = 0;
+        
+        foreach (var shipPart in ShipParts)
+        {
+            if (!shipPart.IsDestroyed)
+            {
+                countParts++;
+            }
+        }
+
+        int chosenShipPart = UnityEngine.Random.Range(0, countParts-1);
+
+        var returnPart = new System.Object();
+
+        foreach (var shipPart in ShipParts)
+        {
+            if (!shipPart.IsDestroyed)
+            {
+                if (chosenShipPart == 0)
+                {
+                    returnPart = shipPart;
+                    break;
+                }
+
+                chosenShipPart--;
+            }
+        }
+
+        return (ShipPart) returnPart;
     }
 }

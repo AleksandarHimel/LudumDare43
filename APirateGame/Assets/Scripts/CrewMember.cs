@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +9,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public ShipPart CurrentShipPart;
     public int Health;
     public bool IsUnderPlague;
-    public int ResourceConsumption;
+    public int ResourceConsumption = 10;
     public string PirateName;
 
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
@@ -16,6 +17,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public bool IsDead { get; private set; }
 
     public Ship ship;
+
+    private Vector3? dragPositionStart = null;
 
     public static string[] CrewMemberColors =
     {
@@ -84,14 +87,66 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log(name + " game object mouse down");
+
+        if (dragPositionStart == null)
+        {
+            dragPositionStart = transform.position;
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        dragPositionStart = null;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         Debug.Log(name + string.Format(" being dragged: {0} {1}", eventData.position.x, eventData.position.y));
         
-        var something = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, Camera.main.transform.position.z - gameObject.transform.position.z));
+        var worldPoint = Camera.main.ScreenToWorldPoint(
+            new Vector3(eventData.position.x, eventData.position.y, Camera.main.transform.position.z - gameObject.transform.position.z));
 
-        this.gameObject.transform.position = new Vector3(something.x, something.y, gameObject.transform.position.z);
+        var pendingPosition = new Vector3(worldPoint.x, worldPoint.y, gameObject.transform.position.z);
+
+        foreach (ShipPart sp in ship.ShipParts)
+        {
+            if (this.IsWithinBoundaries(sp))
+            {
+                try
+                {
+                    ship.AssignCrewMember(this, sp);
+                    this.transform.position = pendingPosition;
+                }
+                catch (Exception)
+                {
+                    // could not assign - return back;
+                }
+
+            }
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(this.gameObject.name + " collided with " + collision.gameObject.name);
+
+        if (collision.gameObject.GetComponent<ShipPart>() != null)
+        {
+            Debug.Log(this.gameObject.name + " trying to enter " + collision.gameObject.name);
+
+            try
+            {
+                ship.AssignCrewMember(this, collision.gameObject.GetComponent<ShipPart>());
+            }
+            catch (Exception)
+            {
+                // could not assign - do something else
+            }
+        }
+    }
+
+    private bool IsWithinBoundaries(ShipPart sp)
+    {
+        return true;
     }
 }
