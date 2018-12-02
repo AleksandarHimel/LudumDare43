@@ -102,7 +102,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
             component.Name = ((XmlNode)node).Attributes["name"].Value;
             component.Color = ((XmlNode)node).Attributes["color"].Value;
-
+            component.Ship = this;
+            
             bool fAssigned = false;
             while (!fAssigned)
             {
