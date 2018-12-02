@@ -38,7 +38,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
-
+        DeceasedCrewMembers = new List<CrewMember>();
         // Instantiate some type of ship 4 example:
         // For each ship type there should be specific game object...
         var cannonGO = new GameObject("ShipPart/Cannon");
