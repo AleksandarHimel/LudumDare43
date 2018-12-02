@@ -9,7 +9,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public int Health;
     public bool IsUnderPlague;
     public int ResourceConsumption;
-    public string Name;
+    public string PirateName;
 
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
@@ -34,7 +34,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
         Debug.Log("Start Loading attributes");
 
-        foreach(var atr in ShipConfig.GetInstance().GetAttributesForCrewMember("Jack"))
+        foreach(var atr in GameFileConfig.GetInstance().GetAttributesForCrewMember("Jack"))
         {
             Debug.Log(string.Format("{0} : {1}", atr.AttributeName, atr.AttributeValue));
             this.attributes.Add(atr.AttributeName, atr);

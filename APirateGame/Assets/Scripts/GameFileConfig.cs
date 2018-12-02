@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
-public class ShipConfig
+public class GameFileConfig
 {
-    private static ShipConfig _instance;
+    private static GameFileConfig _instance;
     private XmlDocument xmlConfig;
 
-    public static ShipConfig GetInstance()
+    public static GameFileConfig GetInstance()
     {
         if (_instance == null)
         {
-            _instance = new ShipConfig();
+            _instance = new GameFileConfig();
         }
 
         return _instance;
@@ -39,7 +39,7 @@ public class ShipConfig
         return itemNode.Attributes["color"].Value;
     }
 
-    private ShipConfig()
+    private GameFileConfig()
     {
         TextAsset configXML = Resources.Load("ShipConfig") as TextAsset;
         xmlConfig = new XmlDocument();
