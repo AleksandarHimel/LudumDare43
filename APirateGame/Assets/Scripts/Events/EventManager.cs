@@ -16,6 +16,8 @@ namespace Assets.Events
             {
                 case EventEnum.PIRATES_ATTACK:
                     return new PirateAttackEvent();
+                case EventEnum.FIRE_EVENT:
+                    return new FireEvent();
                 case EventEnum.SHALLOW_WATER:
                     return new ShallowWaterEvent();
                 case EventEnum.RESTLESS_WATERS:

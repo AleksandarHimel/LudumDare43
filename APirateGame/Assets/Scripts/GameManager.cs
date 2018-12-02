@@ -123,9 +123,9 @@ namespace Assets.Scripts
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
                 MapManager.GoToNextDestination(DesiredRiskiness);
-                Points += MapManager.Instance.GetCurrentNode().Riskiness + 1;
+                Points += Math.Min(MapManager.Instance.GetCurrentNode().Riskiness + 1, GameConfig.Instance.PointRequiredForVictory);
 
-                if (Points >= 100)
+                if (Points >= GameConfig.Instance.PointRequiredForVictory)
                 {
                     Victory();
                     return;

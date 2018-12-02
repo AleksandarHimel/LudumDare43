@@ -46,6 +46,8 @@ namespace Assets.Scripts
         public int KitchenWeight = 1;
         public int SailsWeight = 1;
 
+        public int PointRequiredForVictory = 10;
+
         public static GameConfig Instance
         {
             get
