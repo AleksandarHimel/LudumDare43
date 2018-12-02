@@ -17,6 +17,9 @@ namespace Assets.Scripts
 
         public int RowingActionFoodConsumptionIncrement = 30;
 
+        public uint InitialFoodCount = 100;
+        public uint InitialWoodCount = 100;
+
         public int ChanceForShallowWaters = 10;
         public int ChanceForFire = 20;
         public int ChanceForPirateAttack = 15;
@@ -41,12 +44,7 @@ namespace Assets.Scripts
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new GameConfig();
-                }
-
-                return _instance;
+                return FindObjectOfType<GameConfig>();
             }
         }
 
