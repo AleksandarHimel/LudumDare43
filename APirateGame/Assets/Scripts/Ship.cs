@@ -36,7 +36,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 	// Use this for initialization
 	void Start ()
     {
-        Inventory = new ShipInventory(100, 100);
+        Inventory = ScriptableObject.CreateInstance<ShipInventory>();
+        Inventory.InitialiseResources(100, 100);
 
         // Instantiate some type of ship 4 example:
         // For each ship type there should be specific game object...
