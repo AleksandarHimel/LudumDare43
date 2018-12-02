@@ -86,7 +86,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     internal void ProcessMoveEnd()
     {
         Debug.Log("Ship processing move end");
-        Inventory.TryRemoveAmountOfFood(1);
+        Inventory.TryRemoveAmountOfFood(CalculateFoodConsumptionBetweenTwoPoints());
     }
 
     // Update is called once per frame
