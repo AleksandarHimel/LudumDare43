@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class ShipPart : MonoBehaviour {
+public abstract class ShipPart : MonoBehaviour, IPointerClickHandler {
 
     protected Ship ParentShip;
 
@@ -54,4 +56,9 @@ public abstract class ShipPart : MonoBehaviour {
     }
 
     public abstract bool IsOnBottom();
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        GameManager.Instance.UiController.OnShipPartSelected(this);
+    }
 }
