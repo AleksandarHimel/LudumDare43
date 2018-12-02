@@ -16,7 +16,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public ShipInventory Inventory { get; set; }
 
-
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
     {
@@ -86,7 +85,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         CrewMembers = new List<CrewMember>();
 
-        foreach (var node in ShipConfig.xmlConfig.SelectNodes("Ship/ShipCrew/CrewMember"))
+        foreach (var node in ShipConfig.GetInstance().xmlConfig.SelectNodes("Ship/ShipCrew/CrewMember"))
         {
 
             // Create instance of a Pirate

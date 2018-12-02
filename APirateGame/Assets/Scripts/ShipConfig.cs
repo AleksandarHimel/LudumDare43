@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShipConfig
 {
     private static ShipConfig _instance;
-    public static XmlDocument xmlConfig;
+    public XmlDocument xmlConfig;
 
     public static ShipConfig GetInstance()
     {
