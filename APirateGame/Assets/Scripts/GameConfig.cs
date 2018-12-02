@@ -17,7 +17,7 @@ namespace Assets.Scripts
 
         public int RowingActionFoodConsumptionIncrement = 30;
 
-        public uint InitialFoodCount = 100;
+        public uint InitialFoodCount = 1500;
         public uint InitialWoodCount = 100;
 
         public int ChanceForShallowWaters = 10;
@@ -45,6 +45,9 @@ namespace Assets.Scripts
         public int HullWeight = 2;
         public int KitchenWeight = 1;
         public int SailsWeight = 1;
+        public int CrowsNestWeight = 1;
+
+        public int PointRequiredForVictory = 10;
 
         public static GameConfig Instance
         {

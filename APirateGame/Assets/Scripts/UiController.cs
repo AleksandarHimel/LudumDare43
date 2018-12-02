@@ -13,6 +13,9 @@ public class UiController : MonoBehaviour
 {
     public Text ResourcesTextBox;
     public Text SelectedItemDetailsTextBox;
+    public Text Points;
+    public Text GameOverText;
+    public Text VictoryText;
     public Dropdown PathChoice;
     Dropdown.DropdownEvent ChoiceChangedEvent;
     // Maps option choice to riskiness
@@ -63,7 +66,7 @@ public class UiController : MonoBehaviour
 
         foreach (MapNodeInformation nodeInfo in nodesInformation)
         {
-            string optionText = string.Format("{0} pst: {1}",
+            string optionText = string.Format("{0} pts: {1}",
                   nodeInfo.Riskiness + 1,
                   String.Join(" or ",
                   nodeInfo

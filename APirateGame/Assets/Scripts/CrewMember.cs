@@ -10,13 +10,16 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public int Health;
     public bool IsUnderPlague;
     public int ResourceConsumption = 10;
-    public string Name;
+    public string PirateName;
 
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
+    public bool IsMoving;
+    private Vector3 expectedPosition;
+    
     public bool IsDead { get; private set; }
 
-    public Ship ship;
+    public Ship Ship;
 
     private Vector3? dragPositionStart = null;
 
@@ -27,26 +30,39 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         "blue"
     };
 
-    void Start()
+    public void Init(string pirateName)
     {
-        var sprite = GetComponent<SpriteRenderer>();
-
-        var random = new System.Random(System.DateTime.Now.Millisecond);
-        var color = CrewMemberColors[random.Next(3)];
-        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
-
-        Debug.Log("Start Loading attributes");
-
-        foreach(var atr in ShipConfig.GetInstance().GetAttributesForCrewMember("Jack"))
+        PirateName = pirateName;
+        Assets.Scripts.Configuration.CrewMemberConfig pirate = 
+            GameFileConfig.GetInstance().ShipConfig.GetCrewMembers()[pirateName];
+        foreach (var atrConfig in pirate.AttributesArray)
         {
-            Debug.Log(string.Format("{0} : {1}", atr.AttributeName, atr.AttributeValue));
+            CrewMemberAttribute atr = CrewMemberAttribute.CreateAttribute(atrConfig.Name, atrConfig.Value);
             this.attributes.Add(atr.AttributeName, atr);
         }
 
-        Debug.Log("Finished Loading attributes");
+        var sprite = GetComponent<SpriteRenderer>();
+        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", pirate.Color));
 
+        var shipPartObject = GameObject.Find("ShipPart/" + pirate.InitShipPart);
+        this.CurrentShipPart = shipPartObject.GetComponent<ShipPart>();
+
+        Debug.Log(string.Format("{0} : {1} [{2}]", PirateName, pirate.Color, pirate.InitShipPart));
+    }
+
+    void Start()
+    {
         Health = 10;
         IsDead = false;
+    }
+
+    void FixedUpdate()
+    {
+        if (IsMoving)
+        {
+            gameObject.GetComponent<Rigidbody2D>().MovePosition(expectedPosition);
+            IsMoving = false;
+        }
     }
 
     public void ReduceHealth(int damage)
@@ -55,8 +71,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         if (Health <= 0)
         {
             IsDead = true;
-            ship.CrewMembers.Remove(this);
-            ship.DeceasedCrewMembers.Add(this);
+            Ship.CrewMembers.Remove(this);
+            Ship.DeceasedCrewMembers.Add(this);
         }
     }
 
@@ -78,6 +94,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         Debug.Log(name + " Game Object Clicked!");
 
         GameManager.Instance.UiController.OnCrewMemberSelected(this);
+
+        Ship.OnCrewMemberSelected(this);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -94,7 +112,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     {
         dragPositionStart = null;
     }
-
+    
     public void OnDrag(PointerEventData eventData)
     {
         // Debug.Log(name + string.Format(" being dragged: {0} {1}", eventData.position.x, eventData.position.y));
@@ -104,14 +122,16 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
         var pendingPosition = new Vector3(worldPoint.x, worldPoint.y, gameObject.transform.position.z);
 
-        foreach (ShipPart sp in ship.ShipParts)
+        foreach (ShipPart sp in Ship.ShipParts)
         {
             if (this.IsWithinBoundaries(sp))
             {
                 try
                 {
-                    ship.AssignCrewMember(this, sp);
+                    Ship.AssignCrewMember(this, sp);
                     this.transform.position = pendingPosition;
+                    
+                    MoveTo(new Vector2(eventData.pointerCurrentRaycast.worldPosition.x, eventData.pointerCurrentRaycast.worldPosition.y));
                 }
                 catch (Exception)
                 {
@@ -122,17 +142,17 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(this.gameObject.name + " collided with " + other.gameObject.name);
+        Debug.Log(this.gameObject.name + " collided with " + collision.gameObject.name);
 
-        if (other.gameObject.GetComponent<ShipPart>() != null)
+        if (collision.gameObject.GetComponent<ShipPart>() != null)
         {
-            Debug.Log(this.gameObject.name + " trying to enter " + other.gameObject.name);
+            Debug.Log(this.gameObject.name + " trying to enter " + collision.gameObject.name);
 
             try
             {
-                ship.AssignCrewMember(this, other.gameObject.GetComponent<ShipPart>());
+                Ship.AssignCrewMember(this, collision.gameObject.GetComponent<ShipPart>());
             }
             catch (Exception)
             {
@@ -144,5 +164,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     private bool IsWithinBoundaries(ShipPart sp)
     {
         return true;
+    }
+
+    internal void MoveTo(Vector3 worldPosition)
+    {
+        IsMoving = true;
+        expectedPosition = worldPosition;
     }
 }
