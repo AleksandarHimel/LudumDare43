@@ -12,6 +12,7 @@ namespace Assets.Events
         MAX_THIRD_TIER = 2,
         WALK_THE_PLANK,
         SPREAD_THE_PLAGUE,
+        CONSUME_RESOURCES_BETWEEEN_STAGES,
         EVENT_MAX
     }
 }

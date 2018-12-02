@@ -24,6 +24,8 @@ namespace Assets.Events
                     return new SpreadThePlagueEvent();
                 case EventEnum.WALK_THE_PLANK:
                     return new WalkThePlankEvent();
+                case EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES:
+                    return new ConsumeResourcesBetweenStages();
                 default:
                     return null;
             }
