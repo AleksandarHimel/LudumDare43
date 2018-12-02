@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2338,6 +2338,8 @@ MonoBehaviour:
   DesiredRiskiness: 0
   GameState: {fileID: 0}
   ShipInventory: {fileID: 0}
+  nightBringerSprite: {fileID: 0}
+  FadeTime: 3
 --- !u!4 &1507152521
 Transform:
   m_ObjectHideFlags: 0
@@ -2420,6 +2422,11 @@ MonoBehaviour:
   MaxPirateAttackCrewMemberDamage: 100
   MinPirateAttackResourceDamage: 0
   MaxPirateAttackResourceDamage: 100
+  CannonWeight: 1
+  EngineRoomWeight: 3
+  HullWeight: 2
+  KitchenWeight: 1
+  SailsWeight: 1
 --- !u!1 &1698621967
 GameObject:
   m_ObjectHideFlags: 0
