@@ -39,8 +39,8 @@ namespace Assets.Scripts
 
         private static GameManager _instance;
 
-        // Use this for initialization
-        void Start() {
+        private void Awake()
+        {
             if (_instance == this)
             {
                 return;
@@ -53,7 +53,11 @@ namespace Assets.Scripts
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
-            AudioController = new AudioController();
+            AudioController = _gameManagerGameObject.AddComponent<AudioController>();
+        }
+
+        // Use this for initialization
+        void Start() {
 
             // TODO merge
 
@@ -67,26 +71,38 @@ namespace Assets.Scripts
 
             AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
             AssetDatabase.SaveAssets();
+
+            SetIsUserTurn(true);
         }
 	
         public void SetIsUserTurn(bool newValue)
         {
             GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
+
+            if (GameState.State == GameState.EGameState.PlayerTurn)
+            {
+                ProcessUserTurnStart();
+            }
         }
 
         public void ProcessMoveEnd()
-        {
+        { 
+            // Fade out background music
+            AudioController.FadeOutBackgroundMusic();
+
             Ship.ProcessMoveEnd();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
+
+            while (!Input.anyKey)
+            { }
+
+            SetIsUserTurn(false);
         }
 
         void Update()
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                // Fade out background music
-                AudioController.FadeOutBackgroundMusic();
-
                 // Handle
                 var gameplayEvent = EventManager.Instance.GetNextEvent();
                 gameplayEvent.Execute(Ship);
@@ -94,6 +110,13 @@ namespace Assets.Scripts
                 SetIsUserTurn(true);
             }
         }
+
+        public void ProcessUserTurnStart()
+        {
+            // Fade out background music
+            AudioController.FadeInBackgroundMusic();
+        }
+
 
         private void VerifyGameState()
         {
