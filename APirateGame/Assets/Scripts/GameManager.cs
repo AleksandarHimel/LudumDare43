@@ -60,7 +60,7 @@ namespace Assets.Scripts
             PlayerController = _gameManagerGameObject.AddComponent<PlayerController>();
             EventManager = EventManager.Instance;
             GameState = ScriptableObject.CreateInstance<GameState>();
-            //MapManager = _gameManagerGameObject.AddComponent<MapManager>();
+            MapManager = MapManager.Instance;
             AudioController = _gameManagerGameObject.AddComponent<AudioController>();
             GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
 
