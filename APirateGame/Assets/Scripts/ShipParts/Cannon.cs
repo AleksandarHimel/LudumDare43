@@ -12,7 +12,8 @@ public class Cannon : ShipPart
     {
         ParentShip = ship;
         // Assign texture
-        spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Cannon");
+
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Cannon");
 
         MaxNumberOfCrewMembers = 1;
         MaxHealth = 2;
