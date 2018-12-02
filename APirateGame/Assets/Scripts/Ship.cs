@@ -19,7 +19,7 @@ public class Ship : MonoBehaviour
     {
         if (part.MaxNumberOfCrewMembers == part.PresentCrewMembers.Count())
         {
-            throw new System.Exception("Ship part is full!");
+            throw new Exception("Ship part is full!");
         }
 
         crew.CurrentShipPart = part;
@@ -61,13 +61,20 @@ public class Ship : MonoBehaviour
         }
 
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
+        Inventory.InitialiseResources(100, 100);
 
         AssetDatabase.CreateAsset(Inventory, "Assets/ScriptableObjectsStatic/ShipInventory.asset");
         AssetDatabase.SaveAssets();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    internal void ProcessMoveEnd()
+    {
+        Debug.Log("Ship processing move end");
+        Inventory.TryRemoveAmountOfFood(1);
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
 		// hi my name is andrija
 	}

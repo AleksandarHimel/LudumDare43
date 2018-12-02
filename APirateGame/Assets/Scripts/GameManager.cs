@@ -2,6 +2,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
@@ -12,6 +13,9 @@ namespace Assets.Scripts
         public GameState GameState;
         public PlayerController PlayerController;
         public InputController InputController;
+
+        // TODO: find a better home for this
+        public Text ResourcesTextBox;
 
         private GameObject _gameManagerGameObject;
 
@@ -41,12 +45,14 @@ namespace Assets.Scripts
 
             _gameManagerGameObject = new GameObject("_gameManagerGameObject");
             PlayerController = _gameManagerGameObject.AddComponent<PlayerController>();
-            InputController = _gameManagerGameObject.AddComponent<InputController>();
+            // InputController = _gameManagerGameObject.AddComponent<InputController>();
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
 
-            var shipGameObject = new GameObject("ShipGameObject");
-            Ship = shipGameObject.AddComponent<Ship>();
+            // var shipGameObject = new GameObject("ShipGameObject");
+            // Ship = shipGameObject.AddComponent<Ship>();
+
+            InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 
             AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
             AssetDatabase.SaveAssets();
@@ -55,6 +61,12 @@ namespace Assets.Scripts
         public void SetIsUserTurn(bool newValue)
         {
             GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
+        }
+
+        public void ProcessMoveEnd()
+        {
+            Ship.ProcessMoveEnd();
+            ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
         }
 
         void Update()
