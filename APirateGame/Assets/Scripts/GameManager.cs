@@ -54,9 +54,11 @@ namespace Assets.Scripts
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
 
-            var shipGameObject = GameObject.Find("ShipGO");
-            Ship = shipGameObject.GetComponent<Ship>();
-            Ship.Inventory = ShipInventory;
+            // TODO merge
+
+            // var shipGameObject = GameObject.Find("ShipGO");
+            // Ship = shipGameObject.GetComponent<Ship>();
+            // Ship.Inventory = ShipInventory;
             // var shipGameObject = new GameObject("ShipGameObject");
             // Ship = shipGameObject.AddComponent<Ship>();
 
