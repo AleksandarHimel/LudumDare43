@@ -22,6 +22,8 @@ namespace Assets.Scripts
         public GameState GameState;
         public ShipInventory ShipInventory;
 
+        public SpriteRenderer nightBringerSprite;
+
         // TODO: find a better home for this
         private GameObject _gameManagerGameObject;
 
@@ -39,6 +41,8 @@ namespace Assets.Scripts
         }
 
         private static GameManager _instance;
+        private bool IsNight = false;
+        private bool bringTheNight = true;
 
         private void Awake()
         {
@@ -56,6 +60,12 @@ namespace Assets.Scripts
             MapManager = MapManager.Instance;
             AudioController = _gameManagerGameObject.AddComponent<AudioController>();
             GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
+
+            GameObject _nightBringer = new GameObject("_nightBringer");
+            _nightBringer.transform.position = new Vector3(0, 0, -1);
+            nightBringerSprite = _nightBringer.AddComponent<SpriteRenderer>();
+            nightBringerSprite.sprite = Resources.Load<Sprite>("Sprites/Background");
+            nightBringerSprite.color = new Color(0,0,0,0);
         }
 
         // Use this for initialization
@@ -102,12 +112,32 @@ namespace Assets.Scripts
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                // TODO Update Map
+                if (bringTheNight)
+                {
+                    StartCoroutine(BringTheNight());
+                    bringTheNight = false;
+                }
 
-                // Handle
-                var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
-                gameplayEvent.Execute(Ship);
+                if (!IsNight)
+                {
+                    Debug.Log(IsNight);
+                    while (!IsNight)
+                    { return; }
 
+                    // TODO Update Map
+
+                    // Handle
+                    //var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
+                    //gameplayEvent.Execute(Ship);
+
+                    // Execute Sfx
+
+                    // Show user info message
+
+                    bringTheNight = true;
+                }
+
+                StartCoroutine(BringTheDawn());
                 SetIsUserTurn(true);
             }
         }
@@ -127,6 +157,35 @@ namespace Assets.Scripts
         private void ExecuteEncounters(Ship ship)
         {
             
+        }
+
+        private IEnumerator BringTheNight()
+        {
+            float FadeTime = 4f;
+            float t = 0;
+            while (t < 0.95f)
+            {
+                Debug.Log("bbbb");
+                nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0,0,0,1), t);
+                t += Time.deltaTime / FadeTime;
+                yield return null;
+            }
+            IsNight = true;
+        }
+
+        private IEnumerator BringTheDawn()
+        {
+            float FadeTime = 4f;
+            float t = 1;
+            while (t > 0.0f)
+            {
+                Debug.Log("aaaa");
+                nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), t);
+                t -= Time.deltaTime / FadeTime;
+                yield return null;
+            }
+            IsNight = false;
+            Debug.Log(IsNight);
         }
     }
 }
