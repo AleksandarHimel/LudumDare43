@@ -24,7 +24,7 @@ namespace Assets.Scripts
 
         // TODO: find a better home for this
         private GameObject _gameManagerGameObject;
-
+        
         public static GameManager Instance
         {
             get
@@ -53,7 +53,7 @@ namespace Assets.Scripts
             PlayerController = _gameManagerGameObject.AddComponent<PlayerController>();
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
-            MapManager = MapManager.Instance;
+            //MapManager = _gameManagerGameObject.AddComponent<MapManager>();
             AudioController = _gameManagerGameObject.AddComponent<AudioController>();
             GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
 

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class GameFileConfig
 {
     private static GameFileConfig _instance;
-    private XmlDocument xmlConfig;
+    public Assets.Scripts.Configuration.ShipConfig ShipConfig;
 
     public static GameFileConfig GetInstance()
     {
@@ -18,32 +20,13 @@ public class GameFileConfig
         return _instance;
     }
 
-    public IEnumerable<CrewMemberAttribute> GetAttributesForCrewMember(string name)
-    {
-        XmlNodeList itemNodes = xmlConfig.SelectNodes(
-            String.Format("//Ship/ShipCrew/CrewMember[@name='{0}']/CrewMemberAttribute", name));
-        foreach (XmlNode itemNode in itemNodes)
-        {
-            string atrName = itemNode.Attributes["name"].Value;
-            string atrValue = itemNode.Attributes["value"].Value;
-            float atrFloatValue = float.Parse(atrValue);
-
-            yield return CrewMemberAttribute.CreateAttribute(atrName, atrFloatValue);
-        }
-    }
-
-    public string GetColorForCrewMember(string name)
-    {
-        XmlNode itemNode = xmlConfig.SelectSingleNode(
-            String.Format("//Ship/ShipCrew/CrewMember[@name='{0}']", name));
-        return itemNode.Attributes["color"].Value;
-    }
-
     private GameFileConfig()
     {
         TextAsset configXML = Resources.Load("ShipConfig") as TextAsset;
-        xmlConfig = new XmlDocument();
-        xmlConfig.LoadXml(configXML.text);
+
+        StringReader reader = new StringReader(configXML.text);
+        XmlSerializer xs = new XmlSerializer(typeof(Assets.Scripts.Configuration.ShipConfig));
+        ShipConfig = xs.Deserialize(reader) as Assets.Scripts.Configuration.ShipConfig;
     }
 }
 

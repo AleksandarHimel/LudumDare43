@@ -24,24 +24,28 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         "blue"
     };
 
-    void Start()
+    public void Init(string pirateName)
     {
-        var sprite = GetComponent<SpriteRenderer>();
-
-        var random = new System.Random(System.DateTime.Now.Millisecond);
-        var color = CrewMemberColors[random.Next(3)];
-        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
-
-        Debug.Log("Start Loading attributes");
-
-        foreach(var atr in GameFileConfig.GetInstance().GetAttributesForCrewMember("Jack"))
+        PirateName = pirateName;
+        Assets.Scripts.Configuration.CrewMemberConfig pirate = 
+            GameFileConfig.GetInstance().ShipConfig.GetCrewMembers()[pirateName];
+        foreach (var atrConfig in pirate.AttributesArray)
         {
-            Debug.Log(string.Format("{0} : {1}", atr.AttributeName, atr.AttributeValue));
+            CrewMemberAttribute atr = CrewMemberAttribute.CreateAttribute(atrConfig.Name, atrConfig.Value);
             this.attributes.Add(atr.AttributeName, atr);
         }
 
-        Debug.Log("Finished Loading attributes");
+        var sprite = GetComponent<SpriteRenderer>();
+        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", pirate.Color));
 
+        var shipPartObject = GameObject.Find("ShipPart/" + pirate.InitShipPart);
+        this.CurrentShipPart = shipPartObject.GetComponent<ShipPart>();
+
+        Debug.Log(string.Format("{0} : {1} [{2}]", PirateName, pirate.Color, pirate.InitShipPart));
+    }
+
+    void Start()
+    {
         Health = 10;
         IsDead = false;
     }

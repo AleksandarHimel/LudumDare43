@@ -67,12 +67,11 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         };
 
         CrewMembers = new List<CrewMember>();
-        // TODO: this is temp, depending on crew member size compared to ship part count
-        foreach (var shipPart in ShipParts)
+        foreach (var crewMemberConfig in GameFileConfig.GetInstance().ShipConfig.ShipCrew)
         {
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
-            crewMemberGO.name = "CrewMembers /PlayerCharacter-" + Guid.NewGuid();
+            crewMemberGO.name = "CrewMembers /PlayerCharacter-" + crewMemberConfig.PirateName;
 
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
@@ -80,7 +79,9 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
-            component.CurrentShipPart = shipPart;
+
+            // Init ship parts, name, color and ship part
+            component.Init(crewMemberConfig.PirateName);
             CrewMembers.Add(component);
         }
     }
