@@ -80,7 +80,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
-            Debug.Log("INITALIZING SHIP");
             shipPart.InitShipPart(this);
 
             // Create instance of a Pirate
@@ -89,7 +88,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(DateTime.Now.Millisecond);
-            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
+            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+            crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
