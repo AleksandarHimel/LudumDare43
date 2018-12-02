@@ -14,12 +14,12 @@ public class WavePhysics : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        Xspeed = 0.7f;
+        Xspeed = -0.7f;
         rb.velocity = new Vector2 (Xspeed,0.0f);
         Amplitude = 0.3f;
         Frequency =1f;
         StartingPosition = rb.position;
-        resetX = 4.5f;
+        resetX = 6.7f;
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class WavePhysics : MonoBehaviour
     {
         Vector2 newposition = new Vector2(rb.position.x + Xspeed * Time.deltaTime, StartingPosition.y + Amplitude * Mathf.Sin(Time.fixedTime * Frequency));
 
-        if (newposition.x >= resetX)
+        if (newposition.x <= -resetX)
         {
             newposition.x = StartingPosition.x;
         }
