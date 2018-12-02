@@ -111,6 +111,10 @@ namespace Assets.Scripts
             // Fade out background music
             AudioController.FadeOutBackgroundMusic();
 
+            // Disable next buton and path pick
+            InputController.MoveEndButton.gameObject.SetActive(false);
+            UiController.PathChoice.gameObject.SetActive(false);
+
             Ship.ProcessMoveEnd();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
             UiController.Points.text = string.Format("Points: {0}", Points);
@@ -196,6 +200,10 @@ namespace Assets.Scripts
         {
             // Fade out background music
             AudioController.FadeInBackgroundMusic();
+
+            // Enable next button and path chooser
+            InputController.MoveEndButton.gameObject.SetActive(true);
+            UiController.PathChoice.gameObject.SetActive(true);
         }
 
 
