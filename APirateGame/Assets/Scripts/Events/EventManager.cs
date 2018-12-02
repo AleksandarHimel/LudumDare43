@@ -15,23 +15,17 @@ namespace Assets.Events
             switch (eventEnum)
             {
                 case EventEnum.PIRATES_ATTACK:
-                    return null;
-                case EventEnum.PLAGUE:
-                    return new PlagueEvent();
+                    return new PirateAttackEvent();
                 case EventEnum.SHALLOW_WATER:
                     return new ShallowWaterEvent();
-                case EventEnum.DESTROY_CANNON:
-                    return null;
-                case EventEnum.DESTROY_OBJECT:
-                    return null;
-                case EventEnum.GAME_OVER:
-                    return null;
-                case EventEnum.HARM_SHIP_PART:
-                    return new HarmShipPartEvent();
-                case EventEnum.HARM_CREW_MEMBER:
-                    return new HarmCrewMemberEvent();
-                case EventEnum.REDUCE_RESOURCES:
-                    return new ReduceResourcesEvent(eventArgs);
+                case EventEnum.RESTLESS_WATERS:
+                    return new RestlessWaterEvent();
+                case EventEnum.SPREAD_THE_PLAGUE:
+                    return new SpreadThePlagueEvent();
+                case EventEnum.WALK_THE_PLANK:
+                    return new WalkThePlankEvent();
+                case EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES:
+                    return new ConsumeResourcesBetweenStages();
                 default:
                     return null;
             }
@@ -40,17 +34,12 @@ namespace Assets.Events
         public IEvent GetNextEvent()
         {
             // TODO: logic
-            return new PlagueEvent();
+            return new ComposedEvent();
         }
 
         public void ExecuteEvent(EventEnum eventEnum, MonoBehaviour behaviouralObject, params object[] eventArgs)
         {
             GenerateEvent(eventEnum, eventArgs).Execute(behaviouralObject);
-        }
-
-        public void RaiseReduceResourcesEvent(MonoBehaviour behaviouralObject, uint foodToReduce, uint woodToReduce)
-        {
-            GenerateEvent(EventEnum.REDUCE_RESOURCES, foodToReduce, woodToReduce).Execute(behaviouralObject);
         }
 
         public ComposedEvent ComposeEvent()

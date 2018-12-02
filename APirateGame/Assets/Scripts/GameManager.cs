@@ -16,6 +16,7 @@ namespace Assets.Scripts
         public MapManager MapManager;
         public UiController UiController;
         public AudioController AudioController;
+        public GameConfig GameConfig;
 
         [Header("Health Settings")]
         public GameState GameState;
@@ -54,6 +55,7 @@ namespace Assets.Scripts
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
             AudioController = _gameManagerGameObject.AddComponent<AudioController>();
+            GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
         }
 
         // Use this for initialization
@@ -69,8 +71,8 @@ namespace Assets.Scripts
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 
-            AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
-            AssetDatabase.SaveAssets();
+            // AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
+            // AssetDatabase.SaveAssets();
 
             SetIsUserTurn(true);
         }
@@ -103,8 +105,10 @@ namespace Assets.Scripts
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
+                // TODO Update Map
+
                 // Handle
-                var gameplayEvent = EventManager.Instance.GetNextEvent();
+                var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
 
                 SetIsUserTurn(true);
