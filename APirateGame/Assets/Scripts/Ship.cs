@@ -35,15 +35,19 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // For each ship type there should be specific game object...
         var cannonGO = new GameObject("ShipPart/Cannon");
         cannonGO.transform.parent = gameObject.transform;
+        cannonGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var engineRoomGO = new GameObject("ShipPart/EngineRoom");
         engineRoomGO.transform.parent = gameObject.transform;
+        engineRoomGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var hullGO = new GameObject("ShipPart/Hull");
         engineRoomGO.transform.parent = gameObject.transform;
+        hullGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var kitchenGO = new GameObject("ShipPart/Kitchen");
         engineRoomGO.transform.parent = gameObject.transform;
+        kitchenGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         ShipParts = new List<ShipPart>
         {
@@ -60,7 +64,10 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
             crewMemberGO.name = "CrewMembers /PlayerCharacter-" + Guid.NewGuid();
-            crewMemberGO.transform.position = new Vector3(0, 0, 0);
+
+            // TODO: read positions of crew members relative to boat
+            UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
+            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();

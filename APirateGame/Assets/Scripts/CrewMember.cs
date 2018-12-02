@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CrewMember : MonoBehaviour, IPointerClickHandler {
@@ -7,6 +8,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
     public int Health;
     public bool IsUnderPlague;
     public int ResourceConsumption;
+    
+    private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
     public bool IsDead { get; private set; }
 
@@ -23,8 +26,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
     {
         var sprite = GetComponent<SpriteRenderer>();
 
-        var color = CrewMemberColors[new System.Random().Next(3)];
-        Debug.Log(color);
+        var random = new System.Random(System.DateTime.Now.Millisecond);
+        var color = CrewMemberColors[random.Next(3)];
         sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
 
         Health = 10;
@@ -38,6 +41,14 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
             IsDead = true;
     }
 
+    public CrewMemberAttribute GetAttribute(string attributeName)
+    {
+        CrewMemberAttribute retValue = null;
+        attributes.TryGetValue(attributeName, out retValue);
+
+        return retValue;
+    }
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(name + " Game Object Clicked!");
