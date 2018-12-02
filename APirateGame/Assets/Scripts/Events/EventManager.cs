@@ -37,13 +37,13 @@ namespace Assets.Events
             switch (eventEnum)
             {
                 case EventEnum.PIRATES_ATTACK:
-                    return "Arghhh! Pirates might attack";
+                    return "Pirate attack";
                 case EventEnum.SHALLOW_WATER:
-                    return "This watters are known for being shallow!";
+                    return "Shallow water";
                 case EventEnum.RESTLESS_WATERS:
-                    return "Restless waters! Weak crew might get sicK!";
+                    return "Restless water";
                 case EventEnum.FIRE_EVENT:
-                    return "YOU MIGHT BUUURN!";
+                    return "Firee!";
                 default:
                     return "Don't know what's gonna happen!";
             }

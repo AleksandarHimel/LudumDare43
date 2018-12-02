@@ -63,8 +63,8 @@ public class UiController : MonoBehaviour
 
         foreach (MapNodeInformation nodeInfo in nodesInformation)
         {
-            string optionText = string.Format("Points earned: {0}. You might encounter: {1}",
-                  nodeInfo.Riskiness,
+            string optionText = string.Format("{0} pst: {1}",
+                  nodeInfo.Riskiness + 1,
                   String.Join(" or ",
                   nodeInfo
                     .PossibleEncounter
@@ -73,7 +73,7 @@ public class UiController : MonoBehaviour
             Debug.Log(optionText);
             Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
 
-            OptionsDictionary[optionText] = nodeInfo.Riskiness;
+            OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
             options.Add(optionData);
         }
 

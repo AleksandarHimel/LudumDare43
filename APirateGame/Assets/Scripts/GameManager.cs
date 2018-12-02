@@ -10,6 +10,7 @@ namespace Assets.Scripts
     public class GameManager : MonoBehaviour {
 
         public Ship Ship;
+        public int points = 0;
         public EventManager EventManager;
         public PlayerController PlayerController;
         public InputController InputController;
@@ -104,6 +105,8 @@ namespace Assets.Scripts
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
+                points = points + MapManager.GetCurrentNode().Riskiness + 1;
+
                 MapManager.GoToNextDestination(DesiredRiskiness);
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
