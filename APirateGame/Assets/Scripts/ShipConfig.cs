@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using UnityEngine;
 
 public class ShipConfig
 {
@@ -40,9 +41,9 @@ public class ShipConfig
 
     private ShipConfig()
     {
-        System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
+        TextAsset configXML = Resources.Load("ShipConfig") as TextAsset;
         xmlConfig = new XmlDocument();
-        xmlConfig.Load(a.GetManifestResourceStream(a.FullName + ".ShipConfig.xml"));
+        xmlConfig.LoadXml(configXML.text);
     }
 }
 
