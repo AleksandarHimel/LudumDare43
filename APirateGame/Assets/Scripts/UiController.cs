@@ -57,6 +57,22 @@ public class UiController : MonoBehaviour
         SelectedItemDetailsTextBox.text = text;
     }
 
+    internal void OnShipPartSelected(ShipPart shipPart)
+    {
+        string text = string.Format("Name: {0}\nHealth: {1}/{2}", shipPart.name, shipPart.Health, shipPart.MaxHealth);
+
+        var crewMembers = shipPart.PresentCrewMembers;
+
+        text += string.Format("\nCrew members:{0}/{1}", crewMembers.Count(), shipPart.MaxNumberOfCrewMembers);
+
+        if (crewMembers.Count() > 0)
+        {
+            text += "\n" + crewMembers.Select(c => c.PirateName).Aggregate((c1, c2) => c1 + ", " + c2);
+        }
+
+        SelectedItemDetailsTextBox.text = text;
+    }
+
     public void OnChoiceChanged(int x)
     {
         GameManager.Instance.DesiredRiskiness = OptionsDictionary[PathChoice.options[x].text];
@@ -68,22 +84,31 @@ public class UiController : MonoBehaviour
         OptionsDictionary.Clear();
 
         List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
-
-        foreach (MapNodeInformation nodeInfo in nodesInformation)
+        if (GameManager.Instance.Ship.GetScoutingBonus() > 0)
         {
-            string optionText = string.Format("{0} pts: {1}",
-                  nodeInfo.Riskiness + 1,
-                  String.Join(" or ",
-                  nodeInfo
-                    .PossibleEncounter
-                    .Select(possibleEncounter => EventManager.Instance.GetEventDescription(possibleEncounter)).ToArray())
-                );
-            Debug.Log(optionText);
-            Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
+            foreach (MapNodeInformation nodeInfo in nodesInformation)
+            {
+                string optionText = string.Format("{0} pts: {1}",
+                      nodeInfo.Riskiness + 1,
+                      String.Join(" or ",
+                      nodeInfo
+                        .PossibleEncounter
+                        .Select(possibleEncounter => EventManager.Instance.GetEventDescription(possibleEncounter)).ToArray())
+                    );
+                Debug.Log(optionText);
+                Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
 
-            OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
-            options.Add(optionData);
+                OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
+                options.Add(optionData);
+            }
         }
+        else
+        {
+            string optionText = "We cannot see where we are heading! We might end up anywhere!";
+            Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
+            OptionsDictionary[optionText] = -1;
+            options.Add(optionData);
+        }   
 
         PathChoice.AddOptions(options);
     }

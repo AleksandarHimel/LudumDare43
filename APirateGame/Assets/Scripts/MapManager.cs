@@ -109,7 +109,18 @@ namespace Assets.Scripts
         public void GoToNextDestination(int riskiness)
         {
             List<MapNode> possibleNodeDestinations = (Current == null) ? StartingDestinations : Current.Destinations;
-            Current = possibleNodeDestinations[riskiness];
+            if (riskiness >= 0)
+            {
+                Current = possibleNodeDestinations[riskiness];
+            }
+            else
+            {
+                int possibleDestinationsCount = possibleNodeDestinations.
+                                                Where(node => node != null).Count();
+
+                int fate = Random.Range(0, possibleDestinationsCount);
+                Current = possibleNodeDestinations.Where(node => node != null).ToArray()[fate];
+            }
         }
 
         public IEnumerable<EventEnum> GetRiskinessEvents(int riskiness)

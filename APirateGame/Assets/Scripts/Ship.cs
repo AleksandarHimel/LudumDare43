@@ -31,6 +31,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         }
 
         crew.CurrentShipPart = part;
+        GameManager.Instance.UiController.UpdateChoices(GameManager.Instance.MapManager.GetPossibleDestinations());
     }
 
     // Use this for initialization
@@ -118,17 +119,17 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             component.Init(crewMemberConfig.PirateName);
             component.Ship = this;
             
-            bool fAssigned = false;
-            while (!fAssigned)
-            {
-                try
-                {
-                    component.CurrentShipPart = GetRandomLiveShipPart();
-                    AssignCrewMember(component, component.CurrentShipPart);
-                    fAssigned = true;
-                }
-                catch { }
-            }
+            //bool fAssigned = false;
+            //while (!fAssigned)
+            //{
+            //    try
+            //    {
+            //        component.CurrentShipPart = GetRandomLiveShipPart();
+            //        AssignCrewMember(component, component.CurrentShipPart);
+            //        fAssigned = true;
+            //    }
+            //    catch { }
+            //}
 
             CrewMembers.Add(component);
         }
@@ -231,7 +232,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             .Select(attribute => attribute.AttributeValue)
             .Sum();
 
-        boatSpeed += (int)Math.Floor(rowingSpeedIncrement);
+        boatSpeed += (int)Math.Floor(rowingSpeedIncrement+GetScoutingBonus());
 
         return boatSpeed;
     }
@@ -254,6 +255,17 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         {
             SelectedCrewMember.MoveTo(eventData.pointerCurrentRaycast.worldPosition);
         }
+    }
+
+    public double GetScoutingBonus()
+    {
+        return CrewMembers
+            .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
+            // TODO: milast check if scouting is ok
+            .Select(crewMember => crewMember.GetAttribute("Scouting"))
+            .Where(attribute => attribute != null)
+            .Select(attribute => attribute.AttributeValue)
+            .Sum();
     }
 
     public ShipPart GetRandomLiveShipPart()
