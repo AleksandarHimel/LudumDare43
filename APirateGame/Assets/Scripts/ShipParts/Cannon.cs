@@ -7,8 +7,9 @@ public class Cannon : ShipPart
     public Cannon(Ship parentShip) : base(parentShip) { }
 
     // Use this for initialization
-    public override void InitShipPart()
+    public override void InitShipPart(Ship ship)
     {
+        ParentShip = ship;
         // Assign texture
         spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Cannon");
 
