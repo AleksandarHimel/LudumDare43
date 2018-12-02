@@ -99,9 +99,6 @@ namespace Assets.Scripts
         public MapNode GetCurrentNode()
         { return Current; }
 
-        private void SetCurrentNode(MapNode next)
-        { Current = next; }
-
         public IEnumerable<MapNodeInformation> GetPossibleDestinations()
         {
             IEnumerable<MapNode> possibleNodeDestinations = (Current == null) ? StartingDestinations : Current.Destinations.Where(node => node != null);
