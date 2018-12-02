@@ -81,7 +81,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
-            Debug.Log("INITALIZING SHIP");
             shipPart.InitShipPart(this);
         }
 
@@ -97,6 +96,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
             crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
+            crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
@@ -244,7 +244,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         int defaultFoodConsumption = CalculateDefaultFoodConsumption();
         int boatSpeed = CalculateBoatSpeed();
 
-        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100));
+        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100.0));
     }
 
     public void OnPointerClick(PointerEventData eventData)
