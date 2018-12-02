@@ -3,6 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity;
 
 namespace Assets.Scripts
 {
@@ -35,14 +36,8 @@ namespace Assets.Scripts
 
         public static GameConfig Instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new GameConfig();
-                }
-
-                return _instance;
+            get {
+                return FindObjectOfType<GameConfig>();
             }
         }
 

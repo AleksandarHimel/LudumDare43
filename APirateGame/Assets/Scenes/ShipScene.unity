@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -173,7 +173,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &170076733
 GameObject:
@@ -423,7 +423,7 @@ RectTransform:
   - {fileID: 1394088888}
   - {fileID: 873090269}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -581,7 +581,7 @@ Transform:
   m_Children:
   - {fileID: 2136430661}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1341390717
 MonoBehaviour:
@@ -857,6 +857,7 @@ MonoBehaviour:
   InputController: {fileID: 1507152519}
   UiController: {fileID: 1507152522}
   AudioController: {fileID: 0}
+  GameConfig: {fileID: 0}
   GameState: {fileID: 0}
   ShipInventory: {fileID: 0}
 --- !u!4 &1507152521
@@ -870,7 +871,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1507152522
 MonoBehaviour:
@@ -928,6 +929,8 @@ MonoBehaviour:
   MaxiumumPirateCrewMemberDamageInflicted: 100
   MinimumPirateFoodStolen: 0
   MaximumPirateFoodStolen: 100
+  InitialFoodCount: 100
+  InitialWoodCount: 100
 --- !u!1 &1698621967
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,7 +1154,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2136430660
 GameObject:
