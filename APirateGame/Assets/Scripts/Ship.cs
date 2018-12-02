@@ -19,6 +19,11 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
     {
+        if (crew.CurrentShipPart == part)
+        {
+            return;
+        }
+
         if (part.MaxNumberOfCrewMembers == part.PresentCrewMembers.Count())
         {
             throw new Exception("Ship part is full!");
