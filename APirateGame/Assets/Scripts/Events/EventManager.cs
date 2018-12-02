@@ -15,9 +15,15 @@ namespace Assets.Events
             switch (eventEnum)
             {
                 case EventEnum.PIRATES_ATTACK:
-                    return null;
+                    return new PirateAttackEvent();
                 case EventEnum.SHALLOW_WATER:
                     return new ShallowWaterEvent();
+                case EventEnum.RESTLESS_WATERS:
+                    return new RestlessWaterEvent();
+                case EventEnum.SPREAD_THE_PLAGUE:
+                    return new SpreadThePlagueEvent();
+                case EventEnum.WALK_THE_PLANK:
+                    return new WalkThePlankEvent();
                 default:
                     return null;
             }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Events
 {
-    public class SpreadThePlague : ShipEvent
+    public class SpreadThePlagueEvent : ShipEvent
     {
         public override void ExecuteEventInternal(Ship ship)
         {
