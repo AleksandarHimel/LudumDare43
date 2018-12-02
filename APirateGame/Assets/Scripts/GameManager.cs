@@ -87,6 +87,7 @@ namespace Assets.Scripts
             UiController.Points.text = string.Format("Points: {0}", Points);
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
+            InputController.AcceptEventResult.onClick.AddListener(ProcessUserAcceptedEventResult);
 
             // AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
             // AssetDatabase.SaveAssets();
@@ -117,7 +118,6 @@ namespace Assets.Scripts
             UiController.PathChoice.gameObject.SetActive(false);
 
             Ship.ProcessMoveEnd();
-           
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
@@ -143,19 +143,31 @@ namespace Assets.Scripts
                     GameOver();
                     return;
                 }
-                
+
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
                 UiController.UpdateChoices(MapManager.GetPossibleDestinations());
 
                 // Execute Sfx
-                
-                // Show user info message
 
-                // todo Wait for user to confirm
-                // GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
-                GameState.State = GameState.EGameState.BringTheDawn;
+                // Show user info message
+                ComposedEvent composedEvent = gameplayEvent as ComposedEvent;
+                ShipEvent shipEvent = composedEvent.EventsOfInterest.FirstOrDefault() as ShipEvent;
+
+
+                if (shipEvent != null)
+                {
+                    UiController.EventCanvas.SetActive(true);
+                    UiController.StageText.text = shipEvent.eventDescription();
+                    GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
+                }
+                else
+                {
+                    GameState.State = GameState.EGameState.BringTheDawn;
+                }
+
+                Debug.Log("NEVER HAVE I EVER");
             }
             if (GameState.State == GameState.EGameState.BringTheDawn)
             { 
@@ -197,7 +209,6 @@ namespace Assets.Scripts
             UiController.VictoryText.gameObject.SetActive(true);
         }
 
-
         public void ProcessUserTurnStart()
         {
             // Fade out background music
@@ -206,6 +217,12 @@ namespace Assets.Scripts
             // Enable next button and path chooser
             InputController.MoveEndButton.gameObject.SetActive(true);
             UiController.PathChoice.gameObject.SetActive(true);
+        }
+
+        public void ProcessUserAcceptedEventResult()
+        {
+            UiController.EventCanvas.SetActive(false);
+            GameState.State = GameState.EGameState.BringTheDawn;
         }
 
 

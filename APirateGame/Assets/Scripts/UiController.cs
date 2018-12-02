@@ -16,8 +16,12 @@ public class UiController : MonoBehaviour
     public Text Points;
     public Text GameOverText;
     public Text VictoryText;
+    public Text StageText;
     public Dropdown PathChoice;
     Dropdown.DropdownEvent ChoiceChangedEvent;
+    public Text EventInfo;
+    public GameObject EventCanvas;
+
     // Maps option choice to riskiness
     public Dictionary<string, int> OptionsDictionary = new Dictionary<string, int>();
 

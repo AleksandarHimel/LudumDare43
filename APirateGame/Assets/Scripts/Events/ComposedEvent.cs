@@ -5,16 +5,16 @@ namespace Assets.Events
 {
     public class ComposedEvent : IEvent
     {
-        private IList<IEvent> eventsOfInterest;
+        public IList<IEvent> EventsOfInterest;
 
         public ComposedEvent()
         {
-            eventsOfInterest = new List<IEvent>();
+            EventsOfInterest = new List<IEvent>();
         }
 
         public ComposedEvent AddEvent(EventEnum eventEnum)
         {
-            eventsOfInterest.Add(
+            EventsOfInterest.Add(
                 EventManager.Instance.GenerateEvent(eventEnum)
             );
 
@@ -23,7 +23,7 @@ namespace Assets.Events
 
         public void Execute(MonoBehaviour behaviouralObject)
         {
-            foreach (var eventOfInterest in eventsOfInterest)
+            foreach (var eventOfInterest in EventsOfInterest)
             {
                 eventOfInterest.Execute(behaviouralObject);
             }
