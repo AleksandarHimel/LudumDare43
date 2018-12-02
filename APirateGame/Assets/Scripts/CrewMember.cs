@@ -23,8 +23,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
     {
         var sprite = GetComponent<SpriteRenderer>();
 
-        var color = CrewMemberColors[new System.Random().Next(3)];
-        Debug.Log(color);
+        var random = new System.Random(System.DateTime.Now.Millisecond);
+        var color = CrewMemberColors[random.Next(3)];
         sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
 
         Health = 10;
