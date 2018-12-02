@@ -8,12 +8,19 @@ using UnityEngine.EventSystems;
 
 public class Ship : MonoBehaviour, IPointerClickHandler
 {
+    public int InitialShipSpeed;
+
+
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
 
     public ShipInventory Inventory { get; set; }
 
     public double PlagueSpreadingProbability = 0.3;
+
+    public int PlagueResourceConsumptionIncrement = 30;
+
+    public int RowingActionFoodConsumptionIncrement = 30;
 
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
@@ -149,9 +156,56 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    void TryApplyPlague(CrewMember crewMember)
+    /// <summary>
+    /// Default food consumption is food consumption when boat is going only by wind
+    /// </summary>
+    /// <returns></returns>
+    public int CalculateDefaultFoodConsumption()
     {
+        int foodConsumption = 0;
+        
+        // Default food consumption
+        foodConsumption = foodConsumption + CrewMembers.Select(crewMember => crewMember.ResourceConsumption).Sum();
 
+        // People under plague eat more food
+        foodConsumption = foodConsumption + 
+            CrewMembers.Where(crewMember => crewMember.IsUnderPlague).Count() * PlagueResourceConsumptionIncrement;
+
+        // People that and are rowing in are in engine room eat more food
+        foodConsumption = foodConsumption +
+            CrewMembers.Where(crewMember => crewMember.CurrentShipPart is EngineRoom).Count() * RowingActionFoodConsumptionIncrement;
+
+        return foodConsumption;
+    }
+
+    public int CalculateBoatSpeed()
+    {
+        int boatSpeed = InitialShipSpeed;
+
+        // ShipParts slows us down
+        int shipPartsWeight = ShipParts
+            .Select(shipPart => shipPart.Weight).Sum();
+
+        boatSpeed -= shipPartsWeight;
+
+        double rowingSpeedIncrement =
+            CrewMembers
+            .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
+            // TODO: v-milast check if rowing is valid
+            .Select(crewMember => crewMember.GetAttribute("Rowing").AttributeValue)
+            .Sum();
+
+        boatSpeed += (int)Math.Floor(rowingSpeedIncrement);
+
+        return boatSpeed;
+    }
+
+    public uint CalculateFoodConsumptionBetweenTwoPoints()
+    {
+        int defaultFoodConsumption = CalculateDefaultFoodConsumption();
+        int boatSpeed = CalculateBoatSpeed();
+
+        return (uint)Math.Floor(1.0 * boatSpeed / 100 * defaultFoodConsumption);
     }
 
     public void OnPointerClick(PointerEventData eventData)

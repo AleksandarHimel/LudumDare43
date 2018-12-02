@@ -15,6 +15,7 @@ public class Cannon : ShipPart
         MaxNumberOfCrewMembers = 1;
         MaxHealth = 2;
         Health = MaxHealth;
+        Weight = 10;
 	}
 
 	// Update is called once per frame
@@ -23,7 +24,7 @@ public class Cannon : ShipPart
 
 	}
 
-    public override bool isOnBottom()
+    public override bool IsOnBottom()
     {
         return false;
     }
