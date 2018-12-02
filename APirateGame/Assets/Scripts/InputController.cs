@@ -14,9 +14,10 @@ public class InputController : MonoBehaviour
     public Vector3 InWorldMousePosition;
 
     public Button MoveEndButton;
+    public Button AcceptEventResult;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
     }
 	

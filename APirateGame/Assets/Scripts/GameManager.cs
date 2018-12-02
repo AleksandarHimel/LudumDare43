@@ -87,6 +87,7 @@ namespace Assets.Scripts
             UiController.Points.text = string.Format("Points: {0}", Points);
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
+            InputController.AcceptEventResult.onClick.AddListener(ProcessUserAcceptedEventResult);
 
             // AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
             // AssetDatabase.SaveAssets();
@@ -117,7 +118,6 @@ namespace Assets.Scripts
             UiController.PathChoice.gameObject.SetActive(false);
 
             Ship.ProcessMoveEnd();
-           
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
@@ -150,12 +150,10 @@ namespace Assets.Scripts
                 UiController.UpdateChoices(MapManager.GetPossibleDestinations());
 
                 // Execute Sfx
-                
-                // Show user info message
 
-                // todo Wait for user to confirm
-                // GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
-                GameState.State = GameState.EGameState.BringTheDawn;
+                // Show user info message
+                UiController.EventCanvas.SetActive(true);
+                GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
             }
             if (GameState.State == GameState.EGameState.BringTheDawn)
             { 
@@ -197,7 +195,6 @@ namespace Assets.Scripts
             UiController.VictoryText.gameObject.SetActive(true);
         }
 
-
         public void ProcessUserTurnStart()
         {
             // Fade out background music
@@ -206,6 +203,12 @@ namespace Assets.Scripts
             // Enable next button and path chooser
             InputController.MoveEndButton.gameObject.SetActive(true);
             UiController.PathChoice.gameObject.SetActive(true);
+        }
+
+        public void ProcessUserAcceptedEventResult()
+        {
+            UiController.EventCanvas.SetActive(false);
+            GameState.State = GameState.EGameState.BringTheDawn;
         }
 
 
