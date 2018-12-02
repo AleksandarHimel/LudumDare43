@@ -9,8 +9,7 @@ using UnityEngine.EventSystems;
 
 public class Ship : MonoBehaviour, IPointerClickHandler
 {
-    public int InitialShipSpeed;
-
+    
 
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
@@ -18,11 +17,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public ShipInventory Inventory { get; set; }
 
-    public double PlagueSpreadingProbability = 0.3;
-
-    public int PlagueResourceConsumptionIncrement = 30;
-
-    public int RowingActionFoodConsumptionIncrement = 30;
 
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
@@ -39,7 +33,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 	void Start ()
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
-        Inventory.InitialiseResources(100, 100);
+        Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
 
         // Instantiate some type of ship 4 example:
         // For each ship type there should be specific game object...
@@ -154,9 +148,9 @@ public class Ship : MonoBehaviour, IPointerClickHandler
                 {
                     if (!crewMember.IsUnderPlague)
                     {
-                        if (UnityEngine.Random.Range(0, 1) > PlagueSpreadingProbability)
+                        if (UnityEngine.Random.Range(0, 1) > GameConfig.Instance.PlagueSpreadingProbability)
                         {
-                            EventManager.Instance.ExecuteEvent(EventEnum.PLAGUE, crewMember);
+                            crewMember.PlagueThisGuy();
                         }
                     }
                 }
@@ -177,18 +171,18 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         // People under plague eat more food
         foodConsumption = foodConsumption + 
-            CrewMembers.Where(crewMember => crewMember.IsUnderPlague).Count() * PlagueResourceConsumptionIncrement;
+            CrewMembers.Where(crewMember => crewMember.IsUnderPlague).Count() * GameConfig.Instance.PlagueResourceConsumptionIncrement;
 
         // People that and are rowing in are in engine room eat more food
         foodConsumption = foodConsumption +
-            CrewMembers.Where(crewMember => crewMember.CurrentShipPart is EngineRoom).Count() * RowingActionFoodConsumptionIncrement;
+            CrewMembers.Where(crewMember => crewMember.CurrentShipPart is EngineRoom).Count() * GameConfig.Instance.RowingActionFoodConsumptionIncrement;
 
         return foodConsumption;
     }
 
     public int CalculateBoatSpeed()
     {
-        int boatSpeed = InitialShipSpeed;
+        int boatSpeed = GameConfig.Instance.InitialShipSpeed;
 
         // ShipParts slows us down
         int shipPartsWeight = ShipParts

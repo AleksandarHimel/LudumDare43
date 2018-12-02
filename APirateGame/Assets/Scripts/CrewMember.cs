@@ -63,6 +63,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
 
         return retValue;
     }
+
+    public void PlagueThisGuy()
+    {        
+        IsUnderPlague = true;  
+    }
     
     public void OnPointerClick(PointerEventData eventData)
     {
