@@ -95,9 +95,6 @@ namespace Assets.Scripts
             Ship.ProcessMoveEnd();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
 
-            while (!Input.anyKey)
-            { }
-
             SetIsUserTurn(false);
         }
 
