@@ -13,6 +13,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
+    public List<CrewMember> DeceasedCrewMembers { get; private set; }
 
     public ShipInventory Inventory { get; set; }
 
@@ -49,19 +50,24 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         engineRoomGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var hullGO = new GameObject("ShipPart/Hull");
-        engineRoomGO.transform.parent = gameObject.transform;
+        hullGO.transform.parent = gameObject.transform;
         hullGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var kitchenGO = new GameObject("ShipPart/Kitchen");
-        engineRoomGO.transform.parent = gameObject.transform;
+        kitchenGO.transform.parent = gameObject.transform;
         kitchenGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+
+        var sailsGO = new GameObject("ShipPart/Sails");
+        sailsGO.transform.parent = gameObject.transform;
+        sailsGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         ShipParts = new List<ShipPart>
         {
             cannonGO.AddComponent<Cannon>(),
             engineRoomGO.AddComponent<EngineRoom>(),
             hullGO.AddComponent<Hull>(),
-            kitchenGO.AddComponent<Kitchen>()
+            kitchenGO.AddComponent<Kitchen>(),
+            sailsGO.AddComponent<Sails>()
         };
 
         CrewMembers = new List<CrewMember>();
