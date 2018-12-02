@@ -13,14 +13,16 @@ namespace Assets.Events
             {
                 if (shipPart.IsOnBottom())
                 {
-                    shipPart.TakeDamage((uint)getRandNum(GameConfig.Instance.MinShallowWaterShipPartDamage, GameConfig.Instance.MaxShallowWaterShipPartDamage));
+                    uint damage = (uint)getRandNum(GameConfig.Instance.MinShallowWaterShipPartDamage, GameConfig.Instance.MaxShallowWaterShipPartDamage);
+                    shipPart.TakeDamage(damage);
+                    FullEventDetailsMessage += String.Format("Damned be the shallow seas! {0} took {1} damage \n", shipPart.name, damage);
                 }
             }            
         }
 
         public override string eventDescription()
         {
-            return "Avast ye! We be hittin' shallower waters!";
+            return "Avast ye! We be hittin' shallower waters! \n";
         }
     }
 }

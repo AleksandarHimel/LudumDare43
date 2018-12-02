@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Events
@@ -21,12 +22,33 @@ namespace Assets.Events
             return this;
         }
 
+        public string eventDescription()
+        {
+            string FullEventDescription = String.Empty;
+            foreach (var eventOfInterest in EventsOfInterest)
+            {
+                if (!eventOfInterest.GetFullEventDetailsMessage().Equals(String.Empty))
+                    FullEventDescription += eventOfInterest.eventDescription();
+            }
+            return FullEventDescription;
+        }
+
         public void Execute(MonoBehaviour behaviouralObject)
         {
             foreach (var eventOfInterest in EventsOfInterest)
             {
                 eventOfInterest.Execute(behaviouralObject);
             }
+        }
+
+        public string GetFullEventDetailsMessage()
+        {
+            string FullEventDetailsMessage = String.Empty;
+            foreach (var eventOfInterest in EventsOfInterest)
+            {
+                FullEventDetailsMessage += eventOfInterest.GetFullEventDetailsMessage();
+            }
+            return FullEventDetailsMessage;
         }
     }
 }

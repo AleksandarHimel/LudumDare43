@@ -155,7 +155,6 @@ namespace Assets.Scripts
                 ComposedEvent composedEvent = gameplayEvent as ComposedEvent;
                 ShipEvent shipEvent = composedEvent.EventsOfInterest.FirstOrDefault() as ShipEvent;
 
-
                 if (shipEvent != null)
                 {
                     UiController.EventCanvas.SetActive(true);
