@@ -13,6 +13,7 @@ public class UiController : MonoBehaviour
 {
     public Text ResourcesTextBox;
     public Text SelectedItemDetailsTextBox;
+    public Text StatusBar;
     public Text Points;
     public Text GameOverText;
     public Text VictoryText;
@@ -55,9 +56,10 @@ public class UiController : MonoBehaviour
 
         Debug.Log(text);
         SelectedItemDetailsTextBox.text = text;
+        StatusBar.text = "";
     }
 
-    internal void OnShipPartSelected(ShipPart shipPart)
+    public void OnShipPartSelected(ShipPart shipPart)
     {
         string text = string.Format("Name: {0}\nHealth: {1}/{2}", shipPart.name, shipPart.Health, shipPart.MaxHealth);
 
@@ -71,6 +73,14 @@ public class UiController : MonoBehaviour
         }
 
         SelectedItemDetailsTextBox.text = text;
+        StatusBar.text = "";
+    }
+
+    public void OnFailedLocationChange(CrewMember crewMember, ShipPart shipPart)
+    {
+        StatusBar.color = Color.red;
+        StatusBar.text = string.Format("Can't move {0} to {1}, it is {2}", crewMember.PirateName, shipPart.name,
+            (shipPart.IsDestroyed ? "destroyed" : "full"));
     }
 
     public void OnChoiceChanged(int x)
@@ -121,5 +131,6 @@ public class UiController : MonoBehaviour
     public void OnShipSelected()
     {
         SelectedItemDetailsTextBox.text = "That's a pretty cool ship";
+        StatusBar.text = "";
     }
 }
