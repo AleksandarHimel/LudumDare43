@@ -69,9 +69,10 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         sailsGO.transform.parent = gameObject.transform;
         sailsGO.transform.localPosition = new Vector3(4, 2, shipPartZ);
 
-        var crowsNestGO = new GameObject("ShipPart/CrowsNest");
+        var crowsNestGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
+        crowsNestGO.name = "ShipPart/CrowsNest";
         crowsNestGO.transform.parent = gameObject.transform;
-        crowsNestGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+        crowsNestGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), shipPartZ);
 
         ShipParts = new List<ShipPart>
         {
