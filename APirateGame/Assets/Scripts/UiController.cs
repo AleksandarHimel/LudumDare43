@@ -14,6 +14,8 @@ public class UiController : MonoBehaviour
     public Text ResourcesTextBox;
     public Text SelectedItemDetailsTextBox;
     public Text Points;
+    public Text GameOverText;
+    public Text VictoryText;
     public Dropdown PathChoice;
     Dropdown.DropdownEvent ChoiceChangedEvent;
     // Maps option choice to riskiness

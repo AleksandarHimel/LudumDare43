@@ -95,7 +95,7 @@ namespace Assets.Scripts
 	
         public void SetIsUserTurn(bool newValue)
         {
-            if (GameState.State == GameState.EGameState.PlayerTurn || GameState.State == GameState.EGameState.ComputerTurn)
+            if (!(GameState.State == GameState.EGameState.Victory && GameState.State == GameState.EGameState.GameOver))
             {
                 GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
 
@@ -123,13 +123,27 @@ namespace Assets.Scripts
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
                 MapManager.GoToNextDestination(DesiredRiskiness);
+                Points += MapManager.Instance.GetCurrentNode().Riskiness + 1;
+
+                if (Points >= 100)
+                {
+                    Victory();
+                    return;
+                }
+
+                if (Ship.Inventory.Food == 0)
+                {
+                    GameOver();
+                    return;
+                }
+                
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
                 UiController.UpdateChoices(MapManager.GetPossibleDestinations());
 
                 // Execute Sfx
-
+                
                 // Show user info message
 
                 // todo Wait for user to confirm
@@ -164,11 +178,17 @@ namespace Assets.Scripts
         public void GameOver()
         {
             GameState.State = GameState.EGameState.GameOver;
+            InputController.MoveEndButton.gameObject.SetActive(false);
+            UiController.PathChoice.gameObject.SetActive(false);
+            UiController.GameOverText.gameObject.SetActive(true);
         }
 
         public void Victory()
         {
             GameState.State = GameState.EGameState.Victory;
+            InputController.MoveEndButton.gameObject.SetActive(false);
+            UiController.PathChoice.gameObject.SetActive(false);
+            UiController.VictoryText.gameObject.SetActive(true);
         }
 
 
