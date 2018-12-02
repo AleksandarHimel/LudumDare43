@@ -84,22 +84,31 @@ public class UiController : MonoBehaviour
         OptionsDictionary.Clear();
 
         List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
-
-        foreach (MapNodeInformation nodeInfo in nodesInformation)
+        if (GameManager.Instance.Ship.GetScoutingBonus() > 0)
         {
-            string optionText = string.Format("{0} pts: {1}",
-                  nodeInfo.Riskiness + 1,
-                  String.Join(" or ",
-                  nodeInfo
-                    .PossibleEncounter
-                    .Select(possibleEncounter => EventManager.Instance.GetEventDescription(possibleEncounter)).ToArray())
-                );
-            Debug.Log(optionText);
-            Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
+            foreach (MapNodeInformation nodeInfo in nodesInformation)
+            {
+                string optionText = string.Format("{0} pts: {1}",
+                      nodeInfo.Riskiness + 1,
+                      String.Join(" or ",
+                      nodeInfo
+                        .PossibleEncounter
+                        .Select(possibleEncounter => EventManager.Instance.GetEventDescription(possibleEncounter)).ToArray())
+                    );
+                Debug.Log(optionText);
+                Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
 
-            OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
-            options.Add(optionData);
+                OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
+                options.Add(optionData);
+            }
         }
+        else
+        {
+            string optionText = "We cannot see where we are heading! We might end up anywhere!";
+            Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
+            OptionsDictionary[optionText] = -1;
+            options.Add(optionData);
+        }   
 
         PathChoice.AddOptions(options);
     }
