@@ -17,7 +17,7 @@ namespace Assets.Scripts
 
         public int RowingActionFoodConsumptionIncrement = 30;
 
-        public uint InitialFoodCount = 100;
+        public uint InitialFoodCount = 1500;
         public uint InitialWoodCount = 100;
 
         public int ChanceForShallowWaters = 10;
