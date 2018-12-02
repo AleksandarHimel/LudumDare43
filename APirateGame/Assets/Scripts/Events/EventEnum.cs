@@ -6,16 +6,11 @@ namespace Assets.Events
     {
         SHALLOW_WATER = 0,
         MAX_FIRST_TIER = 0,
-        PLAGUE = 1,
+        RESTLESS_WATERS = 1,
         MAX_SECOND_TIER = 1,
         PIRATES_ATTACK = 2,
         MAX_THIRD_TIER = 2,
-        DESTROY_CANNON,
-        DESTROY_OBJECT,
-        GAME_OVER,
-        HARM_SHIP_PART,
-        HARM_CREW_MEMBER,
-        REDUCE_RESOURCES,
+        SPREAD_THE_PLAGUE,
         EVENT_MAX
     }
 }

@@ -17,12 +17,13 @@ namespace Assets.Events
             {
                 shipPart.TakeDamage(PirateAttackDamageOnShipParts);
             }
+
             foreach (CrewMember crewMember in shipObject.CrewMembers)
             {
                 crewMember.ReduceHealth(PirateAttackDamageOnCrewMembers);
             }
 
-            EventManager.Instance.RaiseReduceResourcesEvent(shipObject, PirateAttackFoodLooted, PirateAttackWoodLooted);
+            shipObject.Inventory.ReduceResources(PirateAttackFoodLooted, 0);
         }
     }
 }

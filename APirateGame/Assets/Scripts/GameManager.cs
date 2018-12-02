@@ -8,6 +8,15 @@ namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour {
 
+
+        public int InitialShipSpeed;
+
+        public double PlagueSpreadingProbability = 0.3;
+
+        public int PlagueResourceConsumptionIncrement = 30;
+
+        public int RowingActionFoodConsumptionIncrement = 30;
+
         public Ship Ship;
         public EventManager EventManager;
         public PlayerController PlayerController;
