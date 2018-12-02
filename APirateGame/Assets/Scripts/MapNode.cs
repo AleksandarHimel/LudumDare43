@@ -7,15 +7,20 @@ public class MapNode
 {
     public IEvent NodeEvent { get; set; }
 
+    public int Riskiness;
+
     public MapNode() {}
 
-    public MapNode(int numOfPaths)
+
+    public MapNode(int numOfPaths, int riskiness)
     {
         Destinations = new List<MapNode>(numOfPaths);
         for (int i = 0; i < numOfPaths; i++)
         {
             Destinations.Add(new MapNode());
         }
+
+        Riskiness = riskiness;
     }
 
     public List <MapNode> Destinations;

@@ -32,7 +32,6 @@ namespace Assets.Scripts
 
         public uint InitialWoodCount = 100;
 
-
         public static GameConfig Instance
         {
             get
