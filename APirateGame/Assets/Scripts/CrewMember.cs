@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IDragHandler {
+public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler {
 
     public ShipPart CurrentShipPart;
     public int Health;
@@ -110,6 +110,46 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
+
+        foreach (ShipPart sp in Ship.ShipParts)
+        {
+            var collider = sp.gameObject.GetComponent<BoxCollider2D>();
+
+            var minX = sp.gameObject.transform.position.x - collider.size.x / 2;
+            var minY = sp.gameObject.transform.position.y - collider.size.y / 2;
+            var maxX = minX + collider.size.x;
+            var maxY = minY + collider.size.y;
+
+            var worldPoint = Camera.main.ScreenToWorldPoint(
+                new Vector3(eventData.position.x, eventData.position.y, gameObject.transform.position.z - Camera.main.transform.position.z));
+            
+            Debug.Log(sp.name + " " + minX + " " + maxX + " " + minY + " " + maxY + "(current: " + worldPoint.x + "," + worldPoint.y + ")");
+
+            if (minX <= worldPoint.x && worldPoint.x <= maxX && minY <= worldPoint.y && worldPoint.y <= maxY)
+            {
+                try
+                {
+                    Ship.AssignCrewMember(this, sp);
+
+                    Debug.Log("Assigned " + this.name + " to " + sp.name);
+                    dragPositionStart = null;
+
+                    return;
+                }
+                catch (Exception)
+                {
+                    Debug.Log("Could not assign " + this.name + " to " + sp.name);
+                    MoveTo(dragPositionStart.Value);
+                    dragPositionStart = null;
+
+                    return;
+                }
+            }
+        }
+
+        Debug.Log(this.name + " moved to nowhere - returning to " + this.CurrentShipPart.name);
+
+        MoveTo(dragPositionStart.Value);
         dragPositionStart = null;
     }
     
@@ -142,17 +182,17 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter(Collider other)
     {
-        Debug.Log(this.gameObject.name + " collided with " + collision.gameObject.name);
+        Debug.Log(this.gameObject.name + " collided with " + other.gameObject.name);
 
-        if (collision.gameObject.GetComponent<ShipPart>() != null)
+        if (other.gameObject.GetComponent<ShipPart>() != null)
         {
-            Debug.Log(this.gameObject.name + " trying to enter " + collision.gameObject.name);
+            Debug.Log(this.gameObject.name + " trying to enter " + other.gameObject.name);
 
             try
             {
-                Ship.AssignCrewMember(this, collision.gameObject.GetComponent<ShipPart>());
+                Ship.AssignCrewMember(this, other.gameObject.GetComponent<ShipPart>());
             }
             catch (Exception)
             {

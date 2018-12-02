@@ -28,19 +28,20 @@ Prefab:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
+  m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1844007861930936}
-  m_IsPrefabAsset: 0
+  m_IsPrefabParent: 0
 --- !u!1 &1844007861930936
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
+  serializedVersion: 5
   m_Component:
   - component: {fileID: 4252126143274754}
   - component: {fileID: 212325816886635486}
-  - component: {fileID: 61009788320828590}
+  - component: {fileID: 50577391445999846}
+  - component: {fileID: 61672224671595634}
   m_Layer: 0
   m_Name: Pirate
   m_TagString: Untagged
@@ -51,7 +52,7 @@ GameObject:
 --- !u!4 &4252126143274754
 Transform:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1844007861930936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -64,8 +65,8 @@ Transform:
 --- !u!50 &50577391445999846
 Rigidbody2D:
   serializedVersion: 4
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1844007861930936}
   m_BodyType: 1
@@ -83,8 +84,8 @@ Rigidbody2D:
   m_Constraints: 0
 --- !u!61 &61672224671595634
 BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1844007861930936}
   m_Enabled: 1
@@ -109,7 +110,7 @@ BoxCollider2D:
 --- !u!212 &212325816886635486
 SpriteRenderer:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1844007861930936}
   m_Enabled: 1
@@ -151,4 +152,3 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0

@@ -16,6 +16,8 @@ public class Sails : ShipPart
         MaxHealth = 2;
         Health = MaxHealth;
         Weight = GameConfig.Instance.SailsWeight;
+
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Sails");
     }
 
     // Update is called once per frame
