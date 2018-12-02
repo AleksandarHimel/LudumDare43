@@ -37,3 +37,8 @@ sysinfo.txt
 
 # custom
 .cs.meta
+/APirateGame/UnityPlayer.dll
+/APirateGame/UnityCrashHandler64.exe
+/APirateGame/Mono
+/APirateGame/APirateGame_Data
+/APirateGame/APirateGame.exe
