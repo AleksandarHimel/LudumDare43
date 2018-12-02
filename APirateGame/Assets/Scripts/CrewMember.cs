@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CrewMember : MonoBehaviour {
+public class CrewMember : MonoBehaviour, IPointerClickHandler {
 
     public ShipPart CurrentShipPart;
     public int Health;
@@ -25,8 +26,8 @@ public class CrewMember : MonoBehaviour {
     {
         var sprite = GetComponent<SpriteRenderer>();
 
-        var color = CrewMemberColors[new System.Random().Next(3)];
-        Debug.Log(color);
+        var random = new System.Random(System.DateTime.Now.Millisecond);
+        var color = CrewMemberColors[random.Next(3)];
         sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
 
         Health = 10;
@@ -46,5 +47,10 @@ public class CrewMember : MonoBehaviour {
         attributes.TryGetValue(attributeName, out retValue);
 
         return retValue;
+    }
+    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log(name + " Game Object Clicked!");
     }
 }

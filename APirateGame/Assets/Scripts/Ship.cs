@@ -33,15 +33,19 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // For each ship type there should be specific game object...
         var cannonGO = new GameObject("ShipPart/Cannon");
         cannonGO.transform.parent = gameObject.transform;
+        cannonGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var engineRoomGO = new GameObject("ShipPart/EngineRoom");
         engineRoomGO.transform.parent = gameObject.transform;
+        engineRoomGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var hullGO = new GameObject("ShipPart/Hull");
         engineRoomGO.transform.parent = gameObject.transform;
+        hullGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var kitchenGO = new GameObject("ShipPart/Kitchen");
         engineRoomGO.transform.parent = gameObject.transform;
+        kitchenGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         ShipParts = new List<ShipPart>
         {
@@ -55,13 +59,13 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
-            // Create position
-            var transform = this.transform;
-            transform.position = new Vector3(transform.position.x + UnityEngine.Random.Range(-0.3f, 0.3f), transform.position.y, transform.position.z);
-
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
             crewMemberGO.name = "CrewMembers /PlayerCharacter-" + Guid.NewGuid();
+
+            // TODO: read positions of crew members relative to boat
+            UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
+            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
