@@ -105,6 +105,9 @@ namespace Assets.Scripts
         public IEnumerable<MapNodeInformation> GetPossibleDestinations()
         {
             IEnumerable<MapNode> possibleNodeDestinations = (Current == null) ? StartingDestinations : Current.Destinations.Where(node => node != null);
+
+            Debug.Log("ASD" + possibleNodeDestinations.Count());
+
             return possibleNodeDestinations.Select(node => new MapNodeInformation(GetRiskinessEvents(node.Riskiness), node.Riskiness));
         }
 

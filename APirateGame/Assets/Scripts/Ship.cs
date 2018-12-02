@@ -70,6 +70,9 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
+            Debug.Log("INITALIZING SHIP");
+            shipPart.InitShipPart(this);
+
             // Create instance of a Pirate
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
             crewMemberGO.name = "CrewMembers /PlayerCharacter-" + Guid.NewGuid();

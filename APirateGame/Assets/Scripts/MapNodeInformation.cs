@@ -14,6 +14,8 @@ namespace Assets.Scripts
 
         public MapNodeInformation(IEnumerable<EventEnum> possibleEncounters, int riskiness)
         {
+            PossibleEncounter = new List<EventEnum>();
+
             foreach (EventEnum ev in possibleEncounters)
             {
                 PossibleEncounter.Add(ev);
