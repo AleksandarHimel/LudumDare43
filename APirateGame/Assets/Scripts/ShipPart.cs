@@ -7,6 +7,8 @@ public abstract class ShipPart : MonoBehaviour {
 
     protected readonly Ship ParentShip;
 
+    protected SpriteRenderer spriteRenderer;
+
     public uint MaxNumberOfCrewMembers { get; protected set; }
 
     public uint Health { get; protected set; }
@@ -14,6 +16,8 @@ public abstract class ShipPart : MonoBehaviour {
     public bool IsDestroyed { get { return (Health == 0); } }
 
     public uint MaxHealth { get; protected set; }
+
+    public abstract void InitShipPart();
 
     public ShipPart(Ship parentShip)
     {
@@ -31,7 +35,11 @@ public abstract class ShipPart : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-		
+        spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+        // TODO: add sprite
+        //spriteRenderer.sprite = Resources.Load<Sprite>("Path");
+
+        InitShipPart();
 	}
 	
 	// Update is called once per frame

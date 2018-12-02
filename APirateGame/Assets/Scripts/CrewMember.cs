@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CrewMember : MonoBehaviour {
+public class CrewMember : MonoBehaviour, IPointerClickHandler {
 
     public ShipPart CurrentShipPart;
     public int Health;
@@ -11,8 +12,21 @@ public class CrewMember : MonoBehaviour {
 
     public Ship ship;
 
+    public static string[] CrewMemberColors =
+    {
+        "red",
+        "green",
+        "blue"
+    };
+
     void Start()
     {
+        var sprite = GetComponent<SpriteRenderer>();
+
+        var color = CrewMemberColors[new System.Random().Next(3)];
+        Debug.Log(color);
+        sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
+
         Health = 10;
         IsDead = false;
     }
@@ -22,5 +36,10 @@ public class CrewMember : MonoBehaviour {
         Health -= damage;
         if (Health <= 0)
             IsDead = true;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log(name + " Game Object Clicked!");
     }
 }

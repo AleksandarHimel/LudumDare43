@@ -12,11 +12,19 @@ namespace Assets.Events
         private uint foodToReduce;
         private uint woodToReduce;
 
-        public ReduceResourcesEvent(uint foodToReduce, uint woodToReduce)
+        public ReduceResourcesEvent(params object[] eventArgs)
         {
-            this.foodToReduce = foodToReduce;
-            this.woodToReduce = woodToReduce;
-        }
+            if (eventArgs != null)
+            {
+                this.foodToReduce = (uint)eventArgs[0];
+                this.woodToReduce = (uint)eventArgs[1];
+            }
+            else
+            {
+                this.foodToReduce = (uint) UnityEngine.Random.Range(0, 2);
+                this.woodToReduce = (uint) UnityEngine.Random.Range(0, 2);
+            }
+    }
 
         public override void ExecuteEventInternal(Ship ship)
         {

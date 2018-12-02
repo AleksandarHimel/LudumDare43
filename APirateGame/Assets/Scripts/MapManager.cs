@@ -4,97 +4,109 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Events;
 
-public class MapManager
+namespace Assets.Scripts
 {
-
-    private static int RiskDepth = 3;
-    private static int MapLength = 12;
-
-    private List<List<MapNode>> Map;
-
-    private MapNode Current;
-
-    private Random RandomGenerator;
-
-    private List<MapNode> StartingDestinations;
-
-    // Use this for initialization
-    void Start()
+    public class MapManager
     {
-        CreateMap();
-    }
+        private static MapManager _instance;
 
-    // Update is called once per frame
-    void Update()
-    {
+        private static int RiskDepth = 3;
 
-    }
+        private static int MapLength = 12;
 
-    void CreateMap()
-    {
-        Current = null;
-        Map = new List<List<MapNode>>();
+        private List<List<MapNode>> Map;
 
-        for (int i = 0; i < RiskDepth; i++)
+        private MapNode Current;
+
+        private List<MapNode> StartingDestinations;
+
+        public static MapManager Instance
         {
-            Map.Add(new List<MapNode>());
-            // Generate each path
-            for (int j = 0; j < MapLength; j++)
+            get
             {
-                Map[i].Add(new MapNode(RiskDepth));
+                if (_instance == null)
+                {
+                    _instance = new MapManager();
+                }
 
-                //(Devnote - Srki) Fix once we get eligible encounters in order.
-                Map[i][j].Encounter = GetRandomEncounter(10 * (i + 1));
+                return _instance;
             }
         }
 
-        // Link allowed paths
-        // Best code ever. Don't touch! I know you want to...
-        for (int j = 0; j < MapLength; j++)
+        MapManager()
         {
-            for (int i = 0; i < RiskDepth; i++)
+            Current = null;
+            Map = new List<List<MapNode>>();
+
+            for (int riskDepth = 0; riskDepth < (int) RiskPathEnum.MAX_RISK_PATH; riskDepth++)
             {
-                for (int k = 0; k < RiskDepth; k++)
+                Map.Add(new List<MapNode>());
+                // Generate each path
+                for (int mapPosition = 0; mapPosition < MapLength; mapPosition++)
                 {
-                    if (j + 1 >= MapLength)
+                    Map[riskDepth].Add(new MapNode(RiskDepth));
+
+                    //(Devnote - Srki) Fix once we get eligible encounters in order.
+                    Map[riskDepth][mapPosition].Encounter = GetRandomEncounter(riskDepth);
+                }
+            }
+
+            // Link allowed paths
+            // Best code ever. Don't touch! I know you want to...
+            for (int mapPosition = 0; mapPosition < MapLength; mapPosition++)
+            {
+                for (int originRiskDepth = 0; originRiskDepth < (int)RiskPathEnum.MAX_RISK_PATH; originRiskDepth++)
+                {
+                    for (int destRiskDepth = 0; destRiskDepth < (int)RiskPathEnum.MAX_RISK_PATH; destRiskDepth++)
                     {
-                        Map[i][j].Destinations[i] = null;
-                    }
-                    else if (i == k)
-                    {
-                        Map[i][j].Destinations[i] = Map[i][j + 1];
-                    }
-                    else
-                    {
-                        Map[i][j].Destinations[i] = (Random.Range(0, 1) < 1.0f / (RiskDepth)) ? Map[k][j] : null;
+                        if (mapPosition + 1 >= MapLength)
+                        {
+                            Map[originRiskDepth][mapPosition].Destinations[destRiskDepth] = null;
+                        }
+                        else if (originRiskDepth == destRiskDepth)
+                        {
+                            Map[originRiskDepth][mapPosition].Destinations[destRiskDepth] = Map[originRiskDepth][mapPosition + 1];
+                        }
+                        else
+                        {
+                            Map[originRiskDepth][mapPosition].Destinations[destRiskDepth] = (Random.Range(0.0f, 1.0f) < 1.0f / ((int)RiskPathEnum.MAX_RISK_PATH - 1.0f)) ? Map[destRiskDepth][mapPosition + 1] : null;
+                        }
                     }
                 }
             }
+
+            StartingDestinations = new List<MapNode>((int)RiskPathEnum.MAX_RISK_PATH);
+
+            for (int riskDepth = 0; riskDepth < (int)RiskPathEnum.MAX_RISK_PATH; riskDepth++)
+            {
+                StartingDestinations.Add(new MapNode());
+
+                StartingDestinations[riskDepth] = Map[0][riskDepth];
+            }
         }
 
-        StartingDestinations = new List<MapNode>(RiskDepth);
+        public MapNode GetCurrentNode()
+        { return Current; }
 
-        for (int i = 0; i < RiskDepth; i++)
+        private void SetCurrentNode(MapNode next)
+        { Current = next; }
+
+        public List<MapNode> GetPossibleDestinations()
         {
-            StartingDestinations.Add(new MapNode());
-
-            StartingDestinations[i] = Map[0][i];
+            return (Current == null) ? StartingDestinations : Current.Destinations;
         }
-    }
 
-    public MapNode GetCurrentNode()
-    { return Current;}
-
-    private void SetCurrentNode(MapNode next)
-    { Current = next;}
-
-    List<MapNode> GetPossibleDestinations()
-    {
-        return (Current == null) ? StartingDestinations : Current.Destinations;
-    }
-
-    EventEnum GetRandomEncounter(int MaxEvent)
-    {
-        return (EventEnum) Random.Range(0, (int) EventEnum.EVENT_MAX-1 );
+        EventEnum GetRandomEncounter(int riskTier)
+        {
+            switch (riskTier)
+            {
+                case 0:
+                    return (EventEnum)Random.Range(0, (int)EventEnum.MAX_FIRST_TIER);
+                case 1:
+                    return (EventEnum)Random.Range((int)EventEnum.MAX_FIRST_TIER + 1, (int)EventEnum.MAX_SECOND_TIER);
+                default:
+                    return (EventEnum)Random.Range((int)EventEnum.MAX_SECOND_TIER + 1, (int)EventEnum.MAX_THIRD_TIER);
+            }
+        }
     }
 }

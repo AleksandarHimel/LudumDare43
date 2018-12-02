@@ -31,10 +31,7 @@ namespace Assets.Events
                 case EventEnum.HARM_CREW_MEMBER:
                     return new HarmCrewMemberEvent();
                 case EventEnum.REDUCE_RESOURCES:
-                    uint foodToReduce = (uint)eventArgs[0];
-                    uint woodToReduce = (uint)eventArgs[1];
-
-                    return new ReduceResourcesEvent(foodToReduce, woodToReduce);
+                    return new ReduceResourcesEvent(eventArgs);
                 default:
                     return null;
             }

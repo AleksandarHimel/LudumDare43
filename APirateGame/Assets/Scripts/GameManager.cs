@@ -10,9 +10,13 @@ namespace Assets.Scripts
 
         public Ship Ship;
         public EventManager EventManager;
-        public GameState GameState;
         public PlayerController PlayerController;
         public InputController InputController;
+        public MapManager MapManager;
+
+        [Header("Health Settings")]
+        public GameState GameState;
+        public ShipInventory ShipInventory;
 
         // TODO: find a better home for this
         public Text ResourcesTextBox;
@@ -48,7 +52,11 @@ namespace Assets.Scripts
             // InputController = _gameManagerGameObject.AddComponent<InputController>();
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
+            MapManager = MapManager.Instance;
 
+            var shipGameObject = GameObject.Find("ShipGO");
+            Ship = shipGameObject.GetComponent<Ship>();
+            Ship.Inventory = ShipInventory;
             // var shipGameObject = new GameObject("ShipGameObject");
             // Ship = shipGameObject.AddComponent<Ship>();
 
