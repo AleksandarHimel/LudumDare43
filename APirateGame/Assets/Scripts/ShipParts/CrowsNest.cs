@@ -17,6 +17,11 @@ public class CrowsNest : ShipPart
         Weight = GameConfig.Instance.CrowsNestWeight;
     }
 
+    public bool ProvidesScoutingBonus()
+    {
+        return true;
+    }
+
     // Update is called once per frame
     void Update()
     {

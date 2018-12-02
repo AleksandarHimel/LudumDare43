@@ -61,13 +61,18 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         sailsGO.transform.parent = gameObject.transform;
         sailsGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
+        var crowsNestGO = new GameObject("ShipPart/CrowsNest");
+        crowsNestGO.transform.parent = gameObject.transform;
+        crowsNestGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+
         ShipParts = new List<ShipPart>
         {
             cannonGO.AddComponent<Cannon>(),
             engineRoomGO.AddComponent<EngineRoom>(),
             hullGO.AddComponent<Hull>(),
             kitchenGO.AddComponent<Kitchen>(),
-            sailsGO.AddComponent<Sails>()
+            sailsGO.AddComponent<Sails>(),
+            crowsNestGO.AddComponent<Sails>(),
         };
 
         foreach (ShipPart sp in ShipParts)
@@ -101,7 +106,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             // Init ship parts, name, color and ship part
             component.Init(crewMemberConfig.PirateName);
             component.Ship = this;
-/*            
+            
             bool fAssigned = false;
             while (!fAssigned)
             {
@@ -113,8 +118,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
                 }
                 catch { }
             }
-*/
-            CrewMembers.Add(component);
         }
     }
 
