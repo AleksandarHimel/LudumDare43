@@ -17,6 +17,8 @@ public abstract class ShipPart : MonoBehaviour {
 
     public uint MaxHealth { get; protected set; }
 
+    public int Weight { get; set; }
+
     public abstract void InitShipPart();
 
     public ShipPart(Ship parentShip)
@@ -53,5 +55,5 @@ public abstract class ShipPart : MonoBehaviour {
         Health -= Math.Min(damage, Health);
     }
 
-    public abstract bool isOnBottom();
+    public abstract bool IsOnBottom();
 }
