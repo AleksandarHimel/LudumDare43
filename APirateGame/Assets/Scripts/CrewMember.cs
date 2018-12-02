@@ -32,6 +32,15 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
         var color = CrewMemberColors[random.Next(3)];
         sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
 
+        Debug.Log("Start Loading attributes");
+
+        foreach(var atr in ShipConfig.GetInstance().GetAttributesForCrewMember("Jack"))
+        {
+            this.attributes.Add(atr.AttributeName, atr);
+        }
+
+        Debug.Log("Finished Loading attributes");
+
         Health = 10;
         IsDead = false;
     }
