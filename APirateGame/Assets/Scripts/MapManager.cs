@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Events;
+using System.Linq;
 
 namespace Assets.Scripts
 {
@@ -38,16 +39,26 @@ namespace Assets.Scripts
             Current = null;
             Map = new List<List<MapNode>>();
 
-            for (int riskDepth = 0; riskDepth < (int) RiskPathEnum.MAX_RISK_PATH; riskDepth++)
+            for (int riskDepth = 0; riskDepth < (int)RiskPathEnum.MAX_RISK_PATH; riskDepth++)
             {
                 Map.Add(new List<MapNode>());
                 // Generate each path
                 for (int mapPosition = 0; mapPosition < MapLength; mapPosition++)
                 {
-                    Map[riskDepth].Add(new MapNode(RiskDepth));
+                    Map[riskDepth].Add(new MapNode(RiskDepth, riskDepth));
 
-                    //(Devnote - Srki) Fix once we get eligible encounters in order.
-                    Map[riskDepth][mapPosition].Encounter = GetRandomEncounter(riskDepth);
+                    EventManager
+                        .Instance.ComposeEvent()
+                        .AddEvent(GetRandomEncounter(riskDepth))
+                        .AddEvent(EventEnum.SPREAD_THE_PLAGUE)
+                        .AddEvent(EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES);
+
+                    //(Devnote - Srki) Fix once we get eligible encounters in 
+                    Map[riskDepth][mapPosition].NodeEvent = EventManager
+                        .Instance.ComposeEvent()
+                        .AddEvent(GetRandomEncounter(riskDepth))
+                        .AddEvent(EventEnum.SPREAD_THE_PLAGUE)
+                        .AddEvent(EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES);
                 }
             }
 
@@ -91,9 +102,46 @@ namespace Assets.Scripts
         private void SetCurrentNode(MapNode next)
         { Current = next; }
 
-        public List<MapNode> GetPossibleDestinations()
+        public IEnumerable<MapNodeInformation> GetPossibleDestinations()
         {
-            return (Current == null) ? StartingDestinations : Current.Destinations;
+            IEnumerable<MapNode> possibleNodeDestinations = (Current == null) ? StartingDestinations : Current.Destinations.Where(node => node != null);
+            return possibleNodeDestinations.Select(node => new MapNodeInformation(GetRiskinessEvents(node.Riskiness), node.Riskiness));
+        }
+
+        public void GoToNextDestination(int riskiness)
+        {
+            List<MapNode> possibleNodeDestinations = (Current == null) ? StartingDestinations : Current.Destinations;
+            Current = possibleNodeDestinations[riskiness];
+        }
+
+        public IEnumerable<EventEnum> GetRiskinessEvents(int riskiness)
+        {
+            List<int> possibleEvents = new List<int>();
+
+            switch (riskiness)
+            {
+                case 0:
+                    for (int i = 0; i <= (int)EventEnum.MAX_FIRST_TIER; i++)
+                    {
+                        possibleEvents.Add(i);
+                    }
+
+                    break;
+                case 1:
+                    for (int i = (int)EventEnum.MAX_FIRST_TIER; i <= (int)EventEnum.MAX_SECOND_TIER; i++)
+                    {
+                        possibleEvents.Add(i);
+                    }
+                    break;
+                default:
+                    for (int i = (int)EventEnum.MAX_SECOND_TIER; i <= (int)EventEnum.MAX_THIRD_TIER; i++)
+                    {
+                        possibleEvents.Add(i);
+                    }
+                    break;
+            }
+
+            return possibleEvents.Select(ev => (EventEnum)ev);
         }
 
         EventEnum GetRandomEncounter(int riskTier)

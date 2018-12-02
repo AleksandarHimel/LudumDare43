@@ -1,4 +1,5 @@
 using Assets.Events;
+using Assets.Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +9,14 @@ using UnityEngine.EventSystems;
 
 public class Ship : MonoBehaviour, IPointerClickHandler
 {
-    public int InitialShipSpeed;
-
+    
 
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
+    public List<CrewMember> DeceasedCrewMembers { get; private set; }
 
     public ShipInventory Inventory { get; set; }
 
-    public double PlagueSpreadingProbability = 0.3;
-
-    public int PlagueResourceConsumptionIncrement = 30;
-
-    public int RowingActionFoodConsumptionIncrement = 30;
 
     // Assign crew member to the ship part
     public void AssignCrewMember(CrewMember crew, ShipPart part)
@@ -37,7 +33,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 	void Start ()
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
-        Inventory.InitialiseResources(100, 100);
+        Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
 
         // Instantiate some type of ship 4 example:
         // For each ship type there should be specific game object...
@@ -50,19 +46,24 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         engineRoomGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var hullGO = new GameObject("ShipPart/Hull");
-        engineRoomGO.transform.parent = gameObject.transform;
+        hullGO.transform.parent = gameObject.transform;
         hullGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         var kitchenGO = new GameObject("ShipPart/Kitchen");
-        engineRoomGO.transform.parent = gameObject.transform;
+        kitchenGO.transform.parent = gameObject.transform;
         kitchenGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+
+        var sailsGO = new GameObject("ShipPart/Sails");
+        sailsGO.transform.parent = gameObject.transform;
+        sailsGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
 
         ShipParts = new List<ShipPart>
         {
             cannonGO.AddComponent<Cannon>(),
             engineRoomGO.AddComponent<EngineRoom>(),
             hullGO.AddComponent<Hull>(),
-            kitchenGO.AddComponent<Kitchen>()
+            kitchenGO.AddComponent<Kitchen>(),
+            sailsGO.AddComponent<Sails>()
         };
 
         CrewMembers = new List<CrewMember>();
@@ -75,7 +76,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
             // TODO: read positions of crew members relative to boat
             UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
-            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
+            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), 0.37f);
 
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
@@ -87,7 +88,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     internal void ProcessMoveEnd()
     {
         Debug.Log("Ship processing move end");
-        Inventory.TryRemoveAmountOfFood(1);
+        Inventory.TryRemoveAmountOfFood(CalculateFoodConsumptionBetweenTwoPoints());
     }
 
     // Update is called once per frame
@@ -147,9 +148,9 @@ public class Ship : MonoBehaviour, IPointerClickHandler
                 {
                     if (!crewMember.IsUnderPlague)
                     {
-                        if (UnityEngine.Random.Range(0, 1) > PlagueSpreadingProbability)
+                        if (UnityEngine.Random.Range(0, 1) > GameConfig.Instance.PlagueSpreadingProbability)
                         {
-                            EventManager.Instance.ExecuteEvent(EventEnum.PLAGUE, crewMember);
+                            crewMember.PlagueThisGuy();
                         }
                     }
                 }
@@ -170,18 +171,18 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         // People under plague eat more food
         foodConsumption = foodConsumption + 
-            CrewMembers.Where(crewMember => crewMember.IsUnderPlague).Count() * PlagueResourceConsumptionIncrement;
+            CrewMembers.Where(crewMember => crewMember.IsUnderPlague).Count() * GameConfig.Instance.PlagueResourceConsumptionIncrement;
 
         // People that and are rowing in are in engine room eat more food
         foodConsumption = foodConsumption +
-            CrewMembers.Where(crewMember => crewMember.CurrentShipPart is EngineRoom).Count() * RowingActionFoodConsumptionIncrement;
+            CrewMembers.Where(crewMember => crewMember.CurrentShipPart is EngineRoom).Count() * GameConfig.Instance.RowingActionFoodConsumptionIncrement;
 
         return foodConsumption;
     }
 
     public int CalculateBoatSpeed()
     {
-        int boatSpeed = InitialShipSpeed;
+        int boatSpeed = GameConfig.Instance.InitialShipSpeed;
 
         // ShipParts slows us down
         int shipPartsWeight = ShipParts
@@ -193,7 +194,9 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             CrewMembers
             .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
             // TODO: v-milast check if rowing is valid
-            .Select(crewMember => crewMember.GetAttribute("Rowing").AttributeValue)
+            .Select(crewMember => crewMember.GetAttribute("Rowing"))
+            .Where(attribute => attribute != null)
+            .Select(attribute => attribute.AttributeValue)
             .Sum();
 
         boatSpeed += (int)Math.Floor(rowingSpeedIncrement);
@@ -206,11 +209,13 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         int defaultFoodConsumption = CalculateDefaultFoodConsumption();
         int boatSpeed = CalculateBoatSpeed();
 
-        return (uint)Math.Floor(1.0 * boatSpeed / 100 * defaultFoodConsumption);
+        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100));
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(name + " Game Object Clicked!");
+
+        GameManager.Instance.UiController.OnShipSelected();
     }
 }

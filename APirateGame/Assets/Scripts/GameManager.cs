@@ -1,5 +1,6 @@
 ﻿using Assets.Events;
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,14 +14,15 @@ namespace Assets.Scripts
         public PlayerController PlayerController;
         public InputController InputController;
         public MapManager MapManager;
+        public UiController UiController;
+        public AudioController AudioController;
+        public GameConfig GameConfig;
 
         [Header("Health Settings")]
         public GameState GameState;
         public ShipInventory ShipInventory;
 
         // TODO: find a better home for this
-        public Text ResourcesTextBox;
-
         private GameObject _gameManagerGameObject;
 
         public static GameManager Instance
@@ -52,6 +54,8 @@ namespace Assets.Scripts
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
+            AudioController = _gameManagerGameObject.AddComponent<AudioController>();
+            GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
 
             // TODO merge
 
@@ -63,8 +67,8 @@ namespace Assets.Scripts
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 
-            AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
-            AssetDatabase.SaveAssets();
+            // AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
+            // AssetDatabase.SaveAssets();
         }
 	
         public void SetIsUserTurn(bool newValue)
@@ -75,18 +79,23 @@ namespace Assets.Scripts
         public void ProcessMoveEnd()
         {
             Ship.ProcessMoveEnd();
-            ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
+            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
         }
 
         void Update()
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
+                // Fade out background music
+                AudioController.FadeOutBackgroundMusic();
+
+                // TODO Update Map
+
                 // Handle
-                var gameplayEvent = EventManager.Instance.GetNextEvent();
+                var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
 
-                GameState.State = GameState.EGameState.PlayerTurn;
+                SetIsUserTurn(true);
             }
         }
 

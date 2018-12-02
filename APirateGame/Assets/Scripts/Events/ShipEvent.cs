@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Assets.Events
 {
@@ -19,5 +20,14 @@ namespace Assets.Events
         }
 
         public abstract void ExecuteEventInternal(Ship ship);
+
+        protected static Random random = new Random();
+
+        protected static int getRandNum(int min, int max)
+        {
+            return ShipEvent.random.Next(max-min) + min;
+        }
+
+        public abstract String eventDescription();
     }
 }
