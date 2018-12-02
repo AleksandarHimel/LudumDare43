@@ -34,16 +34,16 @@ public class UiController : MonoBehaviour
         PathChoice.onValueChanged = ChoiceChangedEvent;
     }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
     }
-	
-	// Update is called once per frame
-	void Update ()
+    
+    // Update is called once per frame
+    void Update ()
     {
-		
-	}
+        
+    }
 
     public void OnCrewMemberSelected(CrewMember member)
     {
@@ -56,7 +56,6 @@ public class UiController : MonoBehaviour
 
         Debug.Log(text);
         SelectedItemDetailsTextBox.text = text;
-        StatusBar.text = "";
     }
 
     public void OnShipPartSelected(ShipPart shipPart)
