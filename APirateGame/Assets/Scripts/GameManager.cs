@@ -40,8 +40,8 @@ namespace Assets.Scripts
 
         private static GameManager _instance;
 
-        // Use this for initialization
-        void Start() {
+        private void Awake()
+        {
             if (_instance == this)
             {
                 return;
@@ -56,6 +56,10 @@ namespace Assets.Scripts
             MapManager = MapManager.Instance;
             AudioController = _gameManagerGameObject.AddComponent<AudioController>();
             GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
+        }
+
+        // Use this for initialization
+        void Start() {
 
             // TODO merge
 
@@ -69,26 +73,35 @@ namespace Assets.Scripts
 
             // AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
             // AssetDatabase.SaveAssets();
+
+            SetIsUserTurn(true);
         }
 	
         public void SetIsUserTurn(bool newValue)
         {
             GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
+
+            if (GameState.State == GameState.EGameState.PlayerTurn)
+            {
+                ProcessUserTurnStart();
+            }
         }
 
         public void ProcessMoveEnd()
-        {
+        { 
+            // Fade out background music
+            AudioController.FadeOutBackgroundMusic();
+
             Ship.ProcessMoveEnd();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
+
+            SetIsUserTurn(false);
         }
 
         void Update()
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                // Fade out background music
-                AudioController.FadeOutBackgroundMusic();
-
                 // TODO Update Map
 
                 // Handle
@@ -98,6 +111,13 @@ namespace Assets.Scripts
                 SetIsUserTurn(true);
             }
         }
+
+        public void ProcessUserTurnStart()
+        {
+            // Fade out background music
+            AudioController.FadeInBackgroundMusic();
+        }
+
 
         private void VerifyGameState()
         {

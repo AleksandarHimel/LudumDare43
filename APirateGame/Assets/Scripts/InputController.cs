@@ -16,7 +16,8 @@ public class InputController : MonoBehaviour
     public Button MoveEndButton;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
     }
 	
 	// Update is called once per frame

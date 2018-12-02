@@ -10,21 +10,21 @@ public class UiController : MonoBehaviour
     public Text ResourcesTextBox;
     public Text SelectedItemDetailsTextBox;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        
+    }
+    
+    // Update is called once per frame
+    void Update ()
     {
-		
-	}
+        
+    }
 
     public void OnCrewMemberSelected(CrewMember member)
     {
-        string text = string.Format("Health: {0}{1}", member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
+        string text = string.Format("{0}\nHealth: {1}{2}", member.Name, member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
 
         foreach (string attributeName in CrewMemberAttribute.s_allowedAttributes.Keys)
         {
