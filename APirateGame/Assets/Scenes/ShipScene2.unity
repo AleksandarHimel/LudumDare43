@@ -307,6 +307,7 @@ MonoBehaviour:
   InputController: {fileID: 0}
   GameState: {fileID: 11400000, guid: 2ce24eee62117374aa94a4e31be21c9d, type: 2}
   ShipInventory: {fileID: 0}
+  ResourcesTextBox: {fileID: 0}
 --- !u!4 &659094898
 Transform:
   m_ObjectHideFlags: 0
@@ -456,7 +457,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c188d1231fa3654cbd570a2f45ada9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InitialShipSpeed: 0
   PlagueSpreadingProbability: 0.3
+  PlagueResourceConsumptionIncrement: 30
+  RowingActionFoodConsumptionIncrement: 30
 --- !u!212 &1436657492
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -541,48 +545,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.305159, y: 2.9716702}
   m_EdgeRadius: 0
---- !u!1001 &1607689415
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0.123083234
-      objectReference: {fileID: 0}
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.19961429
-      objectReference: {fileID: 0}
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -5.145874
-      objectReference: {fileID: 0}
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4252126143274754, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e20d88bc6be5a224aadf70c7503d6086, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!1 &1640217189
 GameObject:
   m_ObjectHideFlags: 0
