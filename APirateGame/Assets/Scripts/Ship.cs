@@ -14,6 +14,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public List<CrewMember> DeceasedCrewMembers { get; private set; }
 
     public ShipInventory Inventory { get; set; }
+    public CrewMember SelectedCrewMember { get; private set; }
 
 
     // Assign crew member to the ship part
@@ -71,12 +72,13 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         foreach (ShipPart sp in ShipParts)
         {
-            var collider = sp.gameObject.AddComponent<BoxCollider2D>();
-            collider.size = new Vector2(20, 20);
+            var _collider = sp.gameObject.AddComponent<BoxCollider2D>();
+            _collider.size = new Vector2(20, 20);
         }
 
         CrewMembers = new List<CrewMember>();
         int i = 1;
+        var collider = gameObject.GetComponent<BoxCollider2D>();
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
@@ -91,12 +93,21 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.37f);
             crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
 
+            // Remove collision between ship and crewMember
+            Physics2D.IgnoreCollision(collider, crewMemberGO.GetComponent<Collider2D>());
+
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
             component.Name = crewMemberGO.name;
             component.CurrentShipPart = shipPart;
+            component.Ship = this;
             CrewMembers.Add(component);
         }
+    }
+
+    internal void OnCrewMemberSelected(CrewMember crewMember)
+    {
+        SelectedCrewMember = crewMember;
     }
 
     internal void ProcessMoveEnd()
@@ -231,5 +242,10 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         Debug.Log(name + " Game Object Clicked!");
 
         GameManager.Instance.UiController.OnShipSelected();
+        
+        if (eventData.button == PointerEventData.InputButton.Right && SelectedCrewMember != null)
+        {
+            SelectedCrewMember.MoveTo(eventData.pointerCurrentRaycast.worldPosition);
+        }
     }
 }

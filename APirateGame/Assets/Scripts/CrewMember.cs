@@ -14,9 +14,12 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
+    public bool IsMoving;
+    private Vector3 expectedPosition;
+    
     public bool IsDead { get; private set; }
 
-    public Ship ship;
+    public Ship Ship;
 
     private Vector3? dragPositionStart = null;
 
@@ -49,14 +52,23 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         IsDead = false;
     }
 
+    void FixedUpdate()
+    {
+        if (IsMoving)
+        {
+            gameObject.GetComponent<Rigidbody2D>().MovePosition(expectedPosition);
+            IsMoving = false;
+        }
+    }
+
     public void ReduceHealth(int damage)
     {
         Health -= damage;
         if (Health <= 0)
         {
             IsDead = true;
-            ship.CrewMembers.Remove(this);
-            ship.DeceasedCrewMembers.Add(this);
+            Ship.CrewMembers.Remove(this);
+            Ship.DeceasedCrewMembers.Add(this);
         }
     }
 
@@ -78,6 +90,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         Debug.Log(name + " Game Object Clicked!");
 
         GameManager.Instance.UiController.OnCrewMemberSelected(this);
+
+        Ship.OnCrewMemberSelected(this);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -94,24 +108,27 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     {
         dragPositionStart = null;
     }
-
+    
     public void OnDrag(PointerEventData eventData)
     {
         Debug.Log(name + string.Format(" being dragged: {0} {1}", eventData.position.x, eventData.position.y));
-        
+        Debug.Log(name + string.Format(" being dragged: {0} {1}", eventData.pointerCurrentRaycast.worldPosition.x, eventData.pointerCurrentRaycast.worldPosition.y));
+
         var worldPoint = Camera.main.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, Camera.main.transform.position.z - gameObject.transform.position.z));
 
-        var pendingPosition = new Vector3(worldPoint.x, worldPoint.y, gameObject.transform.position.z);
+        var pendingPosition = new Vector3(eventData.pointerCurrentRaycast.worldPosition.x, eventData.pointerCurrentRaycast.worldPosition.y, gameObject.transform.position.z);
 
-        foreach (ShipPart sp in ship.ShipParts)
+        foreach (ShipPart sp in Ship.ShipParts)
         {
             if (this.IsWithinBoundaries(sp))
             {
                 try
                 {
-                    ship.AssignCrewMember(this, sp);
+                    Ship.AssignCrewMember(this, sp);
                     this.transform.position = pendingPosition;
+                    
+                    MoveTo(new Vector2(eventData.pointerCurrentRaycast.worldPosition.x, eventData.pointerCurrentRaycast.worldPosition.y));
                 }
                 catch (Exception)
                 {
@@ -132,7 +149,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
             try
             {
-                ship.AssignCrewMember(this, collision.gameObject.GetComponent<ShipPart>());
+                Ship.AssignCrewMember(this, collision.gameObject.GetComponent<ShipPart>());
             }
             catch (Exception)
             {
@@ -144,5 +161,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     private bool IsWithinBoundaries(ShipPart sp)
     {
         return true;
+    }
+
+    internal void MoveTo(Vector3 worldPosition)
+    {
+        IsMoving = true;
+        expectedPosition = worldPosition;
     }
 }
