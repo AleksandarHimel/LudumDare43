@@ -6,6 +6,9 @@ public class ShipInventory : ScriptableObject
     public uint Food { get; set; }
     public uint WoodForFuel { get; set; }
 
+    public ShipInventory()
+    { }
+
     public ShipInventory(uint food, uint wood)
     {
         InitialiseResources(food, wood);

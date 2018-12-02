@@ -16,6 +16,7 @@ namespace Assets.Scripts
         public MapManager MapManager;
         public UiController UiController;
         public AudioController AudioController;
+        public GameConfig GameConfig;
 
         [Header("Health Settings")]
         public GameState GameState;
@@ -53,7 +54,8 @@ namespace Assets.Scripts
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
-            AudioController = new AudioController();
+            AudioController = _gameManagerGameObject.AddComponent<AudioController>();
+            GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
 
             // TODO merge
 

@@ -9,7 +9,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public int Health;
     public bool IsUnderPlague;
     public int ResourceConsumption;
-    
+    public string Name;
+
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
     public bool IsDead { get; private set; }
@@ -30,6 +31,16 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         var random = new System.Random(System.DateTime.Now.Millisecond);
         var color = CrewMemberColors[random.Next(3)];
         sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", color));
+
+        Debug.Log("Start Loading attributes");
+
+        foreach(var atr in ShipConfig.GetInstance().GetAttributesForCrewMember("Jack"))
+        {
+            Debug.Log(string.Format("{0} : {1}", atr.AttributeName, atr.AttributeValue));
+            this.attributes.Add(atr.AttributeName, atr);
+        }
+
+        Debug.Log("Finished Loading attributes");
 
         Health = 10;
         IsDead = false;
@@ -52,6 +63,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         attributes.TryGetValue(attributeName, out retValue);
 
         return retValue;
+    }
+
+    public void PlagueThisGuy()
+    {        
+        IsUnderPlague = true;  
     }
     
     public void OnPointerClick(PointerEventData eventData)

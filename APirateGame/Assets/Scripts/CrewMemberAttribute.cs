@@ -11,6 +11,7 @@ public class CrewMemberAttribute
     {
         s_allowedAttributes = new Dictionary<string, Vector2>();
         s_allowedAttributes.Add("Rowing", new Vector2(1f, 10f));
+        s_allowedAttributes.Add("Sailing", new Vector2(1f, 5f));
         s_allowedAttributes.Add("Scouting", new Vector2(1f, 10f));
         s_allowedAttributes.Add("Canon", new Vector2(1f, 10f));
     }
@@ -19,14 +20,25 @@ public class CrewMemberAttribute
 
     public float AttributeValue { get; private set; }
 
-    public static CrewMemberAttribute CreateAttribute(string name, float value)
+    public static bool IsAllowedName(string name)
+    {
+        return s_allowedAttributes.ContainsKey(name);
+    }
+
+    public static bool IsAllowedValue(string name, float value)
     {
         Vector2 minMax;
         if (!s_allowedAttributes.TryGetValue(name, out minMax))
         {
             throw new ArgumentException("Invalid value", "name");
         }
-        if (value < minMax.x || value > minMax.y)
+        return (value >= minMax.x || value <= minMax.y);
+    }
+
+    // Create a new instance of the attribute
+    public static CrewMemberAttribute CreateAttribute(string name, float value)
+    {
+        if (!IsAllowedValue(name, value))
         {
             throw new ArgumentOutOfRangeException("value");
         }
