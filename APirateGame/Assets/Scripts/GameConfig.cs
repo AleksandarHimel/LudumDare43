@@ -45,6 +45,7 @@ namespace Assets.Scripts
         public int HullWeight = 2;
         public int KitchenWeight = 1;
         public int SailsWeight = 1;
+        public int CrowsNestWeight = 1;
 
         public int PointRequiredForVictory = 10;
 
