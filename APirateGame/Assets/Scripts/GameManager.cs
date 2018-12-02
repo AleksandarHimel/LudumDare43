@@ -1,6 +1,7 @@
 ﻿using Assets.Events;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ namespace Assets.Scripts
     public class GameManager : MonoBehaviour {
 
         public Ship Ship;
-        public int points = 0;
+        public int Points = 0;
         public EventManager EventManager;
         public PlayerController PlayerController;
         public InputController InputController;
@@ -81,7 +82,8 @@ namespace Assets.Scripts
             // var shipGameObject = new GameObject("ShipGameObject");
             // Ship = shipGameObject.AddComponent<Ship>();
             UiController.UpdateChoices(MapManager.GetPossibleDestinations());
-            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
+            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
+            UiController.Points.text = string.Format("Points: {0}", Points);
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 
@@ -93,11 +95,14 @@ namespace Assets.Scripts
 	
         public void SetIsUserTurn(bool newValue)
         {
-            GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
-
-            if (GameState.State == GameState.EGameState.PlayerTurn)
+            if (GameState.State == GameState.EGameState.PlayerTurn || GameState.State == GameState.EGameState.ComputerTurn)
             {
-                ProcessUserTurnStart();
+                GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
+
+                if (GameState.State == GameState.EGameState.PlayerTurn)
+                {
+                    ProcessUserTurnStart();
+                }
             }
         }
 
@@ -107,7 +112,8 @@ namespace Assets.Scripts
             AudioController.FadeOutBackgroundMusic();
 
             Ship.ProcessMoveEnd();
-            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
+            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
+            UiController.Points.text = string.Format("Points: {0}", Points);
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
@@ -154,6 +160,17 @@ namespace Assets.Scripts
                 SetIsUserTurn(false);
             }
         }
+
+        public void GameOver()
+        {
+            GameState.State = GameState.EGameState.GameOver;
+        }
+
+        public void Victory()
+        {
+            GameState.State = GameState.EGameState.Victory;
+        }
+
 
         public void ProcessUserTurnStart()
         {
