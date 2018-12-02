@@ -67,8 +67,8 @@ namespace Assets.Scripts
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 
-            AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
-            AssetDatabase.SaveAssets();
+            // AssetDatabase.CreateAsset(GameState, "Assets/ScriptableObjectsStatic/GameStateStatic.asset");
+            // AssetDatabase.SaveAssets();
         }
 	
         public void SetIsUserTurn(bool newValue)

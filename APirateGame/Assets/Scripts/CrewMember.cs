@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CrewMember : MonoBehaviour, IPointerClickHandler {
+public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IDragHandler {
 
     public ShipPart CurrentShipPart;
     public int Health;
@@ -75,5 +75,19 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler {
         Debug.Log(name + " Game Object Clicked!");
 
         GameManager.Instance.UiController.OnCrewMemberSelected(this);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        Debug.Log(name + " game object mouse down");
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Debug.Log(name + string.Format(" being dragged: {0} {1}", eventData.position.x, eventData.position.y));
+        
+        var something = Camera.main.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, Camera.main.transform.position.z - gameObject.transform.position.z));
+
+        this.gameObject.transform.position = new Vector3(something.x, something.y, gameObject.transform.position.z);
     }
 }
