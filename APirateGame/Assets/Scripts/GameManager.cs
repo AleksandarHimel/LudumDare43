@@ -143,7 +143,7 @@ namespace Assets.Scripts
                     GameOver();
                     return;
                 }
-                
+
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
@@ -152,8 +152,22 @@ namespace Assets.Scripts
                 // Execute Sfx
 
                 // Show user info message
-                UiController.EventCanvas.SetActive(true);
-                GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
+                ComposedEvent composedEvent = gameplayEvent as ComposedEvent;
+                ShipEvent shipEvent = composedEvent.EventsOfInterest.FirstOrDefault() as ShipEvent;
+
+
+                if (shipEvent != null)
+                {
+                    UiController.EventCanvas.SetActive(true);
+                    UiController.StageText.text = shipEvent.eventDescription();
+                    GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
+                }
+                else
+                {
+                    GameState.State = GameState.EGameState.BringTheDawn;
+                }
+
+                Debug.Log("NEVER HAVE I EVER");
             }
             if (GameState.State == GameState.EGameState.BringTheDawn)
             { 

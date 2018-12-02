@@ -16,6 +16,7 @@ public class UiController : MonoBehaviour
     public Text Points;
     public Text GameOverText;
     public Text VictoryText;
+    public Text StageText;
     public Dropdown PathChoice;
     Dropdown.DropdownEvent ChoiceChangedEvent;
     public Text EventInfo;
