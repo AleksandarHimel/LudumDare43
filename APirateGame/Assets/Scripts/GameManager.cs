@@ -1,5 +1,6 @@
 ﻿using Assets.Events;
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace Assets.Scripts
         public InputController InputController;
         public MapManager MapManager;
         public UiController UiController;
+        public AudioController AudioController;
 
         [Header("Health Settings")]
         public GameState GameState;
@@ -51,6 +53,7 @@ namespace Assets.Scripts
             EventManager = _gameManagerGameObject.AddComponent<EventManager>();
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
+            AudioController = new AudioController();
 
             // TODO merge
 
@@ -81,11 +84,14 @@ namespace Assets.Scripts
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
+                // Fade out background music
+                AudioController.FadeOutBackgroundMusic();
+
                 // Handle
                 var gameplayEvent = EventManager.Instance.GetNextEvent();
                 gameplayEvent.Execute(Ship);
 
-                GameState.State = GameState.EGameState.PlayerTurn;
+                SetIsUserTurn(true);
             }
         }
 
