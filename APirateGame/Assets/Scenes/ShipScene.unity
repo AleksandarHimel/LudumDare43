@@ -2441,6 +2441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResourcesTextBox: {fileID: 1394088889}
   SelectedItemDetailsTextBox: {fileID: 873090270}
+  Points: {fileID: 697619192}
   PathChoice: {fileID: 161051662}
 --- !u!114 &1507152523
 MonoBehaviour:
