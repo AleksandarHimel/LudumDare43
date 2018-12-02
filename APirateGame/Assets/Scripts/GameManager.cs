@@ -1,6 +1,7 @@
 ﻿using Assets.Events;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ namespace Assets.Scripts
     public class GameManager : MonoBehaviour {
 
         public Ship Ship;
+        public int Points = 0;
         public EventManager EventManager;
         public PlayerController PlayerController;
         public InputController InputController;
@@ -17,10 +19,13 @@ namespace Assets.Scripts
         public UiController UiController;
         public AudioController AudioController;
         public GameConfig GameConfig;
+        public int DesiredRiskiness;
 
         [Header("Health Settings")]
         public GameState GameState;
         public ShipInventory ShipInventory;
+
+        public SpriteRenderer nightBringerSprite;
 
         // TODO: find a better home for this
         private GameObject _gameManagerGameObject;
@@ -39,6 +44,8 @@ namespace Assets.Scripts
         }
 
         private static GameManager _instance;
+        private bool IsNight = false;
+        private bool bringTheNight = true;
 
         private void Awake()
         {
@@ -51,11 +58,17 @@ namespace Assets.Scripts
 
             _gameManagerGameObject = new GameObject("_gameManagerGameObject");
             PlayerController = _gameManagerGameObject.AddComponent<PlayerController>();
-            EventManager = _gameManagerGameObject.AddComponent<EventManager>();
+            EventManager = EventManager.Instance;
             GameState = ScriptableObject.CreateInstance<GameState>();
             MapManager = MapManager.Instance;
             AudioController = _gameManagerGameObject.AddComponent<AudioController>();
             GameConfig = _gameManagerGameObject.AddComponent<GameConfig>();
+
+            GameObject _nightBringer = new GameObject("_nightBringer");
+            _nightBringer.transform.position = new Vector3(0, 0, -1);
+            nightBringerSprite = _nightBringer.AddComponent<SpriteRenderer>();
+            nightBringerSprite.sprite = Resources.Load<Sprite>("Sprites/Background");
+            nightBringerSprite.color = new Color(0,0,0,0);
         }
 
         // Use this for initialization
@@ -68,6 +81,9 @@ namespace Assets.Scripts
             // Ship.Inventory = ShipInventory;
             // var shipGameObject = new GameObject("ShipGameObject");
             // Ship = shipGameObject.AddComponent<Ship>();
+            UiController.UpdateChoices(MapManager.GetPossibleDestinations());
+            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
+            UiController.Points.text = string.Format("Points: {0}", Points);
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
 
@@ -79,11 +95,14 @@ namespace Assets.Scripts
 	
         public void SetIsUserTurn(bool newValue)
         {
-            GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
-
-            if (GameState.State == GameState.EGameState.PlayerTurn)
+            if (GameState.State == GameState.EGameState.PlayerTurn || GameState.State == GameState.EGameState.ComputerTurn)
             {
-                ProcessUserTurnStart();
+                GameState.State = newValue ? GameState.EGameState.PlayerTurn : GameState.EGameState.ComputerTurn;
+
+                if (GameState.State == GameState.EGameState.PlayerTurn)
+                {
+                    ProcessUserTurnStart();
+                }
             }
         }
 
@@ -93,7 +112,8 @@ namespace Assets.Scripts
             AudioController.FadeOutBackgroundMusic();
 
             Ship.ProcessMoveEnd();
-            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}, wood {1}", Ship.Inventory.Food, Ship.Inventory.WoodForFuel);
+            UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
+            UiController.Points.text = string.Format("Points: {0}", Points);
 
             SetIsUserTurn(false);
         }
@@ -102,21 +122,67 @@ namespace Assets.Scripts
         {
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                // TODO Update Map
+                if (bringTheNight)
+                {
+                    StartCoroutine(BringTheNight());
+                    bringTheNight = false;
+                }
 
-                // Handle
-                var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
-                gameplayEvent.Execute(Ship);
+                if (!IsNight)
+                {
+                    Debug.Log(IsNight);
+                    while (!IsNight)
+                    { return; }
 
+                    Points += MapManager.GetCurrentNode().Riskiness + 1;
+
+                    Points = Math.Max(100, Points);
+
+                    if (Points == 100)
+                    {
+                        Victory();
+                    }
+
+                    if (Ship.Inventory.Food == 0 || Ship.ShipParts.Count() == 0)
+                    {
+                        GameOver();
+                    }
+
+                    MapManager.GoToNextDestination(DesiredRiskiness);
+                    // Handle
+                    var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
+                    gameplayEvent.Execute(Ship);
+                    UiController.UpdateChoices(MapManager.GetPossibleDestinations());
+
+                    // Execute Sfx
+
+                    // Show user info message
+
+                    bringTheNight = true;
+                }
+
+                StartCoroutine(BringTheDawn());
                 SetIsUserTurn(true);
             }
         }
+
+        public void GameOver()
+        {
+            GameState.State = GameState.EGameState.GameOver;
+        }
+
+        public void Victory()
+        {
+            GameState.State = GameState.EGameState.Victory;
+        }
+
 
         public void ProcessUserTurnStart()
         {
             // Fade out background music
             AudioController.FadeInBackgroundMusic();
         }
+
 
 
         private void VerifyGameState()
@@ -127,6 +193,35 @@ namespace Assets.Scripts
         private void ExecuteEncounters(Ship ship)
         {
             
+        }
+
+        private IEnumerator BringTheNight()
+        {
+            float FadeTime = 4f;
+            float t = 0;
+            while (t < 0.95f)
+            {
+                Debug.Log("bbbb");
+                nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0,0,0,1), t);
+                t += Time.deltaTime / FadeTime;
+                yield return null;
+            }
+            IsNight = true;
+        }
+
+        private IEnumerator BringTheDawn()
+        {
+            float FadeTime = 4f;
+            float t = 1;
+            while (t > 0.0f)
+            {
+                Debug.Log("aaaa");
+                nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), t);
+                t -= Time.deltaTime / FadeTime;
+                yield return null;
+            }
+            IsNight = false;
+            Debug.Log(IsNight);
         }
     }
 }
