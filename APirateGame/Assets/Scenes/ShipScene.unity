@@ -3402,7 +3402,7 @@ MonoBehaviour:
   Points: {fileID: 697619192}
   GameOverText: {fileID: 1008789120}
   VictoryText: {fileID: 2123338405}
-  StageText: {fileID: 0}
+  StageText: {fileID: 1834085386}
   PathChoice: {fileID: 161051662}
   EventInfo: {fileID: 1834085386}
   EventCanvas: {fileID: 2044970433}
