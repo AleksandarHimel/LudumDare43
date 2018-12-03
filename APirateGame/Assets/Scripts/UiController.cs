@@ -48,11 +48,19 @@ public class UiController : MonoBehaviour
 
     public void OnCrewMemberSelected(CrewMember member)
     {
-        string text = string.Format("Name: {0}\nHealth: {1}{2}", member.PirateName, member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
-
-        foreach (string attributeName in member.AttributeNames)
+        string text;
+        if (member == null)
         {
-            text += string.Format("\n{0}: {1}", attributeName,( member.GetAttribute(attributeName) == null) ? "\u2620" : member.GetAttribute(attributeName).AttributeValue.ToString());
+            text = "No Pirate selected\nSelect or move one\nalgthough he may not like it...";
+        }
+        else
+        {
+            text = string.Format("Name: {0}\nHealth: {1}{2}", member.PirateName, member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
+
+            foreach (string attributeName in member.AttributeNames)
+            {
+                text += string.Format("\n{0}: {1}", attributeName, (member.GetAttribute(attributeName) == null) ? "\u2620" : member.GetAttribute(attributeName).AttributeValue.ToString());
+            }
         }
 
         //Debug.Log(text);

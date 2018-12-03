@@ -87,6 +87,24 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     internal void OnCrewMemberSelected(CrewMember crewMember)
     {
         SelectedCrewMember = crewMember;
+        GameManager.Instance.UiController.OnCrewMemberSelected(crewMember);
+    }
+
+    internal void ResetCrewMemberSelection()
+    {
+        SelectedCrewMember = null;
+        GameManager.Instance.UiController.OnCrewMemberSelected(null);
+    }
+
+    internal void OnCrewMemberKilled(CrewMember crewMember)
+    {
+        if (SelectedCrewMember == crewMember)
+        {
+            ResetCrewMemberSelection();
+        }
+
+        this.CrewMembers.Remove(crewMember);
+        this.DeceasedCrewMembers.Add(crewMember);
     }
 
     internal void ProcessMoveEnd()

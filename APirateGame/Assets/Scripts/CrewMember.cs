@@ -91,12 +91,18 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         Health -= damage;
         if (Health <= 0)
         {
-            IsDead = true;
-            Ship.CrewMembers.Remove(this);
-            Ship.DeceasedCrewMembers.Add(this);
+            KillCrewMember();
         }
     }
-    
+
+    private void KillCrewMember()
+    {
+        IsDead = true;
+        Ship.OnCrewMemberKilled(this);
+        
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
     public CrewMemberAttribute GetAttribute(string attributeName)
     {
         CrewMemberAttribute retValue = null;
@@ -109,18 +115,25 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     {
         IsUnderPlague = true;  
     }
-    
+
+    private void SelectCrewMember()
+    {
+        if (!IsDead)
+        {
+            Ship.OnCrewMemberSelected(this);
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(name + " Game Object Clicked!");
-
-        GameManager.Instance.UiController.OnCrewMemberSelected(this);
-
-        Ship.OnCrewMemberSelected(this);
+        SelectCrewMember();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        SelectCrewMember();
+
         Debug.Log(name + " game object mouse down");
         var pirateCollider = gameObject.GetComponent<BoxCollider2D>();
 
@@ -174,6 +187,17 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
             }
         }
 
+        // Are we throwing pirate oberboard?
+        var waterCollider = GameObject.Find("Water").GetComponent<BoxCollider2D>();
+        if (waterCollider.IsTouching(pirateCollider))
+        {
+            Debug.Log(string.Format("OMG they killed {0}! You bastards!", PirateName));
+            Ship.ResetCrewMemberSelection();
+            KillCrewMember();
+
+            return;
+        }
+
         Debug.Log(this.name + " moved to nowhere - returning to " + this.CurrentShipPart.name);
 
         MoveTo(dragPositionStart.Value);
@@ -221,7 +245,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
             try
             {
-                Ship.AssignCrewMember(this, other.gameObject.GetComponent<ShipPart>());
+                //Ship.AssignCrewMember(this, other.gameObject.GetComponent<ShipPart>());
             }
             catch (Exception)
             {

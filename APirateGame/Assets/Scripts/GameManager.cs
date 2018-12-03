@@ -138,6 +138,8 @@ namespace Assets.Scripts
         void Update()
         {
             UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, Ship.CalculateBoatSpeed(), Ship.CalculateDefaultFoodConsumption());
+            UiController.OnCrewMemberSelected(Ship.SelectedCrewMember);
+
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
                 MapManager.GoToNextDestination(DesiredRiskiness - 1);
