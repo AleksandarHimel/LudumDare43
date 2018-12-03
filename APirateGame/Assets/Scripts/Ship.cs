@@ -37,6 +37,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
+        CrewMembers = new List<CrewMember>();
         DeceasedCrewMembers = new List<CrewMember>();
     }
 
@@ -64,7 +65,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             shipPart.InitShipPart(this);
         }
 
-        CrewMembers = new List<CrewMember>();
         foreach (var crewMemberConfig in GameFileConfig.GetInstance().ShipConfig.ShipCrew)
         {
             // Create instance of a Pirate
@@ -174,6 +174,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public int CalculateBoatSpeed()
     {
+        Debug.Log("CrewMembers null: " + (CrewMembers == null));
+
         double sailingFactor = CrewMembers
                                 .Where(crewMember => crewMember.CurrentShipPart is Sails)
                                 .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : crewMember.GetAttribute("Sailing").AttributeValue)
