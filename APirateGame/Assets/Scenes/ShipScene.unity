@@ -2799,11 +2799,11 @@ RectTransform:
   m_Father: {fileID: 704084888}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 230}
-  m_SizeDelta: {x: 481.3, y: 179.65}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -80}
+  m_SizeDelta: {x: 481.3, y: 50}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1008789120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4261,7 +4261,6 @@ MonoBehaviour:
   VictoryText: {fileID: 2123338405}
   StageText: {fileID: 1834085386}
   PathChoice: {fileID: 161051662}
-  EventInfo: {fileID: 1834085386}
   EventCanvas: {fileID: 2044970433}
   ScrollRect: {fileID: 618746589}
 --- !u!114 &1507152523
@@ -4301,7 +4300,7 @@ MonoBehaviour:
   PlagueSpreadingProbability: 0.3
   PlagueResourceConsumptionIncrement: 30
   RowingActionFoodConsumptionIncrement: 30
-  InitialFoodCount: 100
+  InitialFoodCount: 1500
   InitialWoodCount: 100
   ChanceForShallowWaters: 10
   ChanceForFire: 20
@@ -5515,11 +5514,11 @@ RectTransform:
   m_Father: {fileID: 704084888}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 230}
-  m_SizeDelta: {x: 481.3, y: 179.65}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -0, y: -80}
+  m_SizeDelta: {x: 481.3, y: 50}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2123338405
 MonoBehaviour:
   m_ObjectHideFlags: 0
