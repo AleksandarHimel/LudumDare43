@@ -236,6 +236,17 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             .Sum();
     }
 
+    public int GetCannonBonus()
+    {
+        return (int)CrewMembers
+            .Where(crewMember => crewMember.CurrentShipPart is Cannon)
+            // TODO: milast check if cannon is ok
+            .Select(crewMember => crewMember.GetAttribute("Cannon"))
+            .Where(attribute => attribute != null)
+            .Select(attribute => attribute.AttributeValue)
+            .Sum();
+    }
+
     public ShipPart GetRandomLiveShipPart()
     {
         // Count available ship parts

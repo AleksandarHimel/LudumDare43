@@ -9,11 +9,20 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship shipObject)
         {
+            //Get cannon bonus before the cannon get possibly destroyed
+            int cannonBonus = shipObject.GetCannonBonus();
+
             foreach (ShipPart shipPart in shipObject.ShipParts)
             {
-                uint damage = (uint)getRandNum(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
-                shipPart.TakeDamage(damage);
+                //uint damage = (uint)getRandNum(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
+                int damage = UnityEngine.Random.Range(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
+                int counterDamage = UnityEngine.Random.Range(0, cannonBonus);
+                damage -= counterDamage;
+                damage = (damage < 0) ? 0 : damage;
+                shipPart.TakeDamage((uint) damage);
                 FullEventDetailsMessage += String.Format("Pirates fired their cannons and {0} took {1} damage /n", shipPart.name, damage);
+                Debug.Log(String.Format("CannonBonus:{0}; damage:{1}; counterDamage:{2}; shipPart:{3}", shipObject.GetCannonBonus(), damage, counterDamage, shipPart.GetType().ToString()));
+
             }
 
             foreach (CrewMember crewMember in shipObject.CrewMembers)

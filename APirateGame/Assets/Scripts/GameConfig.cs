@@ -34,7 +34,7 @@ namespace Assets.Scripts
         public int MaxFireCrewMemberDamage = 100;
 
         public int MinPirateAttackShipPartDamage = 0;
-        public int MaxPirateAttackShipPartDamage = 100;
+        public int MaxPirateAttackShipPartDamage = 20;
         public int MinPirateAttackCrewMemberDamage = 0;
         public int MaxPirateAttackCrewMemberDamage = 100;
         public int MinPirateAttackResourceDamage = 0;

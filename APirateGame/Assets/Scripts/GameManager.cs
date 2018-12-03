@@ -140,6 +140,15 @@ namespace Assets.Scripts
         {
             UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, Ship.CalculateBoatSpeed(), Ship.CalculateDefaultFoodConsumption());
 
+            if (GameState.State == GameState.EGameState.ComputerTurn || GameState.State == GameState.EGameState.PlayerTurn)
+            {
+                //Check if there are crew members alive
+                if (Ship.CrewMembers.Count == 0)
+                {
+                    GameOver();
+                }
+            }
+
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
                 MapManager.GoToNextDestination(DesiredRiskiness - 1);
@@ -181,7 +190,8 @@ namespace Assets.Scripts
                     t += Time.deltaTime / FadeTime;
                     return;
                 }
-                t = 0.0f;
+                t = 0.0f;            
+
                 SetIsUserTurn(true);
             }
             if (GameState.State == GameState.EGameState.BringTheNight)
