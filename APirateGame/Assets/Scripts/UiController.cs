@@ -108,8 +108,9 @@ public class UiController : MonoBehaviour
         {
             foreach (MapNodeInformation nodeInfo in nodesInformation)
             {
-                string optionText = string.Format("{0} miles/day: {1}",
-                      GameManager.Instance.CalculateDistanceByRiskiness(nodeInfo.Riskiness + 1),
+                string optionText = string.Format("Move at least {0} miles: {1}",
+                      GameManager.Instance.CalculateDistanceByRiskiness(nodeInfo.Riskiness),
+
                       String.Join(" or ",
                       nodeInfo
                         .PossibleEncounter
@@ -118,7 +119,7 @@ public class UiController : MonoBehaviour
                 Debug.Log(optionText);
                 Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
 
-                OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
+                OptionsDictionary[optionText] = nodeInfo.Riskiness;
                 options.Add(optionData);
             }
         }

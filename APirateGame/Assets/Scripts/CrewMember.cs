@@ -54,6 +54,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         
         Vector3 v3 = shipPartObject.transform.localPosition;
         v3.z = CrewMemberZPosition;
+        v3.x += 0.1f;
         gameObject.transform.localPosition = v3;
 
         Debug.Log(string.Format("{0} : {1} [{2}]", PirateName, pirate.Color, pirate.InitShipPart));
@@ -61,7 +62,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     void Start()
     {
-        Health = 10;
+        Health = 100;
         IsDead = false;
     }
 

@@ -13,7 +13,7 @@ public class Sails : ShipPart
     {
         ParentShip = ship;
         MaxNumberOfCrewMembers = 1;
-        MaxHealth = 2;
+        MaxHealth = 40;
         Health = MaxHealth;
         Weight = GameConfig.Instance.SailsWeight;
 

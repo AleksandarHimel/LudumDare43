@@ -16,7 +16,7 @@ public class Cannon : ShipPart
         this.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Cannon");
 
         MaxNumberOfCrewMembers = 1;
-        MaxHealth = 2;
+        MaxHealth = 100;
         Health = MaxHealth;
         Weight = GameConfig.Instance.CannonWeight;
 

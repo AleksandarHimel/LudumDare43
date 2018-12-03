@@ -2,10 +2,10 @@
 <Ship>
   <ShipCrew>
     <CrewMember name ="Jack" color="red">
-      <InitShipPart>CrowsNest</InitShipPart>
+      <InitShipPart>Cannon</InitShipPart>
       <Attributes>
         <CrewMemberAttribute name="Scouting" value="2" />
-        <CrewMemberAttribute name="Rowing" value="3" />
+        <CrewMemberAttribute name="Rowing" value="10" />
       </Attributes>
     </CrewMember>
     <CrewMember name ="Samuel" color="blue">
@@ -25,11 +25,18 @@
       </Attributes>
     </CrewMember>
     <CrewMember name ="Francis" color="green">
-      <InitShipPart>Cannon</InitShipPart>
+      <InitShipPart>CrowsNest</InitShipPart>
       <Attributes>
         <CrewMemberAttribute name="Cannon" value="2" />
         <CrewMemberAttribute name="Rowing" value="9" />
-        <CrewMemberAttribute name="Sailing" value="1.1" />
+        <CrewMemberAttribute name="Sailing" value="1.6" />
+      </Attributes>
+    </CrewMember>
+    <CrewMember name ="Vincenzo" color="blue">
+      <InitShipPart>Sails</InitShipPart>
+      <Attributes>
+        <CrewMemberAttribute name="Cannon" value="8" />
+        <CrewMemberAttribute name="Rowing" value="7" />
       </Attributes>
     </CrewMember>
   </ShipCrew>

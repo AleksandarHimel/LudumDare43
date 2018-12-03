@@ -12,7 +12,7 @@ public class Oars : ShipPart {
     {
         ParentShip = ship;
         MaxNumberOfCrewMembers = 2;
-        MaxHealth = 2;
+        MaxHealth = 80;
         Health = MaxHealth;
         Weight = GameConfig.Instance.OarsWeight;
 
