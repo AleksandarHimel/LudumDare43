@@ -31,8 +31,14 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             throw new Exception("Ship part is full!");
         }
 
+        bool needToUpdateMapChoices = crew.CurrentShipPart is CrowsNest || part is CrowsNest;
         crew.CurrentShipPart = part;
-        GameManager.Instance.UiController.UpdateChoices(GameManager.Instance.MapManager.GetPossibleDestinations());
+
+        if (needToUpdateMapChoices)
+        {
+            GameManager.Instance.UiController.UpdateChoices(GameManager.Instance.MapManager.GetPossibleDestinations());
+            GameManager.Instance.UiController.OnChoiceChanged(0);
+        }
     }
 
     // Use this for initialization
@@ -173,12 +179,18 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public int CalculateBoatSpeed()
     {
-        double sailingFactor = CrewMembers
-                                .Where(crewMember => crewMember.CurrentShipPart is Sails)
-                                .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : crewMember.GetAttribute("Sailing").AttributeValue)
+        double sailingFactor = 1.0;
+        /*
+            CrewMembers
+                                .Where(crewMember => crewMember.CurrentShipPart != null && crewMember.CurrentShipPart is Sails)
+                                .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : (double) crewMember.GetAttribute("Sailing").AttributeValue)
                                 .DefaultIfEmpty(1.0)
-                                .Single();
-        double boatSpeed = GameConfig.Instance.InitialShipSpeed * sailingFactor;
+                                .Average();
+                                */
+        //int baseSpeed = GameManager.Instance.CalculateDistanceByRiskiness(GameManager.Instance.DesiredRiskiness + 1);
+        double baseSpeed = sailingFactor * GameManager.Instance.CalculateDistanceByRiskiness(GameManager.Instance.DesiredRiskiness);
+
+        double boatSpeed = baseSpeed * sailingFactor;
 
         // ShipParts slows us down
         /*

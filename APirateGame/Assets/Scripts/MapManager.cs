@@ -13,7 +13,7 @@ namespace Assets.Scripts
 
         private static int RiskDepth = 3;
 
-        private static int MapLength = 12;
+        private static int MapLength = 50;
 
         private List<List<MapNode>> Map;
 
@@ -47,17 +47,10 @@ namespace Assets.Scripts
                 {
                     Map[riskDepth].Add(new MapNode(RiskDepth, riskDepth));
 
-                    EventManager
-                        .Instance.ComposeEvent()
-                        .AddEvent(GetRandomEncounter(riskDepth))
-                        .AddEvent(EventEnum.SPREAD_THE_PLAGUE);
-                        //.AddEvent(EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES);
-
                     //(Devnote - Srki) Fix once we get eligible encounters in 
                     Map[riskDepth][mapPosition].NodeEvent = EventManager
                         .Instance.ComposeEvent()
-                        .AddEvent(GetRandomEncounter(riskDepth))
-                        .AddEvent(EventEnum.SPREAD_THE_PLAGUE);
+                        .AddEvent(GetRandomEncounter(riskDepth));
                         //.AddEvent(EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES);
                 }
             }

@@ -78,6 +78,8 @@ namespace Assets.Scripts
             Debug.Log("Random seed: " + UnityEngine.Random.seed);
 
             UiController.UpdateChoices(MapManager.GetPossibleDestinations());
+            GameManager.Instance.UiController.OnChoiceChanged(0);
+
             DesiredRiskiness = UiController.GetActiveRiskiness();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
             UiController.Points.text = string.Format("");
@@ -121,7 +123,14 @@ namespace Assets.Scripts
 
         public int CalculateDistanceByRiskiness(int riskiness)
         {
-            int distanceTravelled = Ship.CalculateBoatSpeed();
+            int distanceTravelled = GameConfig.Instance.InitialShipSpeed;
+
+            if (riskiness < 0)
+            {
+                return distanceTravelled / 5;
+            }
+
+            riskiness += 1;
             // if we went with a low-risk roundabout path the total distance has increased
             int roundaboutPathPenalty = Math.Max(3 - riskiness, 0) * distanceTravelled / 4;
 
@@ -166,6 +175,7 @@ namespace Assets.Scripts
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
                 UiController.UpdateChoices(MapManager.GetPossibleDestinations());
+                GameManager.Instance.UiController.OnChoiceChanged(0);
 
                 // Execute Sfx
 
