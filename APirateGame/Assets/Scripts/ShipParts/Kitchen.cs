@@ -9,7 +9,7 @@ public class Kitchen : ShipPart {
     {
         ParentShip = ship;
         MaxNumberOfCrewMembers = 3;
-        MaxHealth = 2;
+        MaxHealth = 80;
         Health = MaxHealth;
         Weight = GameConfig.Instance.KitchenWeight;
 

@@ -12,7 +12,7 @@ public class CrowsNest : ShipPart
     {
         ParentShip = ship;
         MaxNumberOfCrewMembers = 1;
-        MaxHealth = 2;
+        MaxHealth = 40;
         Health = MaxHealth;
         Weight = GameConfig.Instance.CrowsNestWeight;
 
