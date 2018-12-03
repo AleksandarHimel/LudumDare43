@@ -19,6 +19,8 @@ public class Cannon : ShipPart
         MaxHealth = 2;
         Health = MaxHealth;
         Weight = GameConfig.Instance.CannonWeight;
+
+        Description = "It's good to have someone ready to defend the ship from pirates if needed";
 	}
 
 	// Update is called once per frame

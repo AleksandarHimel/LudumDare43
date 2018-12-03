@@ -9,17 +9,17 @@
       </Attributes>
     </CrewMember>
     <CrewMember name ="Samuel" color="blue">
-      <InitShipPart>EngineRoom</InitShipPart>
+      <InitShipPart>Oars</InitShipPart>
       <Attributes>
-        <CrewMemberAttribute name="Canon" value="8" />
+        <CrewMemberAttribute name="Cannon" value="8" />
         <CrewMemberAttribute name="Rowing" value="3" />
         <CrewMemberAttribute name="Sailing" value="1.5" />
       </Attributes>
     </CrewMember>
     <CrewMember name ="Benjamin" color="green">
-      <InitShipPart>Hull</InitShipPart>
+      <InitShipPart>Kitchen</InitShipPart>
       <Attributes>
-        <CrewMemberAttribute name="Canon" value="5" />
+        <CrewMemberAttribute name="Cannon" value="5" />
         <CrewMemberAttribute name="Rowing" value="8" />
         <CrewMemberAttribute name="Sailing" value="1.2" />
       </Attributes>
@@ -27,7 +27,7 @@
     <CrewMember name ="Francis" color="green">
       <InitShipPart>Cannon</InitShipPart>
       <Attributes>
-        <CrewMemberAttribute name="Canon" value="2" />
+        <CrewMemberAttribute name="Cannon" value="2" />
         <CrewMemberAttribute name="Rowing" value="9" />
         <CrewMemberAttribute name="Sailing" value="1.1" />
       </Attributes>

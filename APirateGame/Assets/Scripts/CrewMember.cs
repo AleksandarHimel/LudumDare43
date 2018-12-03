@@ -80,8 +80,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
         // People that and are affected by plague eat more food
         result += IsUnderPlague ? GameConfig.Instance.PlagueResourceConsumptionIncrement : 0;
-        // People that and are rowing in are in engine room eat more food
-        result += this.CurrentShipPart is EngineRoom ? GameConfig.Instance.RowingActionFoodConsumptionIncrement : 0;
+        // People who row need more food
+        result += this.CurrentShipPart is Oars ? GameConfig.Instance.RowingActionFoodConsumptionIncrement : 0;
 
         return result;
     }

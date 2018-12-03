@@ -28,6 +28,8 @@ public abstract class ShipPart : MonoBehaviour, IPointerClickHandler {
         ParentShip = parentShip;
     }
 
+    public string Description { get; protected set; }
+
     /// <summary>
     /// Gets all crew members currently in this ship part.
     /// </summary>

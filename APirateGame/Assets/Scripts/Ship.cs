@@ -37,14 +37,15 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
+        CrewMembers = new List<CrewMember>();
         DeceasedCrewMembers = new List<CrewMember>();
     }
 
     void Start()
     {
         var cannonGO = GameObject.Find("ShipPart/Cannon");
-        var engineRoomGO = GameObject.Find("ShipPart/EngineRoom");
-        var hullGO = GameObject.Find("ShipPart/Hull");
+        var oarsGO = GameObject.Find("ShipPart/EngineRoom"); // TODO: rename game object as well
+        // var hullGO = GameObject.Find("ShipPart/Hull");
         var kitchenGO = GameObject.Find("ShipPart/Kitchen");
         var sailsGO = GameObject.Find("ShipPart/Sails");
         var crowsNestGO = GameObject.Find("ShipPart/CrowsNest");
@@ -52,8 +53,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         ShipParts = new List<ShipPart>
         {
             cannonGO.AddComponent<Cannon>(),
-            engineRoomGO.AddComponent<EngineRoom>(),
-            hullGO.AddComponent<Hull>(),
+            oarsGO.AddComponent<Oars>(),
+            // hullGO.AddComponent<Hull>(), // no hull for now
             kitchenGO.AddComponent<Kitchen>(),
             sailsGO.AddComponent<Sails>(),
             crowsNestGO.AddComponent<CrowsNest>(),
@@ -64,7 +65,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             shipPart.InitShipPart(this);
         }
 
-        CrewMembers = new List<CrewMember>();
         foreach (var crewMemberConfig in GameFileConfig.GetInstance().ShipConfig.ShipCrew)
         {
             // Create instance of a Pirate
@@ -174,6 +174,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public int CalculateBoatSpeed()
     {
+        Debug.Log("CrewMembers null: " + (CrewMembers == null));
+
         double sailingFactor = CrewMembers
                                 .Where(crewMember => crewMember.CurrentShipPart is Sails)
                                 .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : crewMember.GetAttribute("Sailing").AttributeValue)
@@ -191,7 +193,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         double rowingSpeedIncrement =
             CrewMembers
-            .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
+            .Where(crewMember => crewMember.CurrentShipPart is Oars)
             // TODO: v-milast check if rowing is valid
             .Select(crewMember => crewMember.GetAttribute("Rowing"))
             .Where(attribute => attribute != null)
