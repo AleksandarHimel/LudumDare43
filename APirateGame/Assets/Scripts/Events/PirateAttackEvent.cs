@@ -9,6 +9,8 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship shipObject)
         {
+            UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
+
             //Get cannon bonus before the cannon get possibly destroyed
             int cannonBonus = shipObject.GetCannonBonus();
 

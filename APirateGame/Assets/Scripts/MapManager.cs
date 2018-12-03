@@ -155,6 +155,7 @@ namespace Assets.Scripts
 
         EventEnum GetRandomEncounter(int riskTier)
         {
+            Random.InitState((int)System.DateTime.Now.Ticks);
             switch (riskTier)
             {
                 case 0:

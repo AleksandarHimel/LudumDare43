@@ -8,6 +8,7 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship ship)
         {
+            Random.InitState((int)System.DateTime.Now.Ticks);
             foreach (ShipPart shipPart in ship.FunctioningShipParts)
             {
                 bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);

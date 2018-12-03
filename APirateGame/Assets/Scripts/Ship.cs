@@ -205,7 +205,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public uint CalculateFoodConsumptionBetweenTwoPoints()
     {
         int defaultFoodConsumption = CalculateDefaultFoodConsumption();
-        int boatSpeed = CalculateBoatSpeed();
+        //int boatSpeed = CalculateBoatSpeed();
 
         return (uint)defaultFoodConsumption;
     }
@@ -257,6 +257,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             }
         }
 
+        UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
         int chosenShipPart = UnityEngine.Random.Range(0, countParts-1);
 
         var returnPart = new System.Object();

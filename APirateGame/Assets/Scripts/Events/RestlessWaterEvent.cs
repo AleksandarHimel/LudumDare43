@@ -10,6 +10,7 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship ship)
         {
+            Random.InitState((int)System.DateTime.Now.Ticks);
             foreach (CrewMember crewMember in ship.AliveCrewMembers)
             {
                 if (Random.Range(0f, 1f) <= GameConfig.Instance.PlagueSpreadingProbability)
