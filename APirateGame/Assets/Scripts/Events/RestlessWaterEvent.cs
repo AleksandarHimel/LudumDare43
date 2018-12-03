@@ -12,7 +12,7 @@ namespace Assets.Events
         {
             foreach (CrewMember crewMember in ship.AliveCrewMembers)
             {
-                if (Random.Range(0, 1) <= GameConfig.Instance.PlagueSpreadingProbability)
+                if (Random.Range(0f, 1f) <= GameConfig.Instance.PlagueSpreadingProbability)
                 {
                     crewMember.PlagueThisGuy();
                     FullEventDetailsMessage += System.String.Format("Oh noo, {0} got sick! \n", crewMember.PirateName);
