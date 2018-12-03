@@ -191,10 +191,10 @@ namespace Assets.Scripts
             }
             if (GameState.State == GameState.EGameState.BringTheDawn)
             { 
-                while (t < 1.0f)
+                while (t > 0.0f)
                 {
-                    nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 1), new Color(0, 0, 0, 0), t);
-                    t += Time.deltaTime / FadeTime;
+                    nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 1), new Color(0, 0, 0, 0), 1f-t);
+                    t -= Time.deltaTime / FadeTime;
                     return;
                 }
                 t = 0.0f;            
@@ -209,8 +209,20 @@ namespace Assets.Scripts
                     t += Time.deltaTime / FadeTime;
                     return;
                 }
-                t = 0.0f;
+                t = 1.0f;
                 SetIsUserTurn(false);
+            }
+            if (GameState.State == GameState.EGameState.BringingTheEnd)
+            {
+                while (t < 1.0f)
+                {
+                    nightBringerSprite.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), t);
+                    t += Time.deltaTime / FadeTime;
+                    return;
+                }
+                //UiController.GameOverText.gameObject.SetActive(true);
+                t = 1.0f;
+                GameState.State = GameState.EGameState.GameOver;
             }
             if (GameState.State == GameState.EGameState.CheckGameState)
             {
@@ -233,11 +245,10 @@ namespace Assets.Scripts
         }
 
         public void GameOver()
-        {
-            GameState.State = GameState.EGameState.GameOver;
+        { 
+            GameState.State = GameState.EGameState.BringingTheEnd;
             InputController.MoveEndButton.gameObject.SetActive(false);
             UiController.PathChoice.gameObject.SetActive(false);
-            UiController.GameOverText.gameObject.SetActive(true);
         }
 
         public void Victory()
