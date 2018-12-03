@@ -11,7 +11,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     private List<ShipPart> ShipParts { get; set; }
     public IEnumerable<ShipPart> DestroyedShipParts { get { return ShipParts.Where(cm => cm.IsDestroyed); } }
     public IEnumerable<ShipPart> FunctioningShipParts { get { return ShipParts.Where(cm => !cm.IsDestroyed); } }
-    private List<CrewMember> CrewMembers { get; set; }
+    public List<CrewMember> CrewMembers { get; set; }
     public IEnumerable<CrewMember> DeceasedCrewMembers { get { return CrewMembers.Where(cm => cm.IsDead); } }
     public IEnumerable<CrewMember> AliveCrewMembers { get { return CrewMembers.Where(cm => !cm.IsDead); } }
 
