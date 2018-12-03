@@ -35,7 +35,7 @@ public abstract class ShipPart : MonoBehaviour, IPointerClickHandler {
     /// </summary>
     public IEnumerable<CrewMember> PresentCrewMembers
     {
-        get { return ParentShip.CrewMembers.Where(cm => cm.CurrentShipPart == this); }
+        get { return ParentShip.AliveCrewMembers.Where(cm => cm.CurrentShipPart == this); }
     }
 
 	// Use this for initialization

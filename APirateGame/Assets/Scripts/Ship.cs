@@ -9,8 +9,9 @@ using UnityEngine.EventSystems;
 public class Ship : MonoBehaviour, IPointerClickHandler
 {
     public List<ShipPart> ShipParts { get; private set; }
-    public List<CrewMember> CrewMembers { get; private set; }
-    public List<CrewMember> DeceasedCrewMembers { get; private set; }
+    private List<CrewMember> CrewMembers { get; set; }
+    public IEnumerable<CrewMember> DeceasedCrewMembers { get { return CrewMembers.Where(cm => cm.IsDead); } }
+    public IEnumerable<CrewMember> AliveCrewMembers { get { return CrewMembers.Where(cm => !cm.IsDead); } }
 
     public ShipInventory Inventory { get; set; }
     public CrewMember SelectedCrewMember { get; private set; }
@@ -38,7 +39,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
         CrewMembers = new List<CrewMember>();
-        DeceasedCrewMembers = new List<CrewMember>();
     }
 
     void Start()
@@ -102,9 +102,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         {
             ResetCrewMemberSelection();
         }
-
-        this.CrewMembers.Remove(crewMember);
-        this.DeceasedCrewMembers.Add(crewMember);
     }
 
     internal void ProcessMoveEnd()

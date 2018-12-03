@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,15 +9,19 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship behaviouralObject)
         {
-            Ship shipObject = behaviouralObject as Ship;
+            // TODO: Fix if you wish to use
 
-            int shortStraw = getRandNum(0, shipObject.CrewMembers.Count + 1);
+            throw new NotImplementedException();
 
-            CrewMember crewMemberToWalkThePlank = shipObject.CrewMembers[shortStraw];
-            CrewMember Timmy = crewMemberToWalkThePlank;
+            //Ship shipObject = behaviouralObject as Ship;
 
-            //Timmy has to go
-            Timmy.ReduceHealth(Timmy.Health);
+            //int shortStraw = getRandNum(0, shipObject.AliveCrewMembers.Count + 1);
+
+            //CrewMember crewMemberToWalkThePlank = shipObject.AliveCrewMembers[shortStraw];
+            //CrewMember Timmy = crewMemberToWalkThePlank;
+
+            ////Timmy has to go
+            //Timmy.ReduceHealth(Timmy.Health);
         }
 
         public override string eventDescription()
