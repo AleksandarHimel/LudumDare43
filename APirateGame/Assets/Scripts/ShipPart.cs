@@ -53,6 +53,11 @@ public abstract class ShipPart : MonoBehaviour, IPointerClickHandler {
     public void TakeDamage(uint damage)
     {
         Health -= Math.Min(damage, Health);
+		if (IsDestroyed)
+		{
+			Fire fire = new Fire(this);
+			fire.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Fire");
+		}
     }
 
     public abstract bool IsOnBottom();
