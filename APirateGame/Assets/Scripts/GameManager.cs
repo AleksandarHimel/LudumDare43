@@ -149,7 +149,7 @@ namespace Assets.Scripts
             if (GameState.State == GameState.EGameState.ComputerTurn || GameState.State == GameState.EGameState.PlayerTurn)
             {
                 //Check if there are crew members alive
-                if (Ship.CrewMembers.Count == 0)
+                if (Ship.AliveCrewMembers.Count() == 0)
                 {
                     GameOver();
                 }
