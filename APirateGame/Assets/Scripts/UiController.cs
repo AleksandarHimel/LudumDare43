@@ -53,7 +53,7 @@ public class UiController : MonoBehaviour
             text += string.Format("\n{0}: {1}", attributeName,( member.GetAttribute(attributeName) == null) ? "\u2620" : member.GetAttribute(attributeName).AttributeValue.ToString());
         }
 
-        Debug.Log(text);
+        //Debug.Log(text);
         SelectedItemDetailsTextBox.text = text;
     }
 

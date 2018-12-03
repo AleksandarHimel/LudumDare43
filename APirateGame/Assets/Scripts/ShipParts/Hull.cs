@@ -11,7 +11,7 @@ public class Hull : ShipPart
     public override void InitShipPart(Ship ship)
     {
         ParentShip = ship;
-        MaxNumberOfCrewMembers = 0;
+        MaxNumberOfCrewMembers = 2;
         MaxHealth = 2;
         Health = MaxHealth;
         Weight = GameConfig.Instance.HullWeight;

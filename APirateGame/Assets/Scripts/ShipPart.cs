@@ -39,7 +39,7 @@ public abstract class ShipPart : MonoBehaviour, IPointerClickHandler {
 	// Use this for initialization
 	void Awake ()
     {
-         spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+        //spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         // TODO: add sprite
         // spriteRenderer.sprite = Resources.Load<Sprite>("Path");
 	}

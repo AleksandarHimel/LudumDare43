@@ -24,6 +24,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public Ship Ship;
 
     private Vector3? dragPositionStart = null;
+    private Vector2? sizeStart = null;
 
     public static string[] CrewMemberColors =
     {
@@ -48,6 +49,10 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
         var shipPartObject = GameObject.Find("ShipPart/" + pirate.InitShipPart);
         this.CurrentShipPart = shipPartObject.GetComponent<ShipPart>();
+        
+        Vector3 v3 = shipPartObject.transform.localPosition;
+        v3.z = -0.2f;
+        gameObject.transform.localPosition = v3;
 
         Debug.Log(string.Format("{0} : {1} [{2}]", PirateName, pirate.Color, pirate.InitShipPart));
     }
@@ -103,31 +108,28 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log(name + " game object mouse down");
+        var pirateCollider = gameObject.GetComponent<BoxCollider2D>();
 
         if (dragPositionStart == null)
         {
             dragPositionStart = transform.position;
+            sizeStart = pirateCollider.size;
         }
+
+        var size = pirateCollider.size;
+        size.y = 0.1f;
+        pirateCollider.size = size;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        var pirateCollider = gameObject.GetComponent<BoxCollider2D>();
 
         foreach (ShipPart sp in Ship.ShipParts)
         {
             var collider = sp.gameObject.GetComponent<BoxCollider2D>();
 
-            var minX = sp.gameObject.transform.position.x - collider.size.x / 2;
-            var minY = sp.gameObject.transform.position.y - collider.size.y / 2;
-            var maxX = minX + collider.size.x;
-            var maxY = minY + collider.size.y;
-
-            var worldPoint = Camera.main.ScreenToWorldPoint(
-                new Vector3(eventData.position.x, eventData.position.y, gameObject.transform.position.z - Camera.main.transform.position.z));
-            
-            Debug.Log(sp.name + " " + minX + " " + maxX + " " + minY + " " + maxY + "(current: " + worldPoint.x + "," + worldPoint.y + ")");
-
-            if (minX <= worldPoint.x && worldPoint.x <= maxX && minY <= worldPoint.y && worldPoint.y <= maxY)
+            if(collider.IsTouching(pirateCollider))
             {
                 try
                 {
@@ -135,6 +137,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
                     Debug.Log("Assigned " + this.name + " to " + sp.name);
                     dragPositionStart = null;
+                    pirateCollider.size = sizeStart.Value;
 
                     return;
                 }
@@ -143,6 +146,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
                     Debug.Log("Could not assign " + this.name + " to " + sp.name + "( max ppl: " + sp.MaxNumberOfCrewMembers + ")");
                     MoveTo(dragPositionStart.Value);
                     dragPositionStart = null;
+                    pirateCollider.size = sizeStart.Value;
 
                     return;
                 }
@@ -153,6 +157,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
         MoveTo(dragPositionStart.Value);
         dragPositionStart = null;
+        pirateCollider.size = sizeStart.Value;
     }
     
     public void OnDrag(PointerEventData eventData)

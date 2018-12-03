@@ -25,7 +25,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        if (part.MaxNumberOfCrewMembers == part.PresentCrewMembers.Count())
+        if (part.MaxNumberOfCrewMembers <= part.PresentCrewMembers.Count())
         {
             throw new Exception("Ship part is full!");
         }
@@ -40,50 +40,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
         DeceasedCrewMembers = new List<CrewMember>();
-
-        float shipPartZ = -0.2f;
-
-        // Instantiate some type of ship 4 example:
-        // For each ship type there should be specific game object...
-        var cannonGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
-        cannonGO.name = "ShipPart/Cannon";
-        cannonGO.transform.parent = gameObject.transform;
-        cannonGO.transform.localPosition = new Vector3(-5, -2, shipPartZ);
-
-        var engineRoomGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
-        engineRoomGO.name = "ShipPart/EngineRoom";
-        engineRoomGO.transform.parent = gameObject.transform;
-        engineRoomGO.transform.localPosition = new Vector3(-5, 0, shipPartZ);
-
-        var hullGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
-        hullGO.name = "ShipPart/Hull";
-        hullGO.transform.parent = gameObject.transform;
-        hullGO.transform.localPosition = new Vector3(2, 0, shipPartZ);
-
-        var kitchenGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
-        kitchenGO.name = "ShipPart/Kitchen";
-        kitchenGO.transform.parent = gameObject.transform;
-        kitchenGO.transform.localPosition = new Vector3(0, 2, shipPartZ);
-
-        var sailsGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
-        sailsGO.name = "ShipPart/Sails";
-        sailsGO.transform.parent = gameObject.transform;
-        sailsGO.transform.localPosition = new Vector3(4, 2, shipPartZ);
-
-        var crowsNestGO = Instantiate(Resources.Load<GameObject>("Prefabs/ShipPart"), transform);
-        crowsNestGO.name = "ShipPart/CrowsNest";
-        crowsNestGO.transform.parent = gameObject.transform;
-        crowsNestGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), shipPartZ);
-
-        ShipParts = new List<ShipPart>
-        {
-            cannonGO.AddComponent<Cannon>(),
-            engineRoomGO.AddComponent<EngineRoom>(),
-            hullGO.AddComponent<Hull>(),
-            kitchenGO.AddComponent<Kitchen>(),
-            sailsGO.AddComponent<Sails>(),
-            crowsNestGO.AddComponent<Sails>(),
-        };
     }
 
     void Start()
@@ -93,6 +49,24 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         //    var _collider = sp.gameObject.AddComponent<BoxCollider2D>();
         //    _collider.size = new Vector2(20, 20);
         //}
+        // Instantiate some type of ship 4 example:
+        // For each ship type there should be specific game object...
+        var cannonGO = GameObject.Find("ShipPart/Cannon");
+        var engineRoomGO = GameObject.Find("ShipPart/EngineRoom");
+        var hullGO = GameObject.Find("ShipPart/Hull");
+        var kitchenGO = GameObject.Find("ShipPart/Kitchen");
+        var sailsGO = GameObject.Find("ShipPart/Sails");
+        var crowsNestGO = GameObject.Find("ShipPart/CrowsNest");
+
+        ShipParts = new List<ShipPart>
+        {
+            cannonGO.AddComponent<Cannon>(),
+            engineRoomGO.AddComponent<EngineRoom>(),
+            hullGO.AddComponent<Hull>(),
+            kitchenGO.AddComponent<Kitchen>(),
+            sailsGO.AddComponent<Sails>(),
+            crowsNestGO.AddComponent<CrowsNest>(),
+        };
 
         // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
@@ -107,29 +81,14 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             var crewMemberGO = Instantiate(Resources.Load<GameObject>("Prefabs/Pirate"), transform);
             crewMemberGO.name = "CrewMembers /PlayerCharacter-" + crewMemberConfig.PirateName;
 
-            // TODO: read positions of crew members relative to boat
-            UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
-            crewMemberGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), -0.25f);
-            crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
-
             // Add component
             var component = crewMemberGO.AddComponent<CrewMember>();
 
             // Init ship parts, name, color and ship part
             component.Init(crewMemberConfig.PirateName);
             component.Ship = this;
-            
-            //bool fAssigned = false;
-            //while (!fAssigned)
-            //{
-            //    try
-            //    {
-            //        component.CurrentShipPart = GetRandomLiveShipPart();
-            //        AssignCrewMember(component, component.CurrentShipPart);
-            //        fAssigned = true;
-            //    }
-            //    catch { }
-            //}
+
+            crewMemberGO.GetComponent<BoxCollider2D>().isTrigger = true;
 
             CrewMembers.Add(component);
         }

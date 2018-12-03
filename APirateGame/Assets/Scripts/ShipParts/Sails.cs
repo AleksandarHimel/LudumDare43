@@ -12,7 +12,7 @@ public class Sails : ShipPart
     public override void InitShipPart(Ship ship)
     {
         ParentShip = ship;
-        MaxNumberOfCrewMembers = 0;
+        MaxNumberOfCrewMembers = 1;
         MaxHealth = 2;
         Health = MaxHealth;
         Weight = GameConfig.Instance.SailsWeight;
