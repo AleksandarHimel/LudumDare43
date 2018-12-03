@@ -1,7 +1,4 @@
 ﻿using Assets.Scripts;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Kitchen : ShipPart {
 
@@ -12,9 +9,11 @@ public class Kitchen : ShipPart {
     {
         ParentShip = ship;
         MaxNumberOfCrewMembers = 3;
-        MaxHealth = 2;
+        MaxHealth = 80;
         Health = MaxHealth;
         Weight = GameConfig.Instance.KitchenWeight;
+
+        Description = "Placing crew members in the kitchen will keep your crew well fed and healthy";
     }
 	
 	// Update is called once per frame

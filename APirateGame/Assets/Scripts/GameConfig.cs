@@ -15,9 +15,9 @@ namespace Assets.Scripts
 
         public int PlagueResourceConsumptionIncrement = 3;
 
-        public int RowingActionFoodConsumptionIncrement = 5;
+        public int RowingActionFoodConsumptionIncrement = 2;
 
-        public uint InitialFoodCount = 1500;
+        public uint InitialFoodCount = 200;
         public uint InitialWoodCount = 100;
 
         public int ChanceForShallowWaters = 10;
@@ -26,7 +26,7 @@ namespace Assets.Scripts
         public int ChanceForWalkThePlank = 5;
 
         public int MinShallowWaterShipPartDamage = 0;
-        public int MaxShallowWaterShipPartDamage = 100;
+        public int MaxShallowWaterShipPartDamage = 10;
 
         public int MinFireShipPartDamage = 0;
         public int MaxFireShipPartDamage = 100;
@@ -34,14 +34,14 @@ namespace Assets.Scripts
         public int MaxFireCrewMemberDamage = 100;
 
         public int MinPirateAttackShipPartDamage = 0;
-        public int MaxPirateAttackShipPartDamage = 100;
+        public int MaxPirateAttackShipPartDamage = 10;
         public int MinPirateAttackCrewMemberDamage = 0;
         public int MaxPirateAttackCrewMemberDamage = 100;
         public int MinPirateAttackResourceDamage = 0;
-        public int MaxPirateAttackResourceDamage = 100;
+        public int MaxPirateAttackResourceDamage = 30;
 
         public int CannonWeight = 1;
-        public int EngineRoomWeight = 3;
+        public int OarsWeight = 3;
         public int HullWeight = 2;
         public int KitchenWeight = 1;
         public int SailsWeight = 1;

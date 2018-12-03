@@ -13,7 +13,7 @@ public class CrewMemberAttribute
         s_allowedAttributes.Add("Rowing", new Vector2(1f, 10f));
         s_allowedAttributes.Add("Sailing", new Vector2(1f, 5f));
         s_allowedAttributes.Add("Scouting", new Vector2(1f, 10f));
-        s_allowedAttributes.Add("Canon", new Vector2(1f, 10f));
+        s_allowedAttributes.Add("Cannon", new Vector2(1f, 10f));
     }
 
     public string AttributeName { get; private set; }

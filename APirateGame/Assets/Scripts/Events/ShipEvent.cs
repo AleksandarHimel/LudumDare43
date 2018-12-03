@@ -22,8 +22,8 @@ namespace Assets.Events
         }
 
         public abstract void ExecuteEventInternal(Ship ship);
-
-        protected static Random random = new Random();
+        
+        protected static Random random = new Random((int)DateTime.Now.Ticks);
 
         protected static int getRandNum(int min, int max)
         {

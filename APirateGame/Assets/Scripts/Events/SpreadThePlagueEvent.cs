@@ -1,6 +1,4 @@
-﻿using Assets.Events;
-using Assets.Scripts;
-using System;
+﻿using Assets.Scripts;
 using System.Linq;
 using UnityEngine;
 
@@ -10,9 +8,11 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship ship)
         {
-            foreach (ShipPart shipPart in ship.ShipParts)
+            Random.InitState((int)System.DateTime.Now.Ticks);
+            foreach (ShipPart shipPart in ship.FunctioningShipParts)
             {
                 bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
+                isRoomSafe = isRoomSafe || shipPart is Kitchen;
 
                 if (!isRoomSafe)
                 {
@@ -20,10 +20,10 @@ namespace Assets.Events
                     {
                         if (!crewMember.IsUnderPlague)
                         {
-                            if (UnityEngine.Random.Range(0f, 1f) > GameConfig.Instance.PlagueSpreadingProbability)
+                            if (Random.Range(0f, 1f) < GameConfig.Instance.PlagueSpreadingProbability)
                             {
                                 crewMember.PlagueThisGuy();
-                                FullEventDetailsMessage += String.Format("Oh no, it's contagious. Now even {0} is sick! \n", crewMember.PirateName);
+                                FullEventDetailsMessage += string.Format("Oh no, it's contagious. Now even {0} is sick! \n", crewMember.PirateName);
                             }
                         }
                     }

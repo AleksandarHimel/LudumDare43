@@ -8,9 +8,12 @@ using UnityEngine.EventSystems;
 
 public class Ship : MonoBehaviour, IPointerClickHandler
 {
-    public List<ShipPart> ShipParts { get; private set; }
-    public List<CrewMember> CrewMembers { get; private set; }
-    public List<CrewMember> DeceasedCrewMembers { get; private set; }
+    private List<ShipPart> ShipParts { get; set; }
+    public IEnumerable<ShipPart> DestroyedShipParts { get { return ShipParts.Where(cm => cm.IsDestroyed); } }
+    public IEnumerable<ShipPart> FunctioningShipParts { get { return ShipParts.Where(cm => !cm.IsDestroyed); } }
+    public List<CrewMember> CrewMembers { get; set; }
+    public IEnumerable<CrewMember> DeceasedCrewMembers { get { return CrewMembers.Where(cm => cm.IsDead); } }
+    public IEnumerable<CrewMember> AliveCrewMembers { get { return CrewMembers.Where(cm => !cm.IsDead); } }
 
     public ShipInventory Inventory { get; set; }
     public CrewMember SelectedCrewMember { get; private set; }
@@ -28,8 +31,14 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             throw new Exception("Ship part is full!");
         }
 
+        bool needToUpdateMapChoices = crew.CurrentShipPart is CrowsNest || part is CrowsNest;
         crew.CurrentShipPart = part;
-        GameManager.Instance.UiController.UpdateChoices(GameManager.Instance.MapManager.GetPossibleDestinations());
+
+        if (needToUpdateMapChoices)
+        {
+            GameManager.Instance.UiController.UpdateChoices(GameManager.Instance.MapManager.GetPossibleDestinations());
+            GameManager.Instance.UiController.OnChoiceChanged(0);
+        }
     }
 
     // Use this for initialization
@@ -37,14 +46,14 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     {
         Inventory = ScriptableObject.CreateInstance<ShipInventory>();
         Inventory.InitialiseResources(GameConfig.Instance.InitialFoodCount, GameConfig.Instance.InitialWoodCount);
-        DeceasedCrewMembers = new List<CrewMember>();
+        CrewMembers = new List<CrewMember>();
     }
 
     void Start()
     {
         var cannonGO = GameObject.Find("ShipPart/Cannon");
-        var engineRoomGO = GameObject.Find("ShipPart/EngineRoom");
-        var hullGO = GameObject.Find("ShipPart/Hull");
+        var oarsGO = GameObject.Find("ShipPart/Oars");
+        // var hullGO = GameObject.Find("ShipPart/Hull");
         var kitchenGO = GameObject.Find("ShipPart/Kitchen");
         var sailsGO = GameObject.Find("ShipPart/Sails");
         var crowsNestGO = GameObject.Find("ShipPart/CrowsNest");
@@ -52,8 +61,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         ShipParts = new List<ShipPart>
         {
             cannonGO.AddComponent<Cannon>(),
-            engineRoomGO.AddComponent<EngineRoom>(),
-            hullGO.AddComponent<Hull>(),
+            oarsGO.AddComponent<Oars>(),
+            // hullGO.AddComponent<Hull>(), // no hull for now
             kitchenGO.AddComponent<Kitchen>(),
             sailsGO.AddComponent<Sails>(),
             crowsNestGO.AddComponent<CrowsNest>(),
@@ -64,7 +73,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             shipPart.InitShipPart(this);
         }
 
-        CrewMembers = new List<CrewMember>();
         foreach (var crewMemberConfig in GameFileConfig.GetInstance().ShipConfig.ShipCrew)
         {
             // Create instance of a Pirate
@@ -87,6 +95,21 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     internal void OnCrewMemberSelected(CrewMember crewMember)
     {
         SelectedCrewMember = crewMember;
+        GameManager.Instance.UiController.OnCrewMemberSelected(crewMember);
+    }
+
+    internal void ResetCrewMemberSelection()
+    {
+        SelectedCrewMember = null;
+        GameManager.Instance.UiController.OnCrewMemberSelected(null);
+    }
+
+    internal void OnCrewMemberKilled(CrewMember crewMember)
+    {
+        if (SelectedCrewMember == crewMember)
+        {
+            ResetCrewMemberSelection();
+        }
     }
 
     internal void ProcessMoveEnd()
@@ -157,11 +180,13 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public int CalculateBoatSpeed()
     {
         double sailingFactor = CrewMembers
-                                .Where(crewMember => crewMember.CurrentShipPart is Sails)
-                                .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : crewMember.GetAttribute("Sailing").AttributeValue)
+                                .Where(crewMember => crewMember!= null && crewMember.CurrentShipPart != null && crewMember.CurrentShipPart is Sails)
+                                .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : (double) crewMember.GetAttribute("Sailing").AttributeValue)
                                 .DefaultIfEmpty(1.0)
-                                .Single();
-        double boatSpeed = GameConfig.Instance.InitialShipSpeed * sailingFactor;
+                                .Average();
+        
+        //int baseSpeed = GameManager.Instance.CalculateDistanceByRiskiness(GameManager.Instance.DesiredRiskiness + 1);
+        double boatSpeed = sailingFactor * GameManager.Instance.CalculateDistanceByRiskiness(GameManager.Instance.DesiredRiskiness);
 
         // ShipParts slows us down
         /*
@@ -173,7 +198,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         double rowingSpeedIncrement =
             CrewMembers
-            .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
+            .Where(crewMember => crewMember.CurrentShipPart is Oars)
             // TODO: v-milast check if rowing is valid
             .Select(crewMember => crewMember.GetAttribute("Rowing"))
             .Where(attribute => attribute != null)
@@ -188,7 +213,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public uint CalculateFoodConsumptionBetweenTwoPoints()
     {
         int defaultFoodConsumption = CalculateDefaultFoodConsumption();
-        int boatSpeed = CalculateBoatSpeed();
+        //int boatSpeed = CalculateBoatSpeed();
 
         return (uint)defaultFoodConsumption;
     }
@@ -216,6 +241,17 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             .Sum();
     }
 
+    public int GetCannonBonus()
+    {
+        return (int)CrewMembers
+            .Where(crewMember => crewMember.CurrentShipPart is Cannon)
+            // TODO: milast check if cannon is ok
+            .Select(crewMember => crewMember.GetAttribute("Cannon"))
+            .Where(attribute => attribute != null)
+            .Select(attribute => attribute.AttributeValue)
+            .Sum();
+    }
+
     public ShipPart GetRandomLiveShipPart()
     {
         // Count available ship parts
@@ -229,6 +265,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             }
         }
 
+        UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
         int chosenShipPart = UnityEngine.Random.Range(0, countParts-1);
 
         var returnPart = new System.Object();

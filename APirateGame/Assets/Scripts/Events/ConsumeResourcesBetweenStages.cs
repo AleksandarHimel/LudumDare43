@@ -9,9 +9,11 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship ship)
         {
+            /*
             uint foodToReduce = ship.CalculateFoodConsumptionBetweenTwoPoints();
             ship.Inventory.ReduceResources(foodToReduce, 0);
-            FullEventDetailsMessage = String.Format("Captain, no work without food! Your crew ate {0} food. \n", foodToReduce);
+            */
+            FullEventDetailsMessage = String.Format("Captain, no work without food! Your crew ate {0} food. \n", ship.CalculateFoodConsumptionBetweenTwoPoints());
         }
 
         public override string eventDescription()

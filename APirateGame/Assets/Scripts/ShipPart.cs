@@ -28,12 +28,14 @@ public abstract class ShipPart : MonoBehaviour, IPointerClickHandler {
         ParentShip = parentShip;
     }
 
+    public string Description { get; protected set; }
+
     /// <summary>
     /// Gets all crew members currently in this ship part.
     /// </summary>
     public IEnumerable<CrewMember> PresentCrewMembers
     {
-        get { return ParentShip.CrewMembers.Where(cm => cm.CurrentShipPart == this); }
+        get { return ParentShip.AliveCrewMembers.Where(cm => cm.CurrentShipPart == this); }
     }
 
 	// Use this for initialization

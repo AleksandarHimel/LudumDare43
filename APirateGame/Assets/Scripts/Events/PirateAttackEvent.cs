@@ -9,24 +9,37 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship shipObject)
         {
-            foreach (ShipPart shipPart in shipObject.ShipParts)
+            UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
+
+            //Get cannon bonus before the cannon get possibly destroyed
+            int cannonBonus = shipObject.GetCannonBonus();
+
+            foreach (ShipPart shipPart in shipObject.FunctioningShipParts)
             {
-                uint damage = (uint)getRandNum(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
-                shipPart.TakeDamage(damage);
-                FullEventDetailsMessage += String.Format("Pirates fired their cannons and {0} took {1} damage /n", shipPart.name, damage);
+                //uint damage = (uint)getRandNum(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
+                int damage = UnityEngine.Random.Range(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
+                int counterDamage = cannonBonus;
+                damage -= cannonBonus;
+                damage = (damage < 0) ? 0 : damage;
+                shipPart.TakeDamage((uint) damage);
+                FullEventDetailsMessage += String.Format("Pirates fired their cannons and {0} took {1} damage \n", shipPart.name, damage);
+                Debug.Log(String.Format("CannonBonus:{0}; damage:{1}; counterDamage:{2}; shipPart:{3}", shipObject.GetCannonBonus(), damage, counterDamage, shipPart.GetType().ToString()));
+
             }
 
-            foreach (CrewMember crewMember in shipObject.CrewMembers)
+            foreach (CrewMember crewMember in shipObject.AliveCrewMembers)
             {
                 int damage = getRandNum(GameConfig.Instance.MinPirateAttackCrewMemberDamage, GameConfig.Instance.MaxPirateAttackCrewMemberDamage);
+                damage -= cannonBonus;
+                damage = (damage < 0) ? 0 : damage;
                 crewMember.ReduceHealth(damage);
-                FullEventDetailsMessage += String.Format("{0} fought like a true pirate but took {1} damage /n", crewMember.PirateName, damage);
+                FullEventDetailsMessage += String.Format("{0} fought like a true pirate but took {1} damage \n", crewMember.PirateName, damage);
             }
 
             int foodLooted = getRandNum(GameConfig.Instance.MinPirateAttackResourceDamage, GameConfig.Instance.MaxPirateAttackResourceDamage);
             shipObject.Inventory.ReduceResources((uint)foodLooted, 0);
             if (foodLooted > 0)
-                FullEventDetailsMessage += String.Format("Damn pirates! {0} food was looted from your ship /n", foodLooted);
+                FullEventDetailsMessage += String.Format("Damn pirates! {0} food was looted from your ship \n", foodLooted);
         }
 
         public override string eventDescription()

@@ -20,7 +20,6 @@ public class UiController : MonoBehaviour
     public Text StageText;
     public Dropdown PathChoice;
     Dropdown.DropdownEvent ChoiceChangedEvent;
-    public Text EventInfo;
     public GameObject EventCanvas;
     public ScrollRect ScrollRect;
 
@@ -48,11 +47,19 @@ public class UiController : MonoBehaviour
 
     public void OnCrewMemberSelected(CrewMember member)
     {
-        string text = string.Format("Name: {0}\nHealth: {1}{2}", member.PirateName, member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
-
-        foreach (string attributeName in member.AttributeNames)
+        string text;
+        if (member == null)
         {
-            text += string.Format("\n{0}: {1}", attributeName,( member.GetAttribute(attributeName) == null) ? "\u2620" : member.GetAttribute(attributeName).AttributeValue.ToString());
+            text = "No Pirate selected\nSelect or move one\nalthough he may not like it...";
+        }
+        else
+        {
+            text = string.Format("Name: {0}\nHealth: {1}{2}", member.PirateName, member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
+
+            foreach (string attributeName in member.AttributeNames)
+            {
+                text += string.Format("\n{0}: {1}", attributeName, (member.GetAttribute(attributeName) == null) ? "\u2620" : member.GetAttribute(attributeName).AttributeValue.ToString());
+            }
         }
 
         //Debug.Log(text);
@@ -61,7 +68,8 @@ public class UiController : MonoBehaviour
 
     public void OnShipPartSelected(ShipPart shipPart)
     {
-        string text = string.Format("Name: {0}\nHealth: {1}/{2}", shipPart.name, shipPart.Health, shipPart.MaxHealth);
+        string name = shipPart.name.Replace("ShipPart/", ""); // TODO: get name in a less hacky way
+        string text = string.Format("Name: {0}\nHealth: {1}/{2}", name, shipPart.Health, shipPart.MaxHealth);
 
         var crewMembers = shipPart.PresentCrewMembers;
 
@@ -73,7 +81,9 @@ public class UiController : MonoBehaviour
         }
 
         SelectedItemDetailsTextBox.text = text;
-        StatusBar.text = "";
+
+        StatusBar.color = Color.black;
+        StatusBar.text = shipPart.Description;
     }
 
     public void OnFailedLocationChange(CrewMember crewMember, ShipPart shipPart)
@@ -98,8 +108,9 @@ public class UiController : MonoBehaviour
         {
             foreach (MapNodeInformation nodeInfo in nodesInformation)
             {
-                string optionText = string.Format("{0} pts: {1}",
-                      nodeInfo.Riskiness + 1,
+                string optionText = string.Format("Move at least {0} miles: {1}",
+                      GameManager.Instance.CalculateDistanceByRiskiness(nodeInfo.Riskiness),
+
                       String.Join(" or ",
                       nodeInfo
                         .PossibleEncounter
@@ -108,7 +119,7 @@ public class UiController : MonoBehaviour
                 Debug.Log(optionText);
                 Dropdown.OptionData optionData = new Dropdown.OptionData(optionText);
 
-                OptionsDictionary[optionText] = nodeInfo.Riskiness + 1;
+                OptionsDictionary[optionText] = nodeInfo.Riskiness;
                 options.Add(optionData);
             }
         }
