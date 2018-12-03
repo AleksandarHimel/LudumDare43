@@ -115,8 +115,19 @@ namespace Assets.Scripts
             UiController.PathChoice.gameObject.SetActive(false);
 
             Ship.ProcessMoveEnd();
-            DistanceToHome = Math.Max(0, DistanceToHome - Ship.CalculateBoatSpeed());
-            if (DistanceToHome <= 0)
+
+            int distanceTravelled = Ship.CalculateBoatSpeed();
+            // if we went with a low-risk roundabout path the total distance has increased
+            int roundaboutPathPenalty = Math.Max(3 - GameManager.Instance.DesiredRiskiness, 0) * distanceTravelled / 4;
+
+            Debug.Log(
+                "Starting distance " + DistanceToHome + 
+                ", travelled " + distanceTravelled + 
+                ", penalty " + roundaboutPathPenalty);
+
+            DistanceToHome = Math.Max(0, DistanceToHome - distanceTravelled + roundaboutPathPenalty);
+
+            if (DistanceToHome == 0)
             {
                 Victory();
                 return;
