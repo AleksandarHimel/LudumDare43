@@ -51,7 +51,7 @@ public class UiController : MonoBehaviour
         string text;
         if (member == null)
         {
-            text = "No Pirate selected\nSelect or move one\nalgthough he may not like it...";
+            text = "No Pirate selected\nSelect or move one\nalthough he may not like it...";
         }
         else
         {
