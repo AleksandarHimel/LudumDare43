@@ -20,7 +20,7 @@ namespace Assets.Events
                     {
                         if (!crewMember.IsUnderPlague)
                         {
-                            if (UnityEngine.Random.Range(0f, 1f) > GameConfig.Instance.PlagueSpreadingProbability)
+                            if (UnityEngine.Random.Range(0f, 1f) < GameConfig.Instance.PlagueSpreadingProbability)
                             {
                                 crewMember.PlagueThisGuy();
                                 FullEventDetailsMessage += String.Format("Oh no, it's contagious. Now even {0} is sick! \n", crewMember.PirateName);
