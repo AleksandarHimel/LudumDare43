@@ -179,18 +179,14 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public int CalculateBoatSpeed()
     {
-        double sailingFactor = 1.0;
-        /*
-            CrewMembers
-                                .Where(crewMember => crewMember.CurrentShipPart != null && crewMember.CurrentShipPart is Sails)
+        double sailingFactor = CrewMembers
+                                .Where(crewMember => crewMember!= null && crewMember.CurrentShipPart != null && crewMember.CurrentShipPart is Sails)
                                 .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : (double) crewMember.GetAttribute("Sailing").AttributeValue)
                                 .DefaultIfEmpty(1.0)
                                 .Average();
-                                */
+        
         //int baseSpeed = GameManager.Instance.CalculateDistanceByRiskiness(GameManager.Instance.DesiredRiskiness + 1);
-        double baseSpeed = sailingFactor * GameManager.Instance.CalculateDistanceByRiskiness(GameManager.Instance.DesiredRiskiness);
-
-        double boatSpeed = baseSpeed * sailingFactor;
+        double boatSpeed = sailingFactor * GameManager.Instance.CalculateDistanceByRiskiness(GameManager.Instance.DesiredRiskiness);
 
         // ShipParts slows us down
         /*

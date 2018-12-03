@@ -27,6 +27,6 @@ public class Oars : ShipPart {
 
     public override bool IsOnBottom()
     {
-        return false;
+        return true;
     }
 }

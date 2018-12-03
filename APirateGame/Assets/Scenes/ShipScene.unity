@@ -4369,7 +4369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ship: {fileID: 1341390717}
   Points: 0
-  DistanceToHome: 300
+  DistanceToHome: 400
   PlayerController: {fileID: 0}
   InputController: {fileID: 1507152519}
   UiController: {fileID: 1507152522}

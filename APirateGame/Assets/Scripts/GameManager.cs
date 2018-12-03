@@ -111,14 +111,12 @@ namespace Assets.Scripts
         {
             int distanceTravelled = Ship.CalculateBoatSpeed();
             // if we went with a low-risk roundabout path the total distance has increased
-            int roundaboutPathPenalty = Math.Max(3 - GameManager.Instance.DesiredRiskiness, 0) * distanceTravelled / 4;
-
+            
             Debug.Log(
                 "Starting distance " + DistanceToHome +
-                ", travelled " + distanceTravelled +
-                ", penalty " + roundaboutPathPenalty);
+                ", travelled " + distanceTravelled );
 
-            DistanceToHome = Math.Max(0, DistanceToHome - distanceTravelled + roundaboutPathPenalty);
+            DistanceToHome = Math.Max(0, DistanceToHome - distanceTravelled);
         }
 
         public int CalculateDistanceByRiskiness(int riskiness)
@@ -147,13 +145,14 @@ namespace Assets.Scripts
             UiController.PathChoice.gameObject.SetActive(false);
 
             Ship.ProcessMoveEnd();
+            UpdateDistance();
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
 
         void Update()
         {
-            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, CalculateDistanceByRiskiness(DesiredRiskiness), Ship.CalculateFoodConsumptionBetweenTwoPoints());
+            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, Ship.CalculateBoatSpeed(), Ship.CalculateFoodConsumptionBetweenTwoPoints());
 
             if (GameState.State == GameState.EGameState.ComputerTurn || GameState.State == GameState.EGameState.PlayerTurn)
             {
@@ -167,8 +166,6 @@ namespace Assets.Scripts
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
                 MapManager.GoToNextDestination(DesiredRiskiness - 1);
-                Points = Points + MapManager.Instance.GetCurrentNode().Riskiness + 1;
-                Debug.Log("POINTS" + Points);
                 UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
@@ -236,17 +233,15 @@ namespace Assets.Scripts
             }
             if (GameState.State == GameState.EGameState.CheckGameState)
             {
-                UpdateDistance();
+                if (DistanceToHome <= 0)
+                {
+                    Victory();
+                    return;
+                }
 
                 if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
                 {
                     GameOver();
-                    return;
-                }
-
-                if (DistanceToHome <= 0)
-                {
-                    Victory();
                     return;
                 }
 
