@@ -50,6 +50,7 @@ namespace Assets.Scripts
                     //(Devnote - Srki) Fix once we get eligible encounters in 
                     Map[riskDepth][mapPosition].NodeEvent = EventManager
                         .Instance.ComposeEvent()
+                        .AddEvent(EventEnum.SPREAD_THE_PLAGUE)
                         .AddEvent(GetRandomEncounter(riskDepth));
                         //.AddEvent(EventEnum.CONSUME_RESOURCES_BETWEEEN_STAGES);
                 }
