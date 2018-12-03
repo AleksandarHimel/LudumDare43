@@ -110,6 +110,7 @@ public class UiController : MonoBehaviour
             {
                 string optionText = string.Format("Move at least {0} miles: {1}",
                       GameManager.Instance.CalculateDistanceByRiskiness(nodeInfo.Riskiness),
+
                       String.Join(" or ",
                       nodeInfo
                         .PossibleEncounter

@@ -153,12 +153,12 @@ namespace Assets.Scripts
 
         void Update()
         {
-            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, Ship.CalculateBoatSpeed(), Ship.CalculateDefaultFoodConsumption());
+            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, CalculateDistanceByRiskiness(DesiredRiskiness), Ship.CalculateFoodConsumptionBetweenTwoPoints());
 
             if (GameState.State == GameState.EGameState.ComputerTurn || GameState.State == GameState.EGameState.PlayerTurn)
             {
                 //Check if there are crew members alive
-                if (Ship.CrewMembers.Count == 0)
+                if (Ship.AliveCrewMembers.Count() == 0)
                 {
                     GameOver();
                 }
@@ -170,7 +170,6 @@ namespace Assets.Scripts
                 Points = Points + MapManager.Instance.GetCurrentNode().Riskiness + 1;
                 Debug.Log("POINTS" + Points);
                 UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
-                
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
@@ -186,10 +185,10 @@ namespace Assets.Scripts
                 if (shipEvent != null)
                 {
                     UiController.EventCanvas.SetActive(true);
-                    UiController.StageText.text = "The Goddess of the Sea was merciful! No harm was done to your crew";
-                    if (shipEvent.eventDescription().Equals(String.Empty))
-                        UiController.StageText.text = shipEvent.eventDescription();
-                    UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = composedEvent.GetFullEventDetailsMessage();
+                    UiController.StageText.text = shipEvent.eventDescription();
+                    UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = "The Goddess of the Sea was merciful! No harm was done to your crew";
+                    if (!composedEvent.GetFullEventDetailsMessage().Equals(String.Empty))
+                        UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = composedEvent.GetFullEventDetailsMessage();
 
                     GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
                 }
@@ -225,7 +224,7 @@ namespace Assets.Scripts
             }
             if (GameState.State == GameState.EGameState.CheckGameState)
             {
-                DistanceToHome = Math.Max(0, DistanceToHome - Ship.CalculateBoatSpeed());
+                UpdateDistance();
 
                 if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
                 {

@@ -77,6 +77,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     public int GetResourceConcuption()
     {
+        if (IsDead)
+        {
+            return 0;
+        }
+
         int result = ResourceConsumption;
 
         // People that and are affected by plague eat more food
