@@ -73,15 +73,10 @@ namespace Assets.Scripts
         }
 
         // Use this for initialization
-        void Start() {
+        void Start()
+        {
+            Debug.Log("Random seed: " + UnityEngine.Random.seed);
 
-            // TODO merge
-
-            // var shipGameObject = GameObject.Find("ShipGO");
-            // Ship = shipGameObject.GetComponent<Ship>();
-            // Ship.Inventory = ShipInventory;
-            // var shipGameObject = new GameObject("ShipGameObject");
-            // Ship = shipGameObject.AddComponent<Ship>();
             UiController.UpdateChoices(MapManager.GetPossibleDestinations());
             DesiredRiskiness = UiController.GetActiveRiskiness();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
@@ -96,7 +91,7 @@ namespace Assets.Scripts
 
             SetIsUserTurn(true);
         }
-	
+    
         public void SetIsUserTurn(bool newValue)
         {
             if (!(GameState.State == GameState.EGameState.Victory && GameState.State == GameState.EGameState.GameOver))
