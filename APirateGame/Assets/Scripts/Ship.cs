@@ -173,8 +173,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public int CalculateBoatSpeed()
     {
-        Debug.Log("CrewMembers null: " + (CrewMembers == null));
-
         double sailingFactor = CrewMembers
                                 .Where(crewMember => crewMember.CurrentShipPart is Sails)
                                 .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : crewMember.GetAttribute("Sailing").AttributeValue)
