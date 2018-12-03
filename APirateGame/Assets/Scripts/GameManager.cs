@@ -144,7 +144,7 @@ namespace Assets.Scripts
 
         void Update()
         {
-            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, Ship.CalculateBoatSpeed(), Ship.CalculateDefaultFoodConsumption());
+            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, CalculateDistanceByRiskiness(DesiredRiskiness), Ship.CalculateFoodConsumptionBetweenTwoPoints());
 
             if (GameState.State == GameState.EGameState.ComputerTurn || GameState.State == GameState.EGameState.PlayerTurn)
             {
@@ -161,7 +161,6 @@ namespace Assets.Scripts
                 Points = Points + MapManager.Instance.GetCurrentNode().Riskiness + 1;
                 Debug.Log("POINTS" + Points);
                 UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
-                
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
@@ -215,7 +214,7 @@ namespace Assets.Scripts
             }
             if (GameState.State == GameState.EGameState.CheckGameState)
             {
-                DistanceToHome = Math.Max(0, DistanceToHome - Ship.CalculateBoatSpeed());
+                UpdateDistance();
 
                 if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
                 {

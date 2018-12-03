@@ -108,7 +108,7 @@ public class UiController : MonoBehaviour
         {
             foreach (MapNodeInformation nodeInfo in nodesInformation)
             {
-                string optionText = string.Format("{0} miles: {1}",
+                string optionText = string.Format("{0} miles/day: {1}",
                       GameManager.Instance.CalculateDistanceByRiskiness(nodeInfo.Riskiness + 1),
                       String.Join(" or ",
                       nodeInfo
