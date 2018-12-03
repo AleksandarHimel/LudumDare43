@@ -44,7 +44,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         var cannonGO = GameObject.Find("ShipPart/Cannon");
-        var oarsGO = GameObject.Find("ShipPart/EngineRoom"); // TODO: rename game object as well
+        var oarsGO = GameObject.Find("ShipPart/Oars");
         // var hullGO = GameObject.Find("ShipPart/Hull");
         var kitchenGO = GameObject.Find("ShipPart/Kitchen");
         var sailsGO = GameObject.Find("ShipPart/Sails");
