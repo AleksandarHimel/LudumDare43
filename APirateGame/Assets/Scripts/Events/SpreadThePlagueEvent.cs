@@ -12,6 +12,7 @@ namespace Assets.Events
             foreach (ShipPart shipPart in ship.FunctioningShipParts)
             {
                 bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
+                isRoomSafe = isRoomSafe || shipPart is Kitchen;
 
                 if (!isRoomSafe)
                 {

@@ -62,7 +62,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     void Start()
     {
-        Health = 10;
+        Health = 100;
         IsDead = false;
     }
 

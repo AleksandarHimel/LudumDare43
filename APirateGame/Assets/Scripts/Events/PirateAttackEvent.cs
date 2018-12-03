@@ -18,8 +18,8 @@ namespace Assets.Events
             {
                 //uint damage = (uint)getRandNum(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
                 int damage = UnityEngine.Random.Range(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
-                int counterDamage = UnityEngine.Random.Range(0, cannonBonus);
-                damage -= counterDamage;
+                int counterDamage = cannonBonus;
+                damage -= cannonBonus;
                 damage = (damage < 0) ? 0 : damage;
                 shipPart.TakeDamage((uint) damage);
                 FullEventDetailsMessage += String.Format("Pirates fired their cannons and {0} took {1} damage \n", shipPart.name, damage);
@@ -30,6 +30,8 @@ namespace Assets.Events
             foreach (CrewMember crewMember in shipObject.AliveCrewMembers)
             {
                 int damage = getRandNum(GameConfig.Instance.MinPirateAttackCrewMemberDamage, GameConfig.Instance.MaxPirateAttackCrewMemberDamage);
+                damage -= cannonBonus;
+                damage = (damage < 0) ? 0 : damage;
                 crewMember.ReduceHealth(damage);
                 FullEventDetailsMessage += String.Format("{0} fought like a true pirate but took {1} damage \n", crewMember.PirateName, damage);
             }

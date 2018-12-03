@@ -11,7 +11,7 @@ namespace Assets.Events
         {
             // TODO: Fix if you wish to use
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
             //Ship shipObject = behaviouralObject as Ship;
 
