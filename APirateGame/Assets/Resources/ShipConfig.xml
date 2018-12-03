@@ -2,7 +2,7 @@
 <Ship>
   <ShipCrew>
     <CrewMember name ="Jack" color="red">
-      <InitShipPart>CrowsNest</InitShipPart>
+      <InitShipPart>Cannon</InitShipPart>
       <Attributes>
         <CrewMemberAttribute name="Scouting" value="2" />
         <CrewMemberAttribute name="Rowing" value="3" />
@@ -25,7 +25,7 @@
       </Attributes>
     </CrewMember>
     <CrewMember name ="Francis" color="green">
-      <InitShipPart>Cannon</InitShipPart>
+      <InitShipPart>CrowsNest</InitShipPart>
       <Attributes>
         <CrewMemberAttribute name="Cannon" value="2" />
         <CrewMemberAttribute name="Rowing" value="9" />
