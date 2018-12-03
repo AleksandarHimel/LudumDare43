@@ -101,6 +101,9 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         Ship.OnCrewMemberKilled(this);
         
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
+
+        var screamManagerGO = GameObject.Find("ScreamManager");
+        screamManagerGO.GetComponent<AudioSource>().Play();
     }
 
     public CrewMemberAttribute GetAttribute(string attributeName)
