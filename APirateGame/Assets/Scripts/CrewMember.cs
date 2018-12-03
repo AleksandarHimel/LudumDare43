@@ -155,7 +155,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     {
         var pirateCollider = gameObject.GetComponent<BoxCollider2D>();
 
-        foreach (ShipPart sp in Ship.ShipParts)
+        foreach (ShipPart sp in Ship.FunctioningShipParts)
         {
             var collider = sp.gameObject.GetComponent<BoxCollider2D>();
 
@@ -216,7 +216,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
         var pendingPosition = new Vector3(worldPoint.x, worldPoint.y, gameObject.transform.position.z);
 
-        foreach (ShipPart sp in Ship.ShipParts)
+        foreach (ShipPart sp in Ship.FunctioningShipParts)
         {
             if (this.IsWithinBoundaries(sp))
             {

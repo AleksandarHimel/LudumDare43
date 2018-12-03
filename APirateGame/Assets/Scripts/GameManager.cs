@@ -73,15 +73,10 @@ namespace Assets.Scripts
         }
 
         // Use this for initialization
-        void Start() {
+        void Start()
+        {
+            Debug.Log("Random seed: " + UnityEngine.Random.seed);
 
-            // TODO merge
-
-            // var shipGameObject = GameObject.Find("ShipGO");
-            // Ship = shipGameObject.GetComponent<Ship>();
-            // Ship.Inventory = ShipInventory;
-            // var shipGameObject = new GameObject("ShipGameObject");
-            // Ship = shipGameObject.AddComponent<Ship>();
             UiController.UpdateChoices(MapManager.GetPossibleDestinations());
             DesiredRiskiness = UiController.GetActiveRiskiness();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
@@ -96,7 +91,7 @@ namespace Assets.Scripts
 
             SetIsUserTurn(true);
         }
-	
+    
         public void SetIsUserTurn(bool newValue)
         {
             if (!(GameState.State == GameState.EGameState.Victory && GameState.State == GameState.EGameState.GameOver))
@@ -110,6 +105,29 @@ namespace Assets.Scripts
             }
         }
 
+        public void UpdateDistance()
+        {
+            int distanceTravelled = Ship.CalculateBoatSpeed();
+            // if we went with a low-risk roundabout path the total distance has increased
+            int roundaboutPathPenalty = Math.Max(3 - GameManager.Instance.DesiredRiskiness, 0) * distanceTravelled / 4;
+
+            Debug.Log(
+                "Starting distance " + DistanceToHome +
+                ", travelled " + distanceTravelled +
+                ", penalty " + roundaboutPathPenalty);
+
+            DistanceToHome = Math.Max(0, DistanceToHome - distanceTravelled + roundaboutPathPenalty);
+        }
+
+        public int CalculateDistanceByRiskiness(int riskiness)
+        {
+            int distanceTravelled = Ship.CalculateBoatSpeed();
+            // if we went with a low-risk roundabout path the total distance has increased
+            int roundaboutPathPenalty = Math.Max(3 - riskiness, 0) * distanceTravelled / 4;
+
+            return distanceTravelled - roundaboutPathPenalty;
+        }
+
         public void ProcessMoveEnd()
         { 
             // Fade out background music
@@ -120,8 +138,10 @@ namespace Assets.Scripts
             UiController.PathChoice.gameObject.SetActive(false);
 
             Ship.ProcessMoveEnd();
-            DistanceToHome = Math.Max(0, DistanceToHome - Ship.CalculateBoatSpeed());
-            if (DistanceToHome <= 0)
+
+            UpdateDistance();
+
+            if (DistanceToHome == 0)
             {
                 Victory();
                 return;
