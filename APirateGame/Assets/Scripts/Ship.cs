@@ -8,8 +8,6 @@ using UnityEngine.EventSystems;
 
 public class Ship : MonoBehaviour, IPointerClickHandler
 {
-    
-
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
     public List<CrewMember> DeceasedCrewMembers { get; private set; }
@@ -25,7 +23,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        if (part.MaxNumberOfCrewMembers == part.PresentCrewMembers.Count())
+        if (part.MaxNumberOfCrewMembers <= part.PresentCrewMembers.Count())
         {
             throw new Exception("Ship part is full!");
         }

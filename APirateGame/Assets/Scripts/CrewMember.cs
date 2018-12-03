@@ -125,8 +125,6 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
             var worldPoint = Camera.main.ScreenToWorldPoint(
                 new Vector3(eventData.position.x, eventData.position.y, gameObject.transform.position.z - Camera.main.transform.position.z));
             
-            Debug.Log(sp.name + " " + minX + " " + maxX + " " + minY + " " + maxY + "(current: " + worldPoint.x + "," + worldPoint.y + ")");
-
             if (minX <= worldPoint.x && worldPoint.x <= maxX && minY <= worldPoint.y && worldPoint.y <= maxY)
             {
                 try
@@ -140,9 +138,11 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
                 }
                 catch (Exception)
                 {
-                    Debug.Log("Could not assign " + this.name + " to " + sp.name + "( max ppl: " + sp.MaxNumberOfCrewMembers + ")");
+                    Debug.Log("Could not assign " + this.name + " to " + sp.name + " (max ppl: " + sp.MaxNumberOfCrewMembers + ")");
                     MoveTo(dragPositionStart.Value);
                     dragPositionStart = null;
+
+                    GameManager.Instance.UiController.OnFailedLocationChange(this, sp);
 
                     return;
                 }
