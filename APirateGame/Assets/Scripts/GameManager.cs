@@ -147,6 +147,9 @@ namespace Assets.Scripts
             Ship.ProcessMoveEnd();
             UpdateDistance();
 
+            UiController.UpdateChoices(MapManager.GetPossibleDestinations());
+            GameManager.Instance.UiController.OnChoiceChanged(0);
+
             GameState.State = GameState.EGameState.BringTheNight; 
         }
 
@@ -233,13 +236,20 @@ namespace Assets.Scripts
             }
             if (GameState.State == GameState.EGameState.CheckGameState)
             {
+                if (Ship.IsDestroyed())
+                {
+                    GameOver();
+                    return;
+                }
+
+                // First check victory condition, allow player to win if their reached the home with no food left
                 if (DistanceToHome <= 0)
                 {
                     Victory();
                     return;
                 }
 
-                if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
+                if (Ship.Inventory.Food == 0)
                 {
                     GameOver();
                     return;
