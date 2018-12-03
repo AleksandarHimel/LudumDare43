@@ -139,20 +139,6 @@ namespace Assets.Scripts
 
             Ship.ProcessMoveEnd();
 
-            UpdateDistance();
-
-            if (DistanceToHome == 0)
-            {
-                Victory();
-                return;
-            }
-
-            if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
-            {
-                GameOver();
-                return;
-            }
-
             GameState.State = GameState.EGameState.BringTheNight; 
         }
 
@@ -190,7 +176,9 @@ namespace Assets.Scripts
                 if (shipEvent != null)
                 {
                     UiController.EventCanvas.SetActive(true);
-                    UiController.StageText.text = shipEvent.eventDescription();
+                    UiController.StageText.text = "The Goddess of the Sea was merciful! No harm was done to your crew";
+                    if (shipEvent.eventDescription().Equals(String.Empty))
+                        UiController.StageText.text = shipEvent.eventDescription();
                     UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = composedEvent.GetFullEventDetailsMessage();
 
                     GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
@@ -225,6 +213,24 @@ namespace Assets.Scripts
                 t = 0.0f;
                 SetIsUserTurn(false);
             }
+            if (GameState.State == GameState.EGameState.CheckGameState)
+            {
+                DistanceToHome = Math.Max(0, DistanceToHome - Ship.CalculateBoatSpeed());
+
+                if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
+                {
+                    GameOver();
+                    return;
+                }
+
+                if (DistanceToHome <= 0)
+                {
+                    Victory();
+                    return;
+                }
+
+                GameState.State = GameState.EGameState.BringTheDawn;
+            }
         }
 
         public void GameOver()
@@ -256,9 +262,8 @@ namespace Assets.Scripts
         public void ProcessUserAcceptedEventResult()
         {
             UiController.EventCanvas.SetActive(false);
-            GameState.State = GameState.EGameState.BringTheDawn;
+            GameState.State = GameState.EGameState.CheckGameState;
         }
-
 
         private void VerifyGameState()
         {

@@ -15,6 +15,7 @@ namespace Assets.Scripts
             BringTheNight,
             BringTheDawn,
             WaitForUserEventResultConfirm,
+            CheckGameState,
         }
 
         public EGameState State = EGameState.PreGame;

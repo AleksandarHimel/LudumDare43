@@ -20,7 +20,6 @@ public class UiController : MonoBehaviour
     public Text StageText;
     public Dropdown PathChoice;
     Dropdown.DropdownEvent ChoiceChangedEvent;
-    public Text EventInfo;
     public GameObject EventCanvas;
     public ScrollRect ScrollRect;
 
