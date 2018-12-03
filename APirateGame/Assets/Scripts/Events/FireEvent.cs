@@ -11,7 +11,7 @@ namespace Assets.Events
         {
             Ship shipObject = behaviouralObject as Ship;
 
-            foreach (ShipPart shipPart in shipObject.ShipParts)
+            foreach (ShipPart shipPart in shipObject.FunctioningShipParts)
             {
                 uint damage = (uint)getRandNum(GameConfig.Instance.MinFireShipPartDamage, GameConfig.Instance.MaxFireShipPartDamage);
                 shipPart.TakeDamage(damage);

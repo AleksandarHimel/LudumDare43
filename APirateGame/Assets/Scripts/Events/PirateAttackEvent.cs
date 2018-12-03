@@ -9,7 +9,7 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship shipObject)
         {
-            foreach (ShipPart shipPart in shipObject.ShipParts)
+            foreach (ShipPart shipPart in shipObject.FunctioningShipParts)
             {
                 uint damage = (uint)getRandNum(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
                 shipPart.TakeDamage(damage);

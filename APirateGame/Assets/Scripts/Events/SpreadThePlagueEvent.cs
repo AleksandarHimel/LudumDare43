@@ -10,7 +10,7 @@ namespace Assets.Events
     {
         public override void ExecuteEventInternal(Ship ship)
         {
-            foreach (ShipPart shipPart in ship.ShipParts)
+            foreach (ShipPart shipPart in ship.FunctioningShipParts)
             {
                 bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
 
