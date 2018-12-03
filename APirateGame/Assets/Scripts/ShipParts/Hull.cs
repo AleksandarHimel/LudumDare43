@@ -12,12 +12,14 @@ public class Hull : ShipPart
         MaxHealth = 2;
         Health = MaxHealth;
         Weight = GameConfig.Instance.HullWeight;
+
+        Description = "(DEBUG) Currently not in the game";
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    
+    // Update is called once per frame
+    void Update () {
+        
+    }
 
     public override bool IsOnBottom()
     {

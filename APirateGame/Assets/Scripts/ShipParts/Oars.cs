@@ -18,12 +18,12 @@ public class Oars : ShipPart {
 
         Description = "The ship moves faster when there are people manning the oars";
     }
-	
-	// Update is called once per frame
-	void Update ()
+    
+    // Update is called once per frame
+    void Update ()
     {
-		
-	}
+        
+    }
 
     public override bool IsOnBottom()
     {
