@@ -105,6 +105,29 @@ namespace Assets.Scripts
             }
         }
 
+        public void UpdateDistance()
+        {
+            int distanceTravelled = Ship.CalculateBoatSpeed();
+            // if we went with a low-risk roundabout path the total distance has increased
+            int roundaboutPathPenalty = Math.Max(3 - GameManager.Instance.DesiredRiskiness, 0) * distanceTravelled / 4;
+
+            Debug.Log(
+                "Starting distance " + DistanceToHome +
+                ", travelled " + distanceTravelled +
+                ", penalty " + roundaboutPathPenalty);
+
+            DistanceToHome = Math.Max(0, DistanceToHome - distanceTravelled + roundaboutPathPenalty);
+        }
+
+        public int CalculateDistanceByRiskiness(int riskiness)
+        {
+            int distanceTravelled = Ship.CalculateBoatSpeed();
+            // if we went with a low-risk roundabout path the total distance has increased
+            int roundaboutPathPenalty = Math.Max(3 - riskiness, 0) * distanceTravelled / 4;
+
+            return distanceTravelled - roundaboutPathPenalty;
+        }
+
         public void ProcessMoveEnd()
         { 
             // Fade out background music
@@ -116,16 +139,7 @@ namespace Assets.Scripts
 
             Ship.ProcessMoveEnd();
 
-            int distanceTravelled = Ship.CalculateBoatSpeed();
-            // if we went with a low-risk roundabout path the total distance has increased
-            int roundaboutPathPenalty = Math.Max(3 - GameManager.Instance.DesiredRiskiness, 0) * distanceTravelled / 4;
-
-            Debug.Log(
-                "Starting distance " + DistanceToHome + 
-                ", travelled " + distanceTravelled + 
-                ", penalty " + roundaboutPathPenalty);
-
-            DistanceToHome = Math.Max(0, DistanceToHome - distanceTravelled + roundaboutPathPenalty);
+            UpdateDistance();
 
             if (DistanceToHome == 0)
             {
