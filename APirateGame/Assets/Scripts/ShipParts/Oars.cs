@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EngineRoom : ShipPart {
+public class Oars : ShipPart {
 
-    public EngineRoom(Ship parentShip) : base (parentShip) { }
+    public Oars(Ship parentShip) : base (parentShip) { }
 
     // Use this for initialization
     public override void InitShipPart(Ship ship)
@@ -14,7 +14,9 @@ public class EngineRoom : ShipPart {
         MaxNumberOfCrewMembers = 2;
         MaxHealth = 2;
         Health = MaxHealth;
-        Weight = GameConfig.Instance.EngineRoomWeight;
+        Weight = GameConfig.Instance.OarsWeight;
+
+        Description = "The ship moves faster when there are people manning the oars";
     }
 	
 	// Update is called once per frame

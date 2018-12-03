@@ -52,8 +52,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         ShipParts = new List<ShipPart>
         {
             cannonGO.AddComponent<Cannon>(),
-            engineRoomGO.AddComponent<EngineRoom>(),
-            hullGO.AddComponent<Hull>(),
+            engineRoomGO.AddComponent<Oars>(),
+            // hullGO.AddComponent<Hull>(), // no hull for now
             kitchenGO.AddComponent<Kitchen>(),
             sailsGO.AddComponent<Sails>(),
             crowsNestGO.AddComponent<CrowsNest>(),
@@ -191,7 +191,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
         double rowingSpeedIncrement =
             CrewMembers
-            .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
+            .Where(crewMember => crewMember.CurrentShipPart is Oars)
             // TODO: v-milast check if rowing is valid
             .Select(crewMember => crewMember.GetAttribute("Rowing"))
             .Where(attribute => attribute != null)

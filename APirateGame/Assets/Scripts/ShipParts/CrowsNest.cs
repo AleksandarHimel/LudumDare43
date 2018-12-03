@@ -15,6 +15,8 @@ public class CrowsNest : ShipPart
         MaxHealth = 2;
         Health = MaxHealth;
         Weight = GameConfig.Instance.CrowsNestWeight;
+
+        Description = "Having a lookout means less chance of being surprised by what's coming next";
     }
 
     // Update is called once per frame
