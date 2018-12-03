@@ -13,6 +13,7 @@ public class UiController : MonoBehaviour
 {
     public Text ResourcesTextBox;
     public Text SelectedItemDetailsTextBox;
+    public Text StatusBar;
     public Text Points;
     public Text GameOverText;
     public Text VictoryText;
@@ -21,6 +22,7 @@ public class UiController : MonoBehaviour
     Dropdown.DropdownEvent ChoiceChangedEvent;
     public Text EventInfo;
     public GameObject EventCanvas;
+    public ScrollRect ScrollRect;
 
     // Maps option choice to riskiness
     public Dictionary<string, int> OptionsDictionary = new Dictionary<string, int>();
@@ -33,16 +35,16 @@ public class UiController : MonoBehaviour
         PathChoice.onValueChanged = ChoiceChangedEvent;
     }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
     }
-	
-	// Update is called once per frame
-	void Update ()
+    
+    // Update is called once per frame
+    void Update ()
     {
-		
-	}
+        
+    }
 
     public void OnCrewMemberSelected(CrewMember member)
     {
@@ -57,7 +59,7 @@ public class UiController : MonoBehaviour
         SelectedItemDetailsTextBox.text = text;
     }
 
-    internal void OnShipPartSelected(ShipPart shipPart)
+    public void OnShipPartSelected(ShipPart shipPart)
     {
         string text = string.Format("Name: {0}\nHealth: {1}/{2}", shipPart.name, shipPart.Health, shipPart.MaxHealth);
 
@@ -71,6 +73,14 @@ public class UiController : MonoBehaviour
         }
 
         SelectedItemDetailsTextBox.text = text;
+        StatusBar.text = "";
+    }
+
+    public void OnFailedLocationChange(CrewMember crewMember, ShipPart shipPart)
+    {
+        StatusBar.color = Color.red;
+        StatusBar.text = string.Format("Can't move {0} to {1}, it is {2}", crewMember.PirateName, shipPart.name,
+            (shipPart.IsDestroyed ? "destroyed" : "full"));
     }
 
     public void OnChoiceChanged(int x)
@@ -121,5 +131,6 @@ public class UiController : MonoBehaviour
     public void OnShipSelected()
     {
         SelectedItemDetailsTextBox.text = "That's a pretty cool ship";
+        StatusBar.text = "";
     }
 }

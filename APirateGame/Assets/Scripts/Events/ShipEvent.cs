@@ -9,6 +9,8 @@ namespace Assets.Events
 {
     public abstract class ShipEvent : IEvent
     {
+        public string FullEventDetailsMessage = String.Empty;
+
         public void Execute(MonoBehaviour behaviouralObject)
         {
             Ship shipObject = behaviouralObject as Ship;
@@ -28,6 +30,11 @@ namespace Assets.Events
             return ShipEvent.random.Next(max-min) + min;
         }
 
-        public abstract String eventDescription();
+        public string GetFullEventDetailsMessage()
+        {
+            return FullEventDetailsMessage;
+        }
+
+        public abstract string eventDescription();
     }
 }

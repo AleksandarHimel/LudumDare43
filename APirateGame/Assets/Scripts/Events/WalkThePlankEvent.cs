@@ -21,7 +21,7 @@ namespace Assets.Events
 
         public override string eventDescription()
         {
-            return "Timmy you scoundrel! Off with you!";
+            return "Timmy you scoundrel! Off with you! \n";
         }
     }
 }

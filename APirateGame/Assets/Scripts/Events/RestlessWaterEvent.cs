@@ -15,13 +15,14 @@ namespace Assets.Events
                 if (Random.Range(0, 1) <= GameConfig.Instance.PlagueSpreadingProbability)
                 {
                     crewMember.PlagueThisGuy();
+                    FullEventDetailsMessage += System.String.Format("Oh noo, {0} got sick! \n", crewMember.PirateName);
                 }
             }
         }
 
         public override string eventDescription()
         {
-            return "Batten down the hatches! Tis sea be filled with waves!";
+            return "Batten down the hatches! Tis sea be filled with waves! \n";
         }
     }
 }

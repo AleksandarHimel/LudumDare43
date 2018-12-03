@@ -155,11 +155,12 @@ namespace Assets.Scripts
                 ComposedEvent composedEvent = gameplayEvent as ComposedEvent;
                 ShipEvent shipEvent = composedEvent.EventsOfInterest.FirstOrDefault() as ShipEvent;
 
-
                 if (shipEvent != null)
                 {
                     UiController.EventCanvas.SetActive(true);
                     UiController.StageText.text = shipEvent.eventDescription();
+                    UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = composedEvent.GetFullEventDetailsMessage();
+
                     GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
                 }
                 else

@@ -8,8 +8,6 @@ using UnityEngine.EventSystems;
 
 public class Ship : MonoBehaviour, IPointerClickHandler
 {
-    
-
     public List<ShipPart> ShipParts { get; private set; }
     public List<CrewMember> CrewMembers { get; private set; }
     public List<CrewMember> DeceasedCrewMembers { get; private set; }
@@ -148,28 +146,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         }
 
         return false;
-    }
-
-    public void SpreadPlague()
-    {
-        foreach (ShipPart shipPart in ShipParts)
-        {
-            bool isRoomSafe = !shipPart.PresentCrewMembers.Any(crew => crew.IsUnderPlague);
-
-            if (!isRoomSafe)
-            {
-                foreach (CrewMember crewMember in shipPart.PresentCrewMembers)
-                {
-                    if (!crewMember.IsUnderPlague)
-                    {
-                        if (UnityEngine.Random.Range(0f, 1f) > GameConfig.Instance.PlagueSpreadingProbability)
-                        {
-                            crewMember.PlagueThisGuy();
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /// <summary>

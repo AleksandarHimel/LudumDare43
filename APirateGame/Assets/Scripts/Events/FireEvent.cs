@@ -13,17 +13,21 @@ namespace Assets.Events
 
             foreach (ShipPart shipPart in shipObject.ShipParts)
             {
-                shipPart.TakeDamage((uint)getRandNum(GameConfig.Instance.MinFireShipPartDamage, GameConfig.Instance.MaxFireShipPartDamage));
+                uint damage = (uint)getRandNum(GameConfig.Instance.MinFireShipPartDamage, GameConfig.Instance.MaxFireShipPartDamage);
+                shipPart.TakeDamage(damage);
+                FullEventDetailsMessage += String.Format("{0} was burning and it took {1} damage /n", shipPart.name, damage);
             }
             foreach (CrewMember crewMember in shipObject.CrewMembers)
             {
-                crewMember.ReduceHealth(getRandNum(GameConfig.Instance.MinFireCrewMemberDamage, GameConfig.Instance.MaxFireCrewMemberDamage));
+                int damage = getRandNum(GameConfig.Instance.MinFireCrewMemberDamage, GameConfig.Instance.MaxFireCrewMemberDamage);
+                crewMember.ReduceHealth(damage);
+                FullEventDetailsMessage += String.Format("{0} got burned for {1} damage /n", crewMember.PirateName, damage);
             }
         }
 
         public override string eventDescription()
         {
-            return "Fire! Avast ye, or we be scramblin' to Davy Jones locker!";
+            return "Fire! Avast ye, or we be scramblin' to Davy Jones locker! \n";
         }
     }
 }

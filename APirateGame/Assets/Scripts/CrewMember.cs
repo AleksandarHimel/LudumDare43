@@ -143,10 +143,12 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
                 }
                 catch (Exception)
                 {
-                    Debug.Log("Could not assign " + this.name + " to " + sp.name + "( max ppl: " + sp.MaxNumberOfCrewMembers + ")");
+                    Debug.Log("Could not assign " + this.name + " to " + sp.name + " (max ppl: " + sp.MaxNumberOfCrewMembers + ")");
                     MoveTo(dragPositionStart.Value);
                     dragPositionStart = null;
                     pirateCollider.size = sizeStart.Value;
+
+                    GameManager.Instance.UiController.OnFailedLocationChange(this, sp);
 
                     return;
                 }
