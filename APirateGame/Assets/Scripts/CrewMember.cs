@@ -72,6 +72,18 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         }
     }
 
+    public int GetResourceConcuption()
+    {
+        int result = ResourceConsumption;
+
+        // People that and are affected by plague eat more food
+        result += IsUnderPlague ? GameConfig.Instance.PlagueResourceConsumptionIncrement : 0;
+        // People that and are rowing in are in engine room eat more food
+        result += this.CurrentShipPart is EngineRoom ? GameConfig.Instance.RowingActionFoodConsumptionIncrement : 0;
+
+        return result;
+    }
+
     public void ReduceHealth(int damage)
     {
         Health -= damage;

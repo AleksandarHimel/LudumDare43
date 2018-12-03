@@ -42,13 +42,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
-        //foreach (ShipPart sp in ShipParts)
-        //{
-        //    var _collider = sp.gameObject.AddComponent<BoxCollider2D>();
-        //    _collider.size = new Vector2(20, 20);
-        //}
-        // Instantiate some type of ship 4 example:
-        // For each ship type there should be specific game object...
         var cannonGO = GameObject.Find("ShipPart/Cannon");
         var engineRoomGO = GameObject.Find("ShipPart/EngineRoom");
         var hullGO = GameObject.Find("ShipPart/Hull");
@@ -66,7 +59,6 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             crowsNestGO.AddComponent<CrowsNest>(),
         };
 
-        // TODO: this is temp, depending on crew member size compared to ship part count
         foreach (var shipPart in ShipParts)
         {
             shipPart.InitShipPart(this);
@@ -156,29 +148,28 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     {
         int foodConsumption = 0;
         
-        // Default food consumption
-        foodConsumption = foodConsumption + CrewMembers.Select(crewMember => crewMember.ResourceConsumption).Sum();
-
-        // People under plague eat more food
-        foodConsumption = foodConsumption + 
-            CrewMembers.Where(crewMember => crewMember.IsUnderPlague).Count() * GameConfig.Instance.PlagueResourceConsumptionIncrement;
-
-        // People that and are rowing in are in engine room eat more food
-        foodConsumption = foodConsumption +
-            CrewMembers.Where(crewMember => crewMember.CurrentShipPart is EngineRoom).Count() * GameConfig.Instance.RowingActionFoodConsumptionIncrement;
+        // Sum up food consumption
+        foodConsumption = foodConsumption + CrewMembers.Select(crewMember => crewMember.GetResourceConcuption()).Sum();
 
         return foodConsumption;
     }
 
     public int CalculateBoatSpeed()
     {
-        int boatSpeed = GameConfig.Instance.InitialShipSpeed;
+        double sailingFactor = CrewMembers
+                                .Where(crewMember => crewMember.CurrentShipPart is Sails)
+                                .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : crewMember.GetAttribute("Sailing").AttributeValue)
+                                .DefaultIfEmpty(1.0)
+                                .Single();
+        double boatSpeed = GameConfig.Instance.InitialShipSpeed * sailingFactor;
 
         // ShipParts slows us down
-        int shipPartsWeight = ShipParts
+        /*
+          int shipPartsWeight = ShipParts
             .Select(shipPart => shipPart.Weight).Sum();
-
+            
         boatSpeed -= shipPartsWeight;
+        */
 
         double rowingSpeedIncrement =
             CrewMembers
@@ -189,9 +180,9 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             .Select(attribute => attribute.AttributeValue)
             .Sum();
 
-        boatSpeed += (int)Math.Floor(rowingSpeedIncrement+GetScoutingBonus());
+        boatSpeed += rowingSpeedIncrement + GetScoutingBonus();
 
-        return boatSpeed;
+        return (int)Math.Floor(boatSpeed);
     }
 
     public uint CalculateFoodConsumptionBetweenTwoPoints()
@@ -199,7 +190,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         int defaultFoodConsumption = CalculateDefaultFoodConsumption();
         int boatSpeed = CalculateBoatSpeed();
 
-        return (uint)Math.Floor(1.0 * defaultFoodConsumption / (boatSpeed  / 100.0));
+        return (uint)defaultFoodConsumption;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -217,7 +208,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public double GetScoutingBonus()
     {
         return CrewMembers
-            .Where(crewMember => crewMember.CurrentShipPart is EngineRoom)
+            .Where(crewMember => crewMember.CurrentShipPart is CrowsNest)
             // TODO: milast check if scouting is ok
             .Select(crewMember => crewMember.GetAttribute("Scouting"))
             .Where(attribute => attribute != null)

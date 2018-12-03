@@ -13,9 +13,9 @@ namespace Assets.Scripts
 
         public double PlagueSpreadingProbability = 0.3;
 
-        public int PlagueResourceConsumptionIncrement = 30;
+        public int PlagueResourceConsumptionIncrement = 3;
 
-        public int RowingActionFoodConsumptionIncrement = 30;
+        public int RowingActionFoodConsumptionIncrement = 5;
 
         public uint InitialFoodCount = 1500;
         public uint InitialWoodCount = 100;

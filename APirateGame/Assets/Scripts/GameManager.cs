@@ -12,6 +12,7 @@ namespace Assets.Scripts
 
         public Ship Ship;
         public int Points;
+        public int DistanceToHome;
         public EventManager EventManager;
         public PlayerController PlayerController;
         public InputController InputController;
@@ -84,7 +85,7 @@ namespace Assets.Scripts
             UiController.UpdateChoices(MapManager.GetPossibleDestinations());
             DesiredRiskiness = UiController.GetActiveRiskiness();
             UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
-            UiController.Points.text = string.Format("Points: {0}", Points);
+            UiController.Points.text = string.Format("");
 
             InputController.MoveEndButton.onClick.AddListener(ProcessMoveEnd);
             InputController.AcceptEventResult.onClick.AddListener(ProcessUserAcceptedEventResult);
@@ -118,32 +119,32 @@ namespace Assets.Scripts
             UiController.PathChoice.gameObject.SetActive(false);
 
             Ship.ProcessMoveEnd();
+            DistanceToHome = Math.Max(0, DistanceToHome - Ship.CalculateBoatSpeed());
+            if (DistanceToHome <= 0)
+            {
+                Victory();
+                return;
+            }
+
+            if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
+            {
+                GameOver();
+                return;
+            }
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
 
         void Update()
         {
+            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, Ship.CalculateBoatSpeed(), Ship.CalculateDefaultFoodConsumption());
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
                 MapManager.GoToNextDestination(DesiredRiskiness - 1);
                 Points = Points + MapManager.Instance.GetCurrentNode().Riskiness + 1;
                 Debug.Log("POINTS" + Points);
-                UiController.Points.text = string.Format("Points: {0}", Points);
                 UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
-                //Points = Math.Min(Points, GameConfig.Instance.PointRequiredForVictory);
-                if (Points >= GameConfig.Instance.PointRequiredForVictory)
-                {
-                    Victory();
-                    return;
-                }
-
-                if (Ship.Inventory.Food == 0)
-                {
-                    GameOver();
-                    return;
-                }
-
+                
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
                 gameplayEvent.Execute(Ship);
