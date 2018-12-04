@@ -232,7 +232,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public double GetScoutingBonus()
     {
-        return CrewMembers
+        return AliveCrewMembers
             .Where(crewMember => crewMember.CurrentShipPart is CrowsNest)
             // TODO: milast check if scouting is ok
             .Select(crewMember => crewMember.GetAttribute("Scouting"))
@@ -243,7 +243,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public int GetCannonBonus()
     {
-        return (int)CrewMembers
+        return (int)AliveCrewMembers
             .Where(crewMember => crewMember.CurrentShipPart is Cannon)
             // TODO: milast check if cannon is ok
             .Select(crewMember => crewMember.GetAttribute("Cannon"))

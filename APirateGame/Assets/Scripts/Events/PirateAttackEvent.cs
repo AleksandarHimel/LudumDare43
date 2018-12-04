@@ -14,6 +14,11 @@ namespace Assets.Events
             //Get cannon bonus before the cannon get possibly destroyed
             int cannonBonus = shipObject.GetCannonBonus();
 
+            var cannonBoomManagerGO = GameObject.Find("CannonBoom");
+            cannonBoomManagerGO.GetComponent<AudioSource>().Play();
+
+            bool fVictory = true;
+
             foreach (ShipPart shipPart in shipObject.FunctioningShipParts)
             {
                 //uint damage = (uint)getRandNum(GameConfig.Instance.MinPirateAttackShipPartDamage, GameConfig.Instance.MaxPirateAttackShipPartDamage);
@@ -21,12 +26,18 @@ namespace Assets.Events
                 int counterDamage = cannonBonus;
                 damage -= cannonBonus;
                 damage = (damage < 0) ? 0 : damage;
+                fVictory &= (damage == 0);
                 shipPart.TakeDamage((uint) damage);
                 FullEventDetailsMessage += String.Format("Pirates fired their cannons and {0} took {1} damage \n", shipPart.name, damage);
                 Debug.Log(String.Format("CannonBonus:{0}; damage:{1}; counterDamage:{2}; shipPart:{3}", shipObject.GetCannonBonus(), damage, counterDamage, shipPart.GetType().ToString()));
-
             }
 
+            if (fVictory)
+            {
+                FullEventDetailsMessage += String.Format("Miracle!!! We drove the pirates away by the might of our cannons!");
+                return;
+            }
+            
             foreach (CrewMember crewMember in shipObject.AliveCrewMembers)
             {
                 int damage = getRandNum(GameConfig.Instance.MinPirateAttackCrewMemberDamage, GameConfig.Instance.MaxPirateAttackCrewMemberDamage);
