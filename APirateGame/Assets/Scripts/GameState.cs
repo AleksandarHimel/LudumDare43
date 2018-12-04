@@ -15,6 +15,7 @@ namespace Assets.Scripts
             BringTheNight,
             BringTheDawn,
             WaitForUserEventResultConfirm,
+            WaitForUserGameOverConfirm,
             CheckGameState,
             BringingTheEnd,
         }

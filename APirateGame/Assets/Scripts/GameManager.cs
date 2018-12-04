@@ -47,6 +47,7 @@ namespace Assets.Scripts
         private static GameManager _instance;
         public float FadeTime = 3f;
         private float t = 0.0f;
+        private string gameOverReason;
 
         private void Awake()
         {
@@ -125,7 +126,7 @@ namespace Assets.Scripts
 
             if (riskiness < 0)
             {
-                return distanceTravelled / 5;
+                return distanceTravelled / 4;
             }
 
             riskiness += 1;
@@ -165,7 +166,7 @@ namespace Assets.Scripts
                 //Check if there are crew members alive
                 if (Ship.AliveCrewMembers.Count() == 0)
                 {
-                    GameOver("No alive crew members");
+                    GameOver("All crew members are dead!");
                 }
             }
 
@@ -187,11 +188,11 @@ namespace Assets.Scripts
 
                 if (shipEvent != null)
                 {
-                    UiController.EventCanvas.SetActive(true);
-                    UiController.StageText.text = shipEvent.eventDescription();
-                    UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = "The Goddess of the Sea was merciful! No harm was done to your crew";
+                    string text = "The Goddess of the Sea was merciful! No harm was done to your crew";
                     if (!composedEvent.GetFullEventDetailsMessage().Equals(String.Empty))
-                        UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = composedEvent.GetFullEventDetailsMessage();
+                        text = composedEvent.GetFullEventDetailsMessage();
+
+                    ShowMessageBox(shipEvent.eventDescription(), text);
 
                     GameState.State = GameState.EGameState.WaitForUserEventResultConfirm;
                 }
@@ -235,13 +236,22 @@ namespace Assets.Scripts
                 }
                 //UiController.GameOverText.gameObject.SetActive(true);
                 t = 1.0f;
-                GameState.State = GameState.EGameState.GameOver;
+
+                ShowMessageBox("GAME OVER", gameOverReason);
+                GameState.State = GameState.EGameState.WaitForUserGameOverConfirm;
+            }
+            if (GameState.State == GameState.EGameState.GameOver)
+            {
+                // Load Game over menu
+                gameObject.GetComponent<GameSceneManager>().LoadSceneByIndex(4);
+
+                return;
             }
             if (GameState.State == GameState.EGameState.CheckGameState)
             {
                 if (Ship.IsDestroyed())
                 {
-                    GameOver("Ship destroyed");
+                    GameOver("The Ship is destroyed!");
                     return;
                 }
 
@@ -254,7 +264,7 @@ namespace Assets.Scripts
 
                 if (Ship.Inventory.Food == 0)
                 {
-                    GameOver("No food");
+                    GameOver("There is no food left!");
                     return;
                 }
 
@@ -262,16 +272,22 @@ namespace Assets.Scripts
             }
         }
 
+        private void ShowMessageBox(string title, string text)
+        {
+            UiController.EventCanvas.SetActive(true);
+            UiController.StageText.text = title;
+            UiController.ScrollRect.viewport.GetComponentInChildren<Text>().text = text;
+        }
+
         public void GameOver(string reason = "")
         {
             Debug.Log("GAME OVER: " + reason);
+            gameOverReason = reason;
 
-            GameState.State = GameState.EGameState.BringingTheEnd;
             InputController.MoveEndButton.gameObject.SetActive(false);
             UiController.PathChoice.gameObject.SetActive(false);
 
-            // Load Game over menu
-            gameObject.GetComponent<GameSceneManager>().LoadSceneByIndex(4);
+            GameState.State = GameState.EGameState.BringingTheEnd;
         }
 
         public void Victory()
@@ -298,7 +314,10 @@ namespace Assets.Scripts
         public void ProcessUserAcceptedEventResult()
         {
             UiController.EventCanvas.SetActive(false);
-            GameState.State = GameState.EGameState.CheckGameState;
+            if (GameState.State == GameState.EGameState.WaitForUserEventResultConfirm)
+                GameState.State = GameState.EGameState.CheckGameState;
+            else
+                GameState.State = GameState.EGameState.GameOver;
         }
 
         private void VerifyGameState()
