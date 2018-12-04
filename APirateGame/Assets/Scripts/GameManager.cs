@@ -152,6 +152,11 @@ namespace Assets.Scripts
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ProcessMoveEnd();
+            }
+
             UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day\nCannon: {3}", DistanceToHome, Ship.CalculateBoatSpeed(), 
                 Ship.CalculateFoodConsumptionBetweenTwoPoints(), Ship.GetCannonBonus());
 
