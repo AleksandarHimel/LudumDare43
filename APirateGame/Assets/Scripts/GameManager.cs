@@ -20,7 +20,7 @@ namespace Assets.Scripts
         public UiController UiController;
         public AudioController AudioController;
         public GameConfig GameConfig;
-        public int DesiredRiskiness;
+        public int DesiredRiskiness = 0;
 
         [Header("Health Settings")]
         public GameState GameState;
@@ -152,7 +152,13 @@ namespace Assets.Scripts
 
         void Update()
         {
-            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day", DistanceToHome, Ship.CalculateBoatSpeed(), Ship.CalculateFoodConsumptionBetweenTwoPoints());
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ProcessMoveEnd();
+            }
+
+            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day\nCannon: {3}", DistanceToHome, Ship.CalculateBoatSpeed(), 
+                Ship.CalculateFoodConsumptionBetweenTwoPoints(), Ship.GetCannonBonus());
 
             if (GameState.State == GameState.EGameState.ComputerTurn || GameState.State == GameState.EGameState.PlayerTurn)
             {
@@ -165,7 +171,7 @@ namespace Assets.Scripts
 
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                MapManager.GoToNextDestination(DesiredRiskiness - 1);
+                MapManager.GoToNextDestination(DesiredRiskiness);
                 UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
@@ -233,13 +239,20 @@ namespace Assets.Scripts
             }
             if (GameState.State == GameState.EGameState.CheckGameState)
             {
+                if (Ship.IsDestroyed())
+                {
+                    GameOver();
+                    return;
+                }
+
+                // First check victory condition, allow player to win if their reached the home with no food left
                 if (DistanceToHome <= 0)
                 {
                     Victory();
                     return;
                 }
 
-                if (Ship.Inventory.Food == 0 || Ship.IsDestroyed())
+                if (Ship.Inventory.Food == 0)
                 {
                     GameOver();
                     return;
@@ -254,6 +267,9 @@ namespace Assets.Scripts
             GameState.State = GameState.EGameState.BringingTheEnd;
             InputController.MoveEndButton.gameObject.SetActive(false);
             UiController.PathChoice.gameObject.SetActive(false);
+
+            // Load Game over menu
+            gameObject.GetComponent<GameSceneManager>().LoadSceneByIndex(4);
         }
 
         public void Victory()
@@ -262,6 +278,9 @@ namespace Assets.Scripts
             InputController.MoveEndButton.gameObject.SetActive(false);
             UiController.PathChoice.gameObject.SetActive(false);
             UiController.VictoryText.gameObject.SetActive(true);
+
+            // Load Victory menu
+            gameObject.GetComponent<GameSceneManager>().LoadSceneByIndex(3);
         }
 
         public void ProcessUserTurnStart()

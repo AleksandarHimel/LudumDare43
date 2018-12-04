@@ -172,14 +172,14 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         int foodConsumption = 0;
         
         // Sum up food consumption
-        foodConsumption = foodConsumption + CrewMembers.Select(crewMember => crewMember.GetResourceConcuption()).Sum();
+        foodConsumption = foodConsumption + AliveCrewMembers.Select(crewMember => crewMember.GetResourceConcuption()).Sum();
 
         return foodConsumption;
     }
 
     public int CalculateBoatSpeed()
     {
-        double sailingFactor = CrewMembers
+        double sailingFactor = AliveCrewMembers
                                 .Where(crewMember => crewMember!= null && crewMember.CurrentShipPart != null && crewMember.CurrentShipPart is Sails)
                                 .Select(crewMember => crewMember.GetAttribute("Sailing") == null ? 1.0 : (double) crewMember.GetAttribute("Sailing").AttributeValue)
                                 .DefaultIfEmpty(1.0)
@@ -197,7 +197,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         */
 
         double rowingSpeedIncrement =
-            CrewMembers
+            AliveCrewMembers
             .Where(crewMember => crewMember.CurrentShipPart is Oars)
             // TODO: v-milast check if rowing is valid
             .Select(crewMember => crewMember.GetAttribute("Rowing"))
@@ -232,7 +232,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public double GetScoutingBonus()
     {
-        return CrewMembers
+        return AliveCrewMembers
             .Where(crewMember => crewMember.CurrentShipPart is CrowsNest)
             // TODO: milast check if scouting is ok
             .Select(crewMember => crewMember.GetAttribute("Scouting"))
@@ -243,7 +243,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
 
     public int GetCannonBonus()
     {
-        return (int)CrewMembers
+        return (int)AliveCrewMembers
             .Where(crewMember => crewMember.CurrentShipPart is Cannon)
             // TODO: milast check if cannon is ok
             .Select(crewMember => crewMember.GetAttribute("Cannon"))

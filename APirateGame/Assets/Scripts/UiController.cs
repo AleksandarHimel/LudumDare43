@@ -68,7 +68,7 @@ public class UiController : MonoBehaviour
 
     public void OnShipPartSelected(ShipPart shipPart)
     {
-        string name = shipPart.name.Replace("ShipPart/", ""); // TODO: get name in a less hacky way
+        string name = shipPart.FriendlyName; 
         string text = string.Format("Name: {0}\nHealth: {1}/{2}", name, shipPart.Health, shipPart.MaxHealth);
 
         var crewMembers = shipPart.PresentCrewMembers;
@@ -89,7 +89,7 @@ public class UiController : MonoBehaviour
     public void OnFailedLocationChange(CrewMember crewMember, ShipPart shipPart)
     {
         StatusBar.color = Color.red;
-        StatusBar.text = string.Format("Can't move {0} to {1}, it is {2}", crewMember.PirateName, shipPart.name,
+        StatusBar.text = string.Format("Can't move {0} to {1}, it is {2}", crewMember.PirateName, shipPart.FriendlyName,
             (shipPart.IsDestroyed ? "destroyed" : "full"));
     }
 
@@ -132,6 +132,7 @@ public class UiController : MonoBehaviour
         }   
 
         PathChoice.AddOptions(options);
+        PathChoice.captionText.text = options[0].text;
     }
 
     public int GetActiveRiskiness()

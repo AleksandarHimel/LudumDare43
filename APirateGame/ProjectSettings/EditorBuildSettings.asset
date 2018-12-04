@@ -6,6 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/MainMenu.unity
+    guid: 50300e84c3214e64cb1a6fbdc1800335
+  - enabled: 1
+    path: Assets/Scenes/StartOfTheTail.unity
+    guid: 875bc354eeaac754b9eb5fe4d31fee83
+  - enabled: 1
+    path: Assets/Scenes/ShipScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/VictoryEndMenu.unity
+    guid: 5e63b71f631d53e44ba15487f67d9efc
+  - enabled: 1
+    path: Assets/Scenes/GameOverMenu.unity
+    guid: 07c93d747bdda9241bc9305ae01b9912
   m_configObjects: {}
