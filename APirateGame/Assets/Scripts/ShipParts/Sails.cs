@@ -17,6 +17,8 @@ public class Sails : ShipPart
         Health = MaxHealth;
         Weight = GameConfig.Instance.SailsWeight;
 
+        Description = "Having expirienced sailer operating sails will speed you up";
+
         this.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Sails");
     }
 

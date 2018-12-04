@@ -54,7 +54,7 @@ public class UiController : MonoBehaviour
         }
         else
         {
-            text = string.Format("Name: {0}\nHealth: {1}{2}", member.PirateName, member.Health, member.IsUnderPlague ? "\nPLAUGEEEE" : "");
+            text = string.Format("Name: {0}\nHealth: {1}{2}", member.PirateName, member.Health, member.IsUnderPlague ? "\nSICK and HUNGRY" : "");
 
             foreach (string attributeName in member.AttributeNames)
             {
