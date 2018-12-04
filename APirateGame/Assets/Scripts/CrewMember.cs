@@ -197,15 +197,19 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         }
 
         // Are we throwing pirate overboard?
-        var waterCollider = GameObject.Find("Water").GetComponent<BoxCollider2D>();
-        if (waterCollider.IsTouching(pirateCollider))
+        var watters = GameObject.FindGameObjectsWithTag("Water");
+        foreach (var w in watters)
         {
-            Debug.Log(string.Format("OMG they killed {0}! You bastards!", PirateName));
-            Ship.ResetCrewMemberSelection();
-            KillCrewMember();
-            dragPositionStart = null;
+            var waterCollider = w.GetComponent<BoxCollider2D>();
+            if (waterCollider.IsTouching(pirateCollider))
+            {
+                Debug.Log(string.Format("OMG they killed {0}! You bastards!", PirateName));
+                Ship.ResetCrewMemberSelection();
+                KillCrewMember();
+                dragPositionStart = null;
 
-            return;
+                return;
+            }
         }
 
         Debug.Log(this.name + " moved to nowhere - returning to " + this.CurrentShipPart.FriendlyName);

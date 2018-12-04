@@ -58,6 +58,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
         var kitchenGO = GameObject.Find("ShipPart/Kitchen");
         var sailsGO = GameObject.Find("ShipPart/Sails");
         var crowsNestGO = GameObject.Find("ShipPart/CrowsNest");
+        var lowerDeck = GameObject.Find("ShipPart/Lower Deck");
+        var upperDeck = GameObject.Find("ShipPart/Upper Deck");
 
         ShipParts = new List<ShipPart>
         {
@@ -67,6 +69,8 @@ public class Ship : MonoBehaviour, IPointerClickHandler
             kitchenGO.AddComponent<Kitchen>(),
             sailsGO.AddComponent<Sails>(),
             crowsNestGO.AddComponent<CrowsNest>(),
+            lowerDeck.AddComponent<Hull>(),
+            upperDeck.AddComponent<Hull>(),
         };
 
         foreach (var shipPart in ShipParts)

@@ -8,12 +8,12 @@ public class Hull : ShipPart
     public override void InitShipPart(Ship ship)
     {
         ParentShip = ship;
-        MaxNumberOfCrewMembers = 2;
-        MaxHealth = 2;
+        MaxNumberOfCrewMembers = 5;
+        MaxHealth = 100;
         Health = MaxHealth;
         Weight = GameConfig.Instance.HullWeight;
 
-        Description = "(DEBUG) Currently not in the game";
+        Description = "Place to kill some time, or people...";
     }
     
     // Update is called once per frame
