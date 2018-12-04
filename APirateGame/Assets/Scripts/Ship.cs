@@ -15,6 +15,7 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public IEnumerable<CrewMember> DeceasedCrewMembers { get { return CrewMembers.Where(cm => cm.IsDead); } }
     public IEnumerable<CrewMember> AliveCrewMembers { get { return CrewMembers.Where(cm => !cm.IsDead); } }
 
+    public int CaptainResourceConsumption = 10;
     public ShipInventory Inventory { get; set; }
     public CrewMember SelectedCrewMember { get; private set; }
 
@@ -170,7 +171,10 @@ public class Ship : MonoBehaviour, IPointerClickHandler
     public int CalculateDefaultFoodConsumption()
     {
         int foodConsumption = 0;
-        
+
+        // add consumption for the captain
+        foodConsumption += CaptainResourceConsumption;
+
         // Sum up food consumption
         foodConsumption = foodConsumption + AliveCrewMembers.Select(crewMember => crewMember.GetResourceConcuption()).Sum();
 
