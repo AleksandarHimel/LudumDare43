@@ -231,7 +231,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
             {
                 try
                 {
-                    Ship.AssignCrewMember(this, sp);
+                    //Ship.AssignCrewMember(this, sp);
                     this.transform.position = pendingPosition;
                     
                     MoveTo(new Vector2(eventData.pointerCurrentRaycast.worldPosition.x, eventData.pointerCurrentRaycast.worldPosition.y));
