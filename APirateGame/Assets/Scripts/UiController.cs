@@ -70,6 +70,8 @@ public class UiController : MonoBehaviour
     {
         StatusBar.color = Color.black;
         StatusBar.text = "It feels good to be a captain\nconfortably eating food and ordering around";
+
+        SelectedItemDetailsTextBox.text = "Name: Captain Rrr\nHealth:\nHigh cholesterol\nHigh blood pressure";
     }
 
     public void OnShipPartSelected(ShipPart shipPart)
@@ -139,6 +141,7 @@ public class UiController : MonoBehaviour
 
         PathChoice.AddOptions(options);
         PathChoice.captionText.text = options[0].text;
+        PathChoice.value = 0;
     }
 
     public int GetActiveRiskiness()
@@ -149,6 +152,11 @@ public class UiController : MonoBehaviour
     public void OnShipSelected()
     {
         SelectedItemDetailsTextBox.text = "That's a pretty cool ship";
+        StatusBar.text = "";
+    }
+
+    public void ClearStatusBar()
+    {
         StatusBar.text = "";
     }
 }

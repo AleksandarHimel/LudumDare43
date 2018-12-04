@@ -130,6 +130,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         if (!IsDead)
         {
             Ship.OnCrewMemberSelected(this);
+            
         }
     }
 
@@ -142,6 +143,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public void OnPointerDown(PointerEventData eventData)
     {
         SelectCrewMember();
+        GameManager.Instance.UiController.ClearStatusBar();
 
         Debug.Log(name + " game object mouse down");
         var pirateCollider = gameObject.GetComponent<BoxCollider2D>();

@@ -4636,7 +4636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.7830189, g: 0, b: 0.1611401, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4646,7 +4646,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 20
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
@@ -5441,7 +5441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ship: {fileID: 1341390717}
   Points: 0
-  DistanceToHome: 400
+  DistanceToHome: 450
   PlayerController: {fileID: 0}
   InputController: {fileID: 1507152519}
   UiController: {fileID: 1507152522}
@@ -5523,7 +5523,7 @@ MonoBehaviour:
   PlagueSpreadingProbability: 0.3
   PlagueResourceConsumptionIncrement: 30
   RowingActionFoodConsumptionIncrement: 30
-  InitialFoodCount: 250
+  InitialFoodCount: 200
   InitialWoodCount: 100
   ChanceForShallowWaters: 10
   ChanceForFire: 20

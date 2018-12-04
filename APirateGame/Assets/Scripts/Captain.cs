@@ -4,9 +4,14 @@ using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Captain : MonoBehaviour, IPointerClickHandler
+public class Captain : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
 {
     public void OnPointerClick(PointerEventData eventData)
+    {
+        GameManager.Instance.UiController.OnCaptainSelected();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
     {
         GameManager.Instance.UiController.OnCaptainSelected();
     }
