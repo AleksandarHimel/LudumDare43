@@ -262,6 +262,9 @@ namespace Assets.Scripts
             GameState.State = GameState.EGameState.BringingTheEnd;
             InputController.MoveEndButton.gameObject.SetActive(false);
             UiController.PathChoice.gameObject.SetActive(false);
+
+            // Load Game over menu
+            gameObject.GetComponent<GameSceneManager>().LoadSceneByIndex(4);
         }
 
         public void Victory()
@@ -270,6 +273,9 @@ namespace Assets.Scripts
             InputController.MoveEndButton.gameObject.SetActive(false);
             UiController.PathChoice.gameObject.SetActive(false);
             UiController.VictoryText.gameObject.SetActive(true);
+
+            // Load Victory menu
+            gameObject.GetComponent<GameSceneManager>().LoadSceneByIndex(3);
         }
 
         public void ProcessUserTurnStart()

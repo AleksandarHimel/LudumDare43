@@ -4458,6 +4458,7 @@ GameObject:
   - component: {fileID: 1507152522}
   - component: {fileID: 1507152524}
   - component: {fileID: 1507152523}
+  - component: {fileID: 1507152525}
   m_Layer: 0
   m_Name: Game manager
   m_TagString: Untagged
@@ -4600,6 +4601,17 @@ MonoBehaviour:
   SailsWeight: 1
   CrowsNestWeight: 1
   PointRequiredForVictory: 10
+--- !u!114 &1507152525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1507152518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 966411d2502fefd488e70eae45f450fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1509724245
 GameObject:
   m_ObjectHideFlags: 0
