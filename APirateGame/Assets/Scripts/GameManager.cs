@@ -20,7 +20,7 @@ namespace Assets.Scripts
         public UiController UiController;
         public AudioController AudioController;
         public GameConfig GameConfig;
-        public int DesiredRiskiness;
+        public int DesiredRiskiness = 0;
 
         [Header("Health Settings")]
         public GameState GameState;
@@ -146,9 +146,6 @@ namespace Assets.Scripts
 
             Ship.ProcessMoveEnd();
             UpdateDistance();
-
-            UiController.UpdateChoices(MapManager.GetPossibleDestinations());
-            GameManager.Instance.UiController.OnChoiceChanged(0);
 
             GameState.State = GameState.EGameState.BringTheNight; 
         }
