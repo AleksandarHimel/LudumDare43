@@ -28,7 +28,7 @@ namespace Assets.Events
                 damage = (damage < 0) ? 0 : damage;
                 fVictory &= (damage == 0);
                 shipPart.TakeDamage((uint) damage);
-                FullEventDetailsMessage += String.Format("Pirates fired their cannons and {0} took {1} damage \n", shipPart.name, damage);
+                FullEventDetailsMessage += String.Format("Pirates fired their cannons and {0} took {1} damage \n", shipPart.FriendlyName, damage);
                 Debug.Log(String.Format("CannonBonus:{0}; damage:{1}; counterDamage:{2}; shipPart:{3}", shipObject.GetCannonBonus(), damage, counterDamage, shipPart.GetType().ToString()));
             }
 

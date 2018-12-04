@@ -15,9 +15,9 @@ namespace Assets.Events
                 {
                     uint damage = (uint)getRandNum(GameConfig.Instance.MinShallowWaterShipPartDamage, GameConfig.Instance.MaxShallowWaterShipPartDamage);
                     shipPart.TakeDamage(damage);
-                    FullEventDetailsMessage += String.Format("Damned be the shallow seas! {0} took {1} damage \n", shipPart.name, damage);
+                    FullEventDetailsMessage += String.Format("Damned be the shallow seas! {0} took {1} damage \n", shipPart.FriendlyName, damage);
                 }
-            }            
+            }
         }
 
         public override string eventDescription()

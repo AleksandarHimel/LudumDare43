@@ -174,7 +174,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
                 {
                     Ship.AssignCrewMember(this, sp);
 
-                    Debug.Log("Assigned " + this.name + " to " + sp.name);
+                    Debug.Log("Assigned " + this.name + " to " + sp.FriendlyName);
                     dragPositionStart = null;
                     pirateCollider.size = sizeStart.Value;
                     sizeStart = null;
@@ -183,7 +183,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
                 }
                 catch (Exception)
                 {
-                    Debug.Log("Could not assign " + this.name + " to " + sp.name + " (max ppl: " + sp.MaxNumberOfCrewMembers + ")");
+                    Debug.Log("Could not assign " + this.name + " to " + sp.FriendlyName + " (max ppl: " + sp.MaxNumberOfCrewMembers + ")");
                     MoveTo(dragPositionStart.Value);
                     dragPositionStart = null;
                     pirateCollider.size = sizeStart.Value;
@@ -208,7 +208,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
             return;
         }
 
-        Debug.Log(this.name + " moved to nowhere - returning to " + this.CurrentShipPart.name);
+        Debug.Log(this.name + " moved to nowhere - returning to " + this.CurrentShipPart.FriendlyName);
 
         MoveTo(dragPositionStart.Value);
         dragPositionStart = null;

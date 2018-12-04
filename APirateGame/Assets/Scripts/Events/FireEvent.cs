@@ -15,7 +15,7 @@ namespace Assets.Events
             {
                 uint damage = (uint)getRandNum(GameConfig.Instance.MinFireShipPartDamage, GameConfig.Instance.MaxFireShipPartDamage);
                 shipPart.TakeDamage(damage);
-                FullEventDetailsMessage += String.Format("{0} was burning and it took {1} damage \n", shipPart.name, damage);
+                FullEventDetailsMessage += String.Format("{0} was burning and it took {1} damage \n", shipPart.FriendlyName, damage);
             }
             foreach (CrewMember crewMember in shipObject.AliveCrewMembers)
             {

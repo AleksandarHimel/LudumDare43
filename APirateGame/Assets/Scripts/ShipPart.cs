@@ -23,6 +23,8 @@ public abstract class ShipPart : MonoBehaviour, IPointerClickHandler {
 
     public abstract void InitShipPart(Ship ship);
 
+    public string FriendlyName { get { return name.Replace("ShipPart/", ""); } }
+
     public ShipPart(Ship parentShip)
     {
         ParentShip = parentShip;
