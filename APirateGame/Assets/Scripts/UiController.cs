@@ -66,6 +66,12 @@ public class UiController : MonoBehaviour
         SelectedItemDetailsTextBox.text = text;
     }
 
+    public void OnCaptainSelected()
+    {
+        StatusBar.color = Color.black;
+        StatusBar.text = "It feels good to be a captain\nconfortably eating food and ordering around";
+    }
+
     public void OnShipPartSelected(ShipPart shipPart)
     {
         string name = shipPart.FriendlyName; 
