@@ -168,7 +168,7 @@ namespace Assets.Scripts
 
             if (GameState.State == GameState.EGameState.ComputerTurn)
             {
-                MapManager.GoToNextDestination(DesiredRiskiness - 1);
+                MapManager.GoToNextDestination(DesiredRiskiness);
                 UiController.ResourcesTextBox.text = string.Format("Resources: food {0}", Ship.Inventory.Food);
                 // Handle
                 var gameplayEvent = MapManager.GetCurrentNode().NodeEvent;
