@@ -165,7 +165,7 @@ namespace Assets.Scripts
                 //Check if there are crew members alive
                 if (Ship.AliveCrewMembers.Count() == 0)
                 {
-                    GameOver();
+                    GameOver("No alive crew members");
                 }
             }
 
@@ -241,7 +241,7 @@ namespace Assets.Scripts
             {
                 if (Ship.IsDestroyed())
                 {
-                    GameOver();
+                    GameOver("Ship destroyed");
                     return;
                 }
 
@@ -254,7 +254,7 @@ namespace Assets.Scripts
 
                 if (Ship.Inventory.Food == 0)
                 {
-                    GameOver();
+                    GameOver("No food");
                     return;
                 }
 
@@ -262,8 +262,10 @@ namespace Assets.Scripts
             }
         }
 
-        public void GameOver()
-        { 
+        public void GameOver(string reason = "")
+        {
+            Debug.Log("GAME OVER: " + reason);
+
             GameState.State = GameState.EGameState.BringingTheEnd;
             InputController.MoveEndButton.gameObject.SetActive(false);
             UiController.PathChoice.gameObject.SetActive(false);
