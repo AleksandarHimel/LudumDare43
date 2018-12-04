@@ -132,6 +132,7 @@ public class UiController : MonoBehaviour
         }   
 
         PathChoice.AddOptions(options);
+        PathChoice.captionText.text = options[0].text;
     }
 
     public int GetActiveRiskiness()
