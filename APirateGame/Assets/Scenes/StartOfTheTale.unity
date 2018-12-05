@@ -304,10 +304,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "After successful raid our captain is trying to return his ship and his
-    loot back home.\r\n\r\nThere is only one small problem. Home port is far away,
-    and food is really scarce.\r\n\r\nAre you going to manage to return the ship back
-    home?\r"
+  m_Text: "After a successful raid, our captain is trying to return his ship and his
+    loot back home.\r\n\r\nThere is only one small problem. Home port is far away and 
+    the waters are full of dangers.\r\n\r\nOh, and food is getting scarce.\r\n\r\nCan 
+    you find your way back?"
 --- !u!222 &567213727
 CanvasRenderer:
   m_ObjectHideFlags: 0
