@@ -228,27 +228,9 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         
         var worldPoint = Camera.main.ScreenToWorldPoint(
             new Vector3(eventData.position.x, eventData.position.y, gameObject.transform.position.z - Camera.main.transform.position.z));
-
         var pendingPosition = new Vector3(worldPoint.x, worldPoint.y, gameObject.transform.position.z);
 
-        foreach (ShipPart sp in Ship.FunctioningShipParts)
-        {
-            if (this.IsWithinBoundaries(sp))
-            {
-                try
-                {
-                    //Ship.AssignCrewMember(this, sp);
-                    this.transform.position = pendingPosition;
-                    
-                    MoveTo(new Vector2(eventData.pointerCurrentRaycast.worldPosition.x, eventData.pointerCurrentRaycast.worldPosition.y));
-                }
-                catch (Exception)
-                {
-                    // could not assign - return back;
-                }
-
-            }
-        }
+        MoveTo(new Vector2(pendingPosition.x, pendingPosition.y));
     }
 
     void OnTriggerEnter(Collider other)
@@ -258,15 +240,6 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         if (other.gameObject.GetComponent<ShipPart>() != null)
         {
             Debug.Log(this.gameObject.name + " trying to enter " + other.gameObject.name);
-
-            try
-            {
-                //Ship.AssignCrewMember(this, other.gameObject.GetComponent<ShipPart>());
-            }
-            catch (Exception)
-            {
-                // could not assign - do something else
-            }
         }
     }
 
