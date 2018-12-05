@@ -158,8 +158,11 @@ namespace Assets.Scripts
                 ProcessMoveEnd();
             }
 
-            UiController.Points.text = string.Format("Distance to home: {0} miles\nSpeed: {1} miles / day\nFood Consumption: {2} / day\nCannon: {3}", DistanceToHome, Ship.CalculateBoatSpeed(), 
-                Ship.CalculateFoodConsumptionBetweenTwoPoints(), Ship.GetCannonBonus());
+            UiController.DistanceTextBox.text = string.Format("Distance to home: {0} miles", DistanceToHome);
+            UiController.Points.text = string.Format("Speed: {0} miles / day\nFood Consumption: {1} / day\nCannon: {2}", 
+                Ship.CalculateBoatSpeed(), 
+                Ship.CalculateFoodConsumptionBetweenTwoPoints(), 
+                Ship.GetCannonBonus());
 
             if (GameState.State == GameState.EGameState.ComputerTurn || GameState.State == GameState.EGameState.PlayerTurn)
             {

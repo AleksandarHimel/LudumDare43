@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class UiController : MonoBehaviour
 {
     public Text ResourcesTextBox;
+    public Text DistanceTextBox;
     public Text SelectedItemDetailsTextBox;
     public Text StatusBar;
     public Text Points;

@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 50300e84c3214e64cb1a6fbdc1800335
   - enabled: 1
-    path: Assets/Scenes/StartOfTheTail.unity
+    path: Assets/Scenes/StartOfTheTale.unity
     guid: 875bc354eeaac754b9eb5fe4d31fee83
   - enabled: 1
     path: Assets/Scenes/ShipScene.unity
