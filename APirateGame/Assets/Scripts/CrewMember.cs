@@ -30,6 +30,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     private Vector3? dragPositionStart = null;
     private Vector2? sizeStart = null;
 
+    private static int deceasedCount = 0;
+
     public static string[] CrewMemberColors =
     {
         "red",
@@ -126,6 +128,10 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
         var screamManagerGO = GameObject.Find("ScreamManager");
         screamManagerGO.GetComponent<AudioSource>().Play();
+
+        deceasedCount++;
+        var deadPirateGO = GameObject.Find("BackgroundObjects/skeleton" + deceasedCount);
+        deadPirateGO.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
     }
 
     public CrewMemberAttribute GetAttribute(string attributeName)
