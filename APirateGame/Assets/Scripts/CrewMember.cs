@@ -10,7 +10,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
     public int Health;
     public bool IsUnderPlague = false;
     public int ResourceConsumption = 10;
-    public int BarfingProbability = 2;
+    public float BarfingProbability = 0.004f;
     public string PirateName;
     public float CrewMemberZPosition = -0.2f;
     public Vector2 CrewMemberMovingBoundingBox = new Vector2(0.1f, 0.1f);
@@ -81,8 +81,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         }
         else
         {
-            int r = UnityEngine.Random.Range(0, 500);
-            if (!PirateBarf.IsBarfing && IsUnderPlague &&  r< BarfingProbability)
+      
+            if (!PirateBarf.IsBarfing && IsUnderPlague && UnityEngine.Random.Range(0f, 1.0f) < BarfingProbability && GameManager.Instance.GameState.State == GameState.EGameState.PlayerTurn)
             {
                 PirateBarf.StartBarfing();
             }
