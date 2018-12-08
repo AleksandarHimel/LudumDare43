@@ -8,11 +8,13 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
 
     public ShipPart CurrentShipPart;
     public int Health;
-    public bool IsUnderPlague;
+    public bool IsUnderPlague = false;
     public int ResourceConsumption = 10;
+    public int BarfingProbability = 2;
     public string PirateName;
     public float CrewMemberZPosition = -0.2f;
     public Vector2 CrewMemberMovingBoundingBox = new Vector2(0.1f, 0.1f);
+    public Barf PirateBarf;
 
     private Dictionary<string, CrewMemberAttribute> attributes = new Dictionary<string, CrewMemberAttribute>();
 
@@ -49,6 +51,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         var sprite = GetComponent<SpriteRenderer>();
         sprite.sprite = Resources.Load<Sprite>(string.Format("Sprites/Pirate {0}", pirate.Color));
 
+        
+
         var shipPartObject = GameObject.Find("ShipPart/" + pirate.InitShipPart);
         this.CurrentShipPart = shipPartObject.GetComponent<ShipPart>();
         
@@ -56,6 +60,8 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         v3.z = CrewMemberZPosition;
         v3.x += 0.1f;
         gameObject.transform.localPosition = v3;
+
+        PirateBarf = new Barf(transform);
 
         Debug.Log(string.Format("{0} : {1} [{2}]", PirateName, pirate.Color, pirate.InitShipPart));
     }
@@ -72,6 +78,16 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         {
             gameObject.GetComponent<Rigidbody2D>().MovePosition(expectedPosition);
             IsMoving = false;
+        }
+        else
+        {
+            int r = UnityEngine.Random.Range(0, 500);
+            if (!PirateBarf.IsBarfing && IsUnderPlague &&  r< BarfingProbability)
+            {
+                PirateBarf.StartBarfing();
+            }
+            PirateBarf.UpdateBarf(); 
+            
         }
     }
 
