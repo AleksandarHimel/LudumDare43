@@ -39,6 +39,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: NotVisible
+    uniqueID: 1882700055
+    locked: 0
   - name: Background
     uniqueID: 3610320951
     locked: 0
