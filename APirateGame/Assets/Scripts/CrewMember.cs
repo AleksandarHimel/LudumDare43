@@ -84,7 +84,7 @@ public class CrewMember : MonoBehaviour, IPointerClickHandler, IPointerDownHandl
         else
         {
       
-            if (!PirateBarf.IsBarfing && IsUnderPlague && UnityEngine.Random.Range(0f, 1.0f) < BarfingProbability && GameManager.Instance.GameState.State == GameState.EGameState.PlayerTurn)
+            if (!IsDead && !PirateBarf.IsBarfing && IsUnderPlague && UnityEngine.Random.Range(0f, 1.0f) < BarfingProbability && GameManager.Instance.GameState.State == GameState.EGameState.PlayerTurn)
             {
                 PirateBarf.StartBarfing();
             }
